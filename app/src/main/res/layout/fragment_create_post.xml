@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E2FDFF"
+    tools:context=".ui.CreatePost.CreatePostFragment">
+
+
+    <ImageView
+        android:id="@+id/create_post_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/create_post_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/create_post_img"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="11dp"
+        android:text="What's on your mind?"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/create_post_img"
+        app:layout_constraintTop_toBottomOf="@+id/create_post_username" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="347dp"
+        android:layout_height="510dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_post_img" />
+
+    <Button
+        android:id="@+id/create_post_btn"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/blue_btn"
+        android:fontFamily="sans-serif"
+        android:text="create"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/view3"
+        app:layout_constraintEnd_toEndOf="@+id/view3" />
+
+    <TextView
+        android:id="@+id/create_post_text"
+        android:layout_width="233dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:hint="Write something.."
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/view3"
+        app:layout_constraintTop_toTopOf="@+id/view3"
+        tools:ignore="MissingConstraints" />
+
+    <View
+        android:id="@+id/create_post_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="130dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/view3"
+        app:layout_constraintTop_toTopOf="@+id/view3"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/create_post_add_photo_btn"
+        android:layout_width="54dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/add_photo"
+        app:layout_constraintBottom_toBottomOf="@+id/create_post_divider"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintStart_toEndOf="@+id/create_post_text"
+        app:layout_constraintTop_toTopOf="@+id/view3" />
+
+    <TextView
+        android:id="@+id/create_post_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/create_post_age"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif"
+        android:text="TYPE:"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_post_divider" />
+
+    <TextView
+        android:id="@+id/create_post_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/create_post_size"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif"
+        android:text="AGE:"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_post_type" />
+
+    <TextView
+        android:id="@+id/create_post_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/create_post_gender"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif"
+        android:text="SIZE:"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_post_age" />
+
+    <TextView
+        android:id="@+id/create_post_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif"
+        android:text="GENDER:"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_post_size" />
+
+    <TextView
+        android:id="@+id/create_post_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif"
+        android:text="LOCATION:"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_post_gender" />
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="126dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="32dp"
+        android:layout_weight=".28"
+        android:background="@drawable/spinner_border"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintHorizontal_bias="0.741"
+        app:layout_constraintStart_toEndOf="@+id/create_post_type"
+        app:layout_constraintTop_toTopOf="@+id/create_post_type"
+        tools:ignore="MissingConstraints">
+
+        <Spinner
+            android:id="@+id/create_post_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="126dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight=".28"
+        android:background="@drawable/spinner_border"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintHorizontal_bias="0.822"
+        app:layout_constraintStart_toEndOf="@+id/create_post_type"
+        app:layout_constraintTop_toBottomOf="@+id/create_post_gender"
+        tools:ignore="MissingConstraints">
+
+        <Spinner
+            android:id="@+id/create_post_location_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="126dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight=".28"
+        android:background="@drawable/spinner_border"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintHorizontal_bias="0.833"
+        app:layout_constraintStart_toEndOf="@+id/create_post_type"
+        app:layout_constraintTop_toBottomOf="@+id/create_post_size"
+        tools:ignore="MissingConstraints">
+
+        <Spinner
+            android:id="@+id/create_post_gender_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="126dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight=".28"
+        android:background="@drawable/spinner_border"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintHorizontal_bias="0.833"
+        app:layout_constraintStart_toEndOf="@+id/create_post_type"
+        app:layout_constraintTop_toBottomOf="@+id/create_post_age"
+        tools:ignore="MissingConstraints">
+
+        <Spinner
+            android:id="@+id/create_post_size_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="126dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight=".28"
+        android:background="@drawable/spinner_border"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintHorizontal_bias="0.833"
+        app:layout_constraintStart_toEndOf="@+id/create_post_type"
+        app:layout_constraintTop_toBottomOf="@+id/create_post_type"
+        tools:ignore="MissingConstraints">
+
+        <Spinner
+            android:id="@+id/create_post_age_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center" />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

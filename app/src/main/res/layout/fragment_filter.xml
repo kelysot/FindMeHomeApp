@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E2FDFF"
+    tools:context=".ui.Filter.FilterFragment">
+
+
+    <!--    <Spinner-->
+    <!--        android:id="@+id/spinner7"-->
+    <!--        android:layout_width="94dp"-->
+    <!--        android:layout_height="38dp"-->
+    <!--        android:background="@android:drawable/btn_dropdown"-->
+    <!--        android:spinnerMode="dropdown"-->
+    <!--        tools:layout_editor_absoluteX="237dp"-->
+    <!--        tools:layout_editor_absoluteY="127dp" />-->
+
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="50dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/login_btn_login2"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="150dp"
+        android:background="@drawable/blue_btn"
+        android:fontFamily="sans-serif"
+        android:text="Search"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="@+id/view2" />
+
+    <TextView
+        android:id="@+id/filter_looking_for"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/filter_type"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif"
+        android:text="I\'M LOOKING FOR"
+        android:textColor="#1826A7"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view2" />
+
+    <TextView
+        android:id="@+id/filter_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/filter_age"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="sans-serif"
+        android:text="TYPE"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_looking_for" />
+
+    <TextView
+        android:id="@+id/filter_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/filter_size"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif"
+        android:text="AGE"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_type" />
+
+    <TextView
+        android:id="@+id/filter_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/filter_gender"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif"
+        android:text="SIZE"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_age" />
+
+    <TextView
+        android:id="@+id/filter_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif"
+        android:text="GENDER"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_size" />
+
+    <TextView
+        android:id="@+id/filter_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif"
+        android:text="LOCATION"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_gender" />
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="126dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="32dp"
+        android:layout_weight=".28"
+        android:background="@drawable/spinner_border"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintHorizontal_bias="0.741"
+        app:layout_constraintStart_toEndOf="@+id/filter_type"
+        app:layout_constraintTop_toTopOf="@+id/filter_type"
+        tools:ignore="MissingConstraints">
+
+        <Spinner
+            android:id="@+id/filter_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="126dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight=".28"
+        android:background="@drawable/spinner_border"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintHorizontal_bias="0.822"
+        app:layout_constraintStart_toEndOf="@+id/filter_type"
+        app:layout_constraintTop_toBottomOf="@+id/filter_gender"
+        tools:ignore="MissingConstraints">
+
+        <Spinner
+            android:id="@+id/filter_location_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="126dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight=".28"
+        android:background="@drawable/spinner_border"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintHorizontal_bias="0.833"
+        app:layout_constraintStart_toEndOf="@+id/filter_type"
+        app:layout_constraintTop_toBottomOf="@+id/filter_size"
+        tools:ignore="MissingConstraints">
+
+        <Spinner
+            android:id="@+id/filter_gender_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="126dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight=".28"
+        android:background="@drawable/spinner_border"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintHorizontal_bias="0.833"
+        app:layout_constraintStart_toEndOf="@+id/filter_type"
+        app:layout_constraintTop_toBottomOf="@+id/filter_age"
+        tools:ignore="MissingConstraints">
+
+        <Spinner
+            android:id="@+id/filter_size_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="126dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight=".28"
+        android:background="@drawable/spinner_border"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintHorizontal_bias="0.833"
+        app:layout_constraintStart_toEndOf="@+id/filter_type"
+        app:layout_constraintTop_toBottomOf="@+id/filter_type"
+        tools:ignore="MissingConstraints">
+
+        <Spinner
+            android:id="@+id/filter_age_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center" />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.findmehomeapp.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_post"
+            app:destination="@id/nav_post" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_gallery"
+        android:name="com.example.findmehomeapp.ui.gallery.GalleryFragment"
+        android:label="@string/menu_gallery"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="com.example.findmehomeapp.ui.slideshow.SlideshowFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_create_post"
+        android:name="com.example.findmehomeapp.ui.CreatePost.CreatePostFragment"
+        android:label="@string/menu_create_post"
+        tools:layout="@layout/fragment_create_post" />
+
+    <fragment
+        android:id="@+id/nav_edit_post"
+        android:name="com.example.findmehomeapp.ui.EditPost.EditPostFragment"
+        android:label="@string/menu_edit_post"
+        tools:layout="@layout/fragment_edit_post" />
+
+    <fragment
+        android:id="@+id/nav_edit_profile"
+        android:name="com.example.findmehomeapp.ui.EditProfile.EditProfileFragment"
+        android:label="@string/menu_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+
+    <fragment
+        android:id="@+id/nav_filter"
+        android:name="com.example.findmehomeapp.ui.Filter.FilterFragment"
+        android:label="@string/menu_filter"
+        tools:layout="@layout/fragment_filter" />
+
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.example.findmehomeapp.ui.Login.LoginFragment"
+        android:label="@string/menu_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_nav_login_to_nav_register"
+            app:destination="@id/nav_register" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_post"
+        android:name="com.example.findmehomeapp.ui.Post.PostFragment"
+        android:label="@string/menu_post"
+        tools:layout="@layout/fragment_post" >
+        <action
+            android:id="@+id/action_nav_post_self"
+            app:destination="@id/nav_post" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_register"
+        android:name="com.example.findmehomeapp.ui.Register.RegisterFragment"
+        android:label="@string/menu_register"
+        tools:layout="@layout/fragment_register" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.findmehomeapp.ui.Profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_nav_edit_profile"
+            app:destination="@id/nav_edit_profile" />
+        <action
+            android:id="@+id/action_nav_profile_to_nav_create_post"
+            app:destination="@id/nav_create_post" />
+        <action
+            android:id="@+id/action_nav_profile_to_nav_edit_post"
+            app:destination="@id/nav_edit_post" />
+    </fragment>
+    <action android:id="@+id/action_global_nav_home" app:destination="@id/nav_home" />
+    <action android:id="@+id/action_global_nav_profile" app:destination="@id/nav_profile" />
+</navigation>
