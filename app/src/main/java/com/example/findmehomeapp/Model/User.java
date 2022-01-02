@@ -1,8 +1,15 @@
 package com.example.findmehomeapp.Model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 
+@Entity
 public class User {
+    @PrimaryKey
+    @NonNull
     String id = "";
     String name = "";
     String phone = "";
@@ -12,6 +19,8 @@ public class User {
     String gender = "";
     String age = "";
     List<Post> posts;
+
+    public User(){} //for room
 
     public User(String id, String name, String phone, String email, String password, String location, String gender, String age, List<Post> posts) {
         this.id = id;
