@@ -17,6 +17,8 @@
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.22327898550724637" />
         <entry key="app/src/main/res/layout/login_fragment.xml" value="0.22327898550724637" />
         <entry key="app/src/main/res/layout/small_post.xml" value="0.22327898550724637" />
+        <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.25" />
+        <entry key="app/src/main/res/menu/main.xml" value="0.27291666666666664" />
       </map>
     </option>
   </component>

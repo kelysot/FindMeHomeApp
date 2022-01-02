@@ -65,11 +65,7 @@
         android:id="@+id/nav_post"
         android:name="com.example.findmehomeapp.ui.Post.PostFragment"
         android:label="@string/menu_post"
-        tools:layout="@layout/fragment_post" >
-        <action
-            android:id="@+id/action_nav_post_self"
-            app:destination="@id/nav_post" />
-    </fragment>
+        tools:layout="@layout/fragment_post" />
 
     <fragment
         android:id="@+id/nav_register"
@@ -91,7 +87,10 @@
         <action
             android:id="@+id/action_nav_profile_to_nav_edit_post"
             app:destination="@id/nav_edit_post" />
+        <action
+            android:id="@+id/action_nav_profile_to_nav_post2"
+            app:destination="@id/nav_post" />
     </fragment>
     <action android:id="@+id/action_global_nav_home" app:destination="@id/nav_home" />
-    <action android:id="@+id/action_global_nav_profile" app:destination="@id/nav_profile" />
+    <action android:id="@+id/action_global_nav_profile" app:destination="@id/nav_profile" /><action android:id="@+id/action_global_nav_filter" app:destination="@id/nav_filter"/>
 </navigation>

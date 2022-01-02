@@ -1,5 +1,7 @@
 package com.example.findmehomeapp.Model;
 
+import java.util.List;
+
 public class User {
     String id = "";
     String name = "";
@@ -9,8 +11,9 @@ public class User {
     String location = "";
     String gender = "";
     String age = "";
+    List<Post> posts;
 
-    public User(String id, String name, String phone, String email, String password, String location, String gender, String age) {
+    public User(String id, String name, String phone, String email, String password, String location, String gender, String age, List<Post> posts) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -19,6 +22,7 @@ public class User {
         this.location = location;
         this.gender = gender;
         this.age = age;
+        this.posts = posts;
     }
 
     @Override
@@ -32,7 +36,16 @@ public class User {
                 ", location='" + location + '\'' +
                 ", gender='" + gender + '\'' +
                 ", age='" + age + '\'' +
+                ", posts=" + posts +
                 '}';
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     public String getId() {

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Post {
 
+    String id = "";
     String userId = "";
     String text = "";
     String image = "";
@@ -13,10 +14,12 @@ public class Post {
     String size = "";
     String gender = "";
     String location = "";
-    String numOfLikes = "";
-    List<Comment> comments = new LinkedList<>();
+    List<String> likesUserId; //that everyone can do like only once
+//    List<Comment> comments = new LinkedList<>();
 
-    public Post(String userId, String text, String image, String type, String age, String size, String gender, String location, String numOfLikes, List<Comment> comments) {
+
+    public Post(String id, String userId, String text, String image, String type, String age, String size, String gender, String location, List<String> likesUserId) {
+        this.id = id;
         this.userId = userId;
         this.text = text;
         this.image = image;
@@ -25,14 +28,14 @@ public class Post {
         this.size = size;
         this.gender = gender;
         this.location = location;
-        this.numOfLikes = numOfLikes;
-        this.comments = comments;
+        this.likesUserId = likesUserId;
     }
 
     @Override
     public String toString() {
         return "Post{" +
-                "userId='" + userId + '\'' +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
                 ", text='" + text + '\'' +
                 ", image='" + image + '\'' +
                 ", type='" + type + '\'' +
@@ -40,10 +43,27 @@ public class Post {
                 ", size='" + size + '\'' +
                 ", gender='" + gender + '\'' +
                 ", location='" + location + '\'' +
-                ", numOfLikes='" + numOfLikes + '\'' +
-                ", comments=" + comments +
+                ", likesUserId=" + likesUserId +
                 '}';
     }
+
+    public List<String> getLikesUserId() {
+        return likesUserId;
+    }
+
+    public void setLikesUserId(List<String> likesUserId) {
+        this.likesUserId = likesUserId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
 
     public String getUserId() {
         return userId;
@@ -109,19 +129,4 @@ public class Post {
         this.location = location;
     }
 
-    public String getNumOfLikes() {
-        return numOfLikes;
-    }
-
-    public void setNumOfLikes(String numOfLikes) {
-        this.numOfLikes = numOfLikes;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
 }
