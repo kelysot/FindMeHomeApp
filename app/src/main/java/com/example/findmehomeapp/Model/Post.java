@@ -1,10 +1,16 @@
 package com.example.findmehomeapp.Model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.LinkedList;
 import java.util.List;
 
+@Entity
 public class Post {
-
+    @PrimaryKey
+    @NonNull
     String id = "";
     String userId = "";
     String text = "";
@@ -17,6 +23,8 @@ public class Post {
     List<String> likesUserId; //that everyone can do like only once
 //    List<Comment> comments = new LinkedList<>();
 
+
+    public Post(){} //for room
 
     public Post(String id, String userId, String text, String image, String type, String age, String size, String gender, String location, List<String> likesUserId) {
         this.id = id;

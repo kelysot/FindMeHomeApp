@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "763321205470",
+    "project_id": "findmehome-69d84",
+    "storage_bucket": "findmehome-69d84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:763321205470:android:514c8812afc243af40384f",
+        "android_client_info": {
+          "package_name": "com.example.findmehomeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "763321205470-fg5h2cct4gpf6qt8ujqo0h42jtcodajo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvruJMdfgZdS-c37zgIVgRe43eREIBRco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "763321205470-fg5h2cct4gpf6qt8ujqo0h42jtcodajo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
