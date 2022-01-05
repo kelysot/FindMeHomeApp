@@ -18,7 +18,7 @@ public class User {
     String location = "";
     String gender = "";
     String age = "";
-    List<Post> posts;
+//    List<Post> posts;
 
     public User(){} //for room
 
@@ -31,7 +31,7 @@ public class User {
         this.location = location;
         this.gender = gender;
         this.age = age;
-        this.posts = posts;
+//        this.posts = posts;
     }
 
     @Override
@@ -45,17 +45,17 @@ public class User {
                 ", location='" + location + '\'' +
                 ", gender='" + gender + '\'' +
                 ", age='" + age + '\'' +
-                ", posts=" + posts +
+//                ", posts=" + posts +
                 '}';
     }
 
-    public List<Post> getPosts() {
-        return posts;
-    }
+//    public List<Post> getPosts() {
+//        return posts;
+//    }
 
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
+//    public void setPosts(List<Post> posts) {
+//        this.posts = posts;
+//    }
 
     public String getId() {
         return id;
