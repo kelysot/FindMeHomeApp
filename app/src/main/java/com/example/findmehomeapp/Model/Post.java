@@ -19,7 +19,9 @@ public class Post {
     @PrimaryKey
     @NonNull
     String id = "";
+    String name ="";
     String userId = "";
+    Long postTime = new Long(0);
     String text = "";
     String image = "";
     String type = "";
@@ -41,6 +43,8 @@ public class Post {
         this.size = size;
         this.gender = gender;
         this.location = location;
+
+//        this.postTime = FieldValue.serverTimestamp();
 //        this.likesUserId = likesUserId;
     }
 
@@ -67,6 +71,10 @@ public class Post {
         this.updateDate = updateDate;
     }
 
+    public Long getPostTime() {
+        return postTime;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
@@ -91,6 +99,14 @@ public class Post {
 //        this.likesUserId = likesUserId;
 //    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getId() {
         return id;
     }
@@ -98,8 +114,6 @@ public class Post {
     public void setId(String id) {
         this.id = id;
     }
-
-
 
     public String getUserId() {
         return userId;
