@@ -4,11 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
+
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class Post {
+    final public static String COLLECTION_NAME = "posts";
+
     @PrimaryKey
     @NonNull
     String id = "";
@@ -20,13 +27,11 @@ public class Post {
     String size = "";
     String gender = "";
     String location = "";
-    List<String> likesUserId; //that everyone can do like only once
-//    List<Comment> comments = new LinkedList<>();
+    Long updateDate = new Long(0);
 
+    public Post(){}
 
-    public Post(){} //for room
-
-    public Post(String id, String userId, String text, String image, String type, String age, String size, String gender, String location, List<String> likesUserId) {
+    public Post(String id, String userId, String text, String image, String type, String age, String size, String gender, String location){  //}), List<String> likesUserId) {
         this.id = id;
         this.userId = userId;
         this.text = text;
@@ -36,7 +41,30 @@ public class Post {
         this.size = size;
         this.gender = gender;
         this.location = location;
-        this.likesUserId = likesUserId;
+//        this.likesUserId = likesUserId;
+    }
+
+    public static Post create(Map<String, Object> json) {
+        String id = (String) json.get("id");
+        String userId = (String) json.get("userId");
+        String text = (String) json.get("text");
+        String image = (String) json.get("image");
+        String type = (String) json.get("type");
+        String age = (String) json.get("age");
+        String size = (String) json.get("size");
+        String gender = (String) json.get("gender");
+        String location = (String) json.get("location");
+
+        Timestamp ts = (Timestamp)json.get("updateDate");
+        Long updateDate = ts.getSeconds();
+
+        Post post = new Post(id,userId,text,image,type,age,size, gender,location);
+        post.setUpdateDate(updateDate);
+        return post;
+    }
+
+    private void setUpdateDate(Long updateDate) {
+        this.updateDate = updateDate;
     }
 
     @Override
@@ -51,17 +79,17 @@ public class Post {
                 ", size='" + size + '\'' +
                 ", gender='" + gender + '\'' +
                 ", location='" + location + '\'' +
-                ", likesUserId=" + likesUserId +
+//                ", likesUserId=" + likesUserId +
                 '}';
     }
 
-    public List<String> getLikesUserId() {
-        return likesUserId;
-    }
+//    public List<String> getLikesUserId() {
+//        return likesUserId;
+//    }
 
-    public void setLikesUserId(List<String> likesUserId) {
-        this.likesUserId = likesUserId;
-    }
+//    public void setLikesUserId(List<String> likesUserId) {
+//        this.likesUserId = likesUserId;
+//    }
 
     public String getId() {
         return id;
@@ -137,4 +165,23 @@ public class Post {
         this.location = location;
     }
 
+    public Long getUpdateDate() {
+        return updateDate;
+    }
+
+    public Map<String, Object> toJson() {
+        Map<String, Object> json = new HashMap<String, Object>();
+        json.put("id",id);
+        json.put("userId",userId);
+        json.put("text",text);
+        json.put("image",image);
+        json.put("type",type);
+        json.put("age",age);
+        json.put("size",size);
+        json.put("gender",gender);
+        json.put("location",location);
+        json.put("updateDate", FieldValue.serverTimestamp());
+
+        return json;
+    }
 }
