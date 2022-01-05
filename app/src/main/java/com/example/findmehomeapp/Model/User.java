@@ -4,10 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.firestore.FieldValue;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class User {
+    public static final String COLLECTION_NAME = "users";
+
     @PrimaryKey
     @NonNull
     String id = "";
@@ -18,12 +24,18 @@ public class User {
     String location = "";
     String gender = "";
     String age = "";
+    Long updateDate = new Long(0);
+
+    public void setUpdateDate(Long updateDate) {
+        this.updateDate = updateDate;
+    }
 //    List<Post> posts;
 
     public User(){} //for room
 
-    public User(String id, String name, String phone, String email, String password, String location, String gender, String age, List<Post> posts) {
-        this.id = id;
+    //TODO: add location
+    public User(String name, String phone, String email, String password, String gender, String age) {
+//        this.id = id;
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -37,7 +49,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id='" + id + '\'' +
+//                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
@@ -119,5 +131,23 @@ public class User {
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public Long getUpdateDate() {
+        return updateDate;
+    }
+
+    public Map<String, Object> toJson() {
+        Map<String, Object> json = new HashMap<String, Object>();
+        json.put("id",id);
+        json.put("name",name);
+        json.put("phone",phone);
+        json.put("email",email);
+        json.put("password",password);
+        json.put("gender",gender);
+        json.put("age",age);
+        json.put("updateDate", FieldValue.serverTimestamp());
+
+        return json;
     }
 }

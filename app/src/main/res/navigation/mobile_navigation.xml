@@ -82,7 +82,11 @@
         android:id="@+id/nav_register"
         android:name="com.example.findmehomeapp.ui.Register.RegisterFragment"
         android:label="@string/menu_register"
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_nav_register_to_nav_profile"
+            app:destination="@id/nav_profile" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_profile"
@@ -98,6 +102,9 @@
         <action
             android:id="@+id/action_nav_profile_to_nav_post2"
             app:destination="@id/nav_post" />
+        <argument
+            android:name="email"
+            app:argType="string" />
     </fragment>
     <action android:id="@+id/action_global_nav_home" app:destination="@id/nav_home" />
     <action android:id="@+id/action_global_nav_profile" app:destination="@id/nav_profile" /><action android:id="@+id/action_global_nav_filter" app:destination="@id/nav_filter"/>

@@ -30,6 +30,16 @@ public class ModelFirebase {
                 .build();
         db.setFirestoreSettings(settings);
     }
+
+    public void addUser(User user, Model.AddUserListener listener) {
+        Map<String, Object> json = user.toJson();
+        db.collection(User.COLLECTION_NAME)
+                .document(user.getEmail())
+                .set(json)
+                .addOnSuccessListener(unused -> listener.onComplete())
+                .addOnFailureListener(e -> listener.onComplete());
+    }
+
     public interface GetAllPostsListener{
         void onComplete(List<Post> list);
     }
