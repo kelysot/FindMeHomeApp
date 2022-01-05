@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import androidx.core.os.HandlerCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -12,11 +14,34 @@ import java.util.concurrent.Executors;
 public class Model {
 
     public static final Model instance = new Model();
+
     Executor executor = Executors.newFixedThreadPool(1);
     Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
 
+    public enum PostListLoadingState{
+        loading,
+        loaded
+    }
+    MutableLiveData<PostListLoadingState> postListLoadingState = new MutableLiveData<PostListLoadingState>();
+    public LiveData<PostListLoadingState> getPostListLoadingState() {
+        return postListLoadingState;
+    }
+
+    ModelFirebase modelFirebase = new ModelFirebase();
+
     private Model(){
 
+    }
+
+    MutableLiveData<List<Post>> postsList = new MutableLiveData<List<Post>>();
+    public LiveData<List<Post>> getAllPosts() {
+        if (postsList.getValue() == null ) {
+            refreshPostsList();
+        }
+        return postsList;
+    }
+
+    public void refreshPostsList() {
     }
 
     public interface GetAllUsersListener{
@@ -78,8 +103,11 @@ public class Model {
         return null;
     }
 
-    public Post getPostById(String postId){
-
+    public interface GetPostById {
+        void onComplete(Post post);
+    }
+    public Post getPostById(String postId, GetPostById listener){
+        modelFirebase.getPostById(postId, listener);
         return null;
     }
 }
