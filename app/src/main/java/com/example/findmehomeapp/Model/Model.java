@@ -76,12 +76,8 @@ public class Model {
     }
 
     public void addUser(User user, AddUserListener listener){
-        executor.execute(()->{
-            AppLocalDb.db.userDao().insertAll(user);
-            mainThread.post(()->{
-                listener.onComplete();
-            });
-        });
+        //TODO: should we save in the localdb..?
+        modelFirebase.addUser( user,  listener);
     }
 
     public interface AddPostListener{

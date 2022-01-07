@@ -3,64 +3,73 @@ package com.example.findmehomeapp.ui.Register;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
+import com.example.findmehomeapp.Model.Model;
+import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
+import com.example.findmehomeapp.ui.Login.LoginFragmentDirections;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RegisterFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RegisterFragment extends Fragment {
+    // TODO: add image
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public RegisterFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RegisterFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RegisterFragment newInstance(String param1, String param2) {
-        RegisterFragment fragment = new RegisterFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    EditText nameEt;
+    EditText phoneEt;
+    EditText emailEt;
+    EditText passwordEt;
+    EditText repasswordEt;
+    Spinner genderSpinner;
+    Spinner ageSpinner;
+    Button registerBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false);
+        View view =  inflater.inflate(R.layout.fragment_register, container, false);
+
+        nameEt = view.findViewById(R.id.register_et_name);
+        phoneEt = view.findViewById(R.id.register_phone_number);
+        emailEt = view.findViewById(R.id.register_et_email);
+        passwordEt = view.findViewById(R.id.register_et_password);
+        repasswordEt = view.findViewById(R.id.register_et_repassword);
+        genderSpinner = view.findViewById(R.id.register_gender_spinner);
+        ageSpinner = view.findViewById(R.id.register_age_spinner);
+        registerBtn = view.findViewById(R.id.register_btn_register);
+
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save();
+            }
+        });
+
+        return view;
+    }
+
+    private void save() {
+//        progressBar.setVisibility(View.VISIBLE);
+        registerBtn.setEnabled(false);
+        String name = nameEt.getText().toString();
+        String phone = phoneEt.getText().toString();
+        String email = emailEt.getText().toString();
+        String password = passwordEt.getText().toString();
+        String repassword = repasswordEt.getText().toString();
+        String gender = genderSpinner.getSelectedItem().toString();
+        String age = ageSpinner.getSelectedItem().toString();
+
+        Log.d("TAG","user has register");
+        User user = new User(name,phone,email,password,gender,age);
+        Model.instance.addUser(user,()->{
+            Navigation.findNavController(nameEt).navigate(RegisterFragmentDirections.actionNavRegisterToNavProfile(user.getEmail()));
+        });
     }
 }
