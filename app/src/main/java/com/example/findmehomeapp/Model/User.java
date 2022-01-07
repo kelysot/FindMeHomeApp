@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
 import java.util.HashMap;
@@ -25,6 +26,25 @@ public class User {
     String gender = "";
     String age = "";
     Long updateDate = new Long(0);
+
+    //TODO: add data
+    public static User create(Map<String, Object> json) {
+        String id = (String) json.get("id");
+        String name = (String) json.get("userId");
+        String phone = (String) json.get("text");
+        String email = (String) json.get("image");
+        String password = (String) json.get("type");
+        String location = (String) json.get("age");
+        String gender = (String) json.get("size");
+        String age = (String) json.get("gender");
+
+        Timestamp ts = (Timestamp)json.get("updateDate");
+        Long updateDate = ts.getSeconds();
+
+        User user = new User(name,phone,email,password,gender,age);
+        user.setUpdateDate(updateDate);
+        return user;
+    }
 
     public void setUpdateDate(Long updateDate) {
         this.updateDate = updateDate;

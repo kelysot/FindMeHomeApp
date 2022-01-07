@@ -63,6 +63,27 @@ public class ModelFirebase {
                 });
     }
 
+    public interface GetAllUsersListener{
+        void onComplete(List<User> list);
+    }
+
+    public void getAllUsers(GetAllUsersListener listener) {
+        db.collection(User.COLLECTION_NAME)
+                .get()
+                .addOnCompleteListener(task -> {
+                    List<User> list = new LinkedList<User>();
+                    if (task.isSuccessful()){
+                        for (QueryDocumentSnapshot doc : task.getResult()){
+                            User user = User.create(doc.getData());
+                            if (user != null){
+                                list.add(user);
+                            }
+                        }
+                    }
+                    listener.onComplete(list);
+                });
+    }
+
     public void addPost(Post post, Model.AddPostListener listener) {
         Map<String, Object> json = post.toJson();
         db.collection(Post.COLLECTION_NAME)

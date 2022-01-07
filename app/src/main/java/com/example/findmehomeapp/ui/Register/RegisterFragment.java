@@ -14,9 +14,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.findmehomeapp.Model.Model;
+import com.example.findmehomeapp.Model.ModelFirebase;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.ui.Login.LoginFragmentDirections;
+
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class RegisterFragment extends Fragment {
     // TODO: add image
@@ -29,6 +34,10 @@ public class RegisterFragment extends Fragment {
     Spinner genderSpinner;
     Spinner ageSpinner;
     Button registerBtn;
+
+    Executor executor = Executors.newFixedThreadPool(1);
+
+    ModelFirebase modelFirebase = new ModelFirebase();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,15 +57,14 @@ public class RegisterFragment extends Fragment {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                save();
+                validateAndSave();
             }
         });
 
         return view;
     }
 
-    private void save() {
-//        progressBar.setVisibility(View.VISIBLE);
+    private void validateAndSave(){
         registerBtn.setEnabled(false);
         String name = nameEt.getText().toString();
         String phone = phoneEt.getText().toString();
@@ -66,10 +74,23 @@ public class RegisterFragment extends Fragment {
         String gender = genderSpinner.getSelectedItem().toString();
         String age = ageSpinner.getSelectedItem().toString();
 
-        Log.d("TAG","user has register");
         User user = new User(name,phone,email,password,gender,age);
-        Model.instance.addUser(user,()->{
-            Navigation.findNavController(nameEt).navigate(RegisterFragmentDirections.actionNavRegisterToNavProfile(user.getEmail()));
+
+        modelFirebase.getAllUsers(new ModelFirebase.GetAllUsersListener() {
+            @Override
+            public void onComplete(List<User> list) {
+            }
         });
+        //TODO: check if user email is in the list of users
+//        if (email != "") {
+            // save user in firebase
+            Model.instance.addUser(user,()->{
+                Navigation.findNavController(nameEt).navigate(RegisterFragmentDirections.actionNavRegisterToNavProfile(user.getEmail()));
+            });
+
+            Log.d("TAG", "user has registered");
+//        } else {
+//            //TODO: alert to user that the email is already in use
+//        }
     }
 }
