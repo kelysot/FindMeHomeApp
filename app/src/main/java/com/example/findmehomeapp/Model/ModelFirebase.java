@@ -45,9 +45,9 @@ public class ModelFirebase {
     }
 
     //TODO: fix since...
-    public void getAllPosts(Long lastUpdateDate, GetAllPostsListener listener) {
+    public void getAllPosts(GetAllPostsListener listener) {
         db.collection(Post.COLLECTION_NAME)
-                .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
+//                .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Post> list = new LinkedList<Post>();

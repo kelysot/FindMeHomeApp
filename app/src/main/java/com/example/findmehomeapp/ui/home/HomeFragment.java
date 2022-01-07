@@ -69,15 +69,12 @@ public class HomeFragment extends Fragment {
 
         swipeRefresh.setRefreshing(Model.instance.getPostListLoadingState().getValue() == Model.PostListLoadingState.loading);
 
-        Model.instance.getPostListLoadingState().observe(getViewLifecycleOwner(), new Observer<Model.PostListLoadingState>() {
-            @Override
-            public void onChanged(Model.PostListLoadingState postListLoadingState) {
+        Model.instance.getPostListLoadingState().observe(getViewLifecycleOwner(), postListLoadingState -> {
                 if(postListLoadingState == Model.PostListLoadingState.loading) {
                     swipeRefresh.setRefreshing(true);
                 } else {
                     swipeRefresh.setRefreshing(false);
                 }
-            }
         });
 
         return view;
@@ -89,13 +86,13 @@ public class HomeFragment extends Fragment {
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView nameTv;
-        TextView idTv;
-        CheckBox cb;
+        TextView petTextTv;
+//        TextView idTv;
+//        CheckBox cb;
 
         public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
-//            nameTv = itemView.findViewById(R.id.listrow_name_tv);
+            petTextTv = itemView.findViewById(R.id.post_pet_text_tv);
 //            idTv = itemView.findViewById(R.id.listrow_id_tv);
 //            cb = itemView.findViewById(R.id.listrow_cb);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +127,7 @@ public class HomeFragment extends Fragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             Post post = homeViewModel.getData().getValue().get(position);
             //TODO: set relevants from holder
-//            holder.nameTv.setText(student.getName());
+            holder.petTextTv.setText(post.getText());
 //            holder.idTv.setText(student.getId());
         }
 
