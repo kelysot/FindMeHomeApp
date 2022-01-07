@@ -1,18 +1,21 @@
 package com.example.findmehomeapp.Model;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.example.findmehomeapp.MyApplication;
 
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class Model {
-
     public static final Model instance = new Model();
 
     Executor executor = Executors.newFixedThreadPool(1);
@@ -30,7 +33,7 @@ public class Model {
     ModelFirebase modelFirebase = new ModelFirebase();
 
     private Model(){
-
+        postListLoadingState.setValue(PostListLoadingState.loaded);
     }
 
     MutableLiveData<List<Post>> postsList = new MutableLiveData<List<Post>>();
@@ -42,6 +45,42 @@ public class Model {
     }
 
     public void refreshPostsList() {
+        postListLoadingState.setValue(PostListLoadingState.loading);
+
+        // get last local update date
+//        Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("PostsLastUpdateDate",0);
+
+        // firebase get all updates since lastLocalUpdateDate
+        modelFirebase.getAllPosts(new ModelFirebase.GetAllPostsListener() {
+            @Override
+            public void onComplete(List<Post> list) {
+                // add all records to the local db
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+//                        Long lud = new Long(0);
+                        Log.d("TAG","fb returned " + list.size());
+                        for (Post post: list) {
+                            AppLocalDb.db.postDao().insertAll(post);
+//                            if (lud < student.getUpdateDate()){
+//                                lud = student.getUpdateDate();
+//                            }
+                        }
+                        // update last local update date
+                        MyApplication.getContext()
+                                .getSharedPreferences("TAG",Context.MODE_PRIVATE)
+                                .edit()
+//                                .putLong("PostsLastUpdateDate",lud)
+                                .commit();
+
+                        //return all data to caller
+                        List<Post> stList = AppLocalDb.db.postDao().getAll();
+                        postsList.postValue(stList);
+                        postListLoadingState.postValue(PostListLoadingState.loaded);
+                    }
+                });
+            }
+        });
     }
 
     public interface GetAllUsersListener{

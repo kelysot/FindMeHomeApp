@@ -29,7 +29,7 @@ public class Post {
     String size = "";
     String gender = "";
     String location = "";
-    Long updateDate = new Long(0);
+//    Long updateDate = new Long(0);
 
     public Post(){}
 
@@ -59,17 +59,17 @@ public class Post {
         String gender = (String) json.get("gender");
         String location = (String) json.get("location");
 
-        Timestamp ts = (Timestamp)json.get("updateDate");
-        Long updateDate = ts.getSeconds();
+//        Timestamp ts = (Timestamp)json.get("updateDate");
+//        Long updateDate = ts.getSeconds();
 
         Post post = new Post(id,userId,text,image,type,age,size, gender,location);
-        post.setUpdateDate(updateDate);
+//        post.setUpdateDate(updateDate);
         return post;
     }
 
-    private void setUpdateDate(Long updateDate) {
-        this.updateDate = updateDate;
-    }
+//    private void setUpdateDate(Long updateDate) {
+//        this.updateDate = updateDate;
+//    }
 
     public Long getPostTime() {
         return postTime;
@@ -179,9 +179,9 @@ public class Post {
         this.location = location;
     }
 
-    public Long getUpdateDate() {
-        return updateDate;
-    }
+//    public Long getUpdateDate() {
+//        return updateDate;
+//    }
 
     public Map<String, Object> toJson() {
         Map<String, Object> json = new HashMap<String, Object>();
