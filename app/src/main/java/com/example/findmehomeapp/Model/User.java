@@ -2,6 +2,7 @@ package com.example.findmehomeapp.Model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.firebase.Timestamp;
@@ -17,7 +18,7 @@ public class User {
 
     @PrimaryKey
     @NonNull
-    String id = "";
+//    String id = "";
     String name = "";
     String phone = "";
     String email = "";
@@ -54,6 +55,7 @@ public class User {
     public User(){} //for room
 
     //TODO: add location
+    @Ignore
     public User(String name, String phone, String email, String password, String gender, String age) {
 //        this.id = id;
         this.name = name;
@@ -89,13 +91,13 @@ public class User {
 //        this.posts = posts;
 //    }
 
-    public String getId() {
-        return id;
-    }
+//    public String getId() {
+//        return id;
+//    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+//    public void setId(String id) {
+//        this.id = id;
+//    }
 
     public String getName() {
         return name;
@@ -159,7 +161,7 @@ public class User {
 
     public Map<String, Object> toJson() {
         Map<String, Object> json = new HashMap<String, Object>();
-        json.put("id",id);
+//        json.put("id",id);
         json.put("name",name);
         json.put("phone",phone);
         json.put("email",email);
