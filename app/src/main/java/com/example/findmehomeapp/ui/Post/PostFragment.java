@@ -3,64 +3,50 @@ package com.example.findmehomeapp.ui.Post;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.findmehomeapp.Model.Model;
+import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PostFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PostFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public PostFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PostFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PostFragment newInstance(String param1, String param2) {
-        PostFragment fragment = new PostFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    TextView usernameTv;
+    TextView postTimeTv;
+    TextView petTextTv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_post, container, false);
+        View view = inflater.inflate(R.layout.fragment_post, container, false);
+
+        String stId = PostFragmentArgs.fromBundle(getArguments()).getPostId();
+
+        Model.instance.getPostById(stId, new Model.GetPostById() {
+            @Override
+            public void onComplete(Post post) {
+                usernameTv.setText(post.getName());
+                postTimeTv.setText(post.getPostTime().toString());
+                petTextTv.setText(post.getText());
+            }
+        });
+
+        usernameTv = view.findViewById(R.id.post_username_tv);
+        postTimeTv = view.findViewById(R.id.post_post_time_tv);
+        petTextTv = view.findViewById(R.id.post_pet_text_tv);
+
+        //TODO: do we need the back button?
+//        Button backBtn = view.findViewById(R.id.details_back_btn);
+//        backBtn.setOnClickListener((v)->{
+//            Navigation.findNavController(v).navigateUp();
+//        });
+        return view;
     }
 }
