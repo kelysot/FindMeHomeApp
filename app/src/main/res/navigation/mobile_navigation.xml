@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_post"
             app:destination="@id/nav_post" />
+        <argument
+            android:name="userId"
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -63,6 +66,9 @@
         <action
             android:id="@+id/action_nav_login_to_nav_register"
             app:destination="@id/nav_register" />
+        <action
+            android:id="@+id/action_nav_login_to_nav_home"
+            app:destination="@id/nav_home" />
     </fragment>
 
     <fragment
