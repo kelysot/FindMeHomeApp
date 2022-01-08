@@ -39,11 +39,11 @@ public class User {
         String gender = (String) json.get("size");
         String age = (String) json.get("gender");
 
-        Timestamp ts = (Timestamp)json.get("updateDate");
-        Long updateDate = ts.getSeconds();
+//        Timestamp ts = (Timestamp)json.get("updateDate");
+//        Long updateDate = ts.getSeconds();
 
         User user = new User(name,phone,email,password,gender,age);
-        user.setUpdateDate(updateDate);
+//        user.setUpdateDate(updateDate);
         return user;
     }
 

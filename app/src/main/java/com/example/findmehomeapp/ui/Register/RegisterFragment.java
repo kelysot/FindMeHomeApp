@@ -69,10 +69,10 @@ public class RegisterFragment extends Fragment {
         String name = nameEt.getText().toString();
         String phone = phoneEt.getText().toString();
         String email = emailEt.getText().toString();
-        String password = passwordEt.getText().toString();
-        String repassword = repasswordEt.getText().toString();
-        String gender = genderSpinner.getSelectedItem().toString();
-        String age = ageSpinner.getSelectedItem().toString();
+        String password = "";//passwordEt.getText().toString();
+        String repassword = "";//repasswordEt.getText().toString();
+        String gender = "";//genderSpinner.getSelectedItem().toString();
+        String age = "";//ageSpinner.getSelectedItem().toString();
 
         User user = new User(name,phone,email,password,gender,age);
 
