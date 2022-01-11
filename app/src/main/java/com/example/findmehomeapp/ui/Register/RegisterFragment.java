@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -41,13 +43,15 @@ public class RegisterFragment extends Fragment {
     EditText emailEt;
     EditText passwordEt;
     EditText repasswordEt;
-    //Spinner genderSpinner;
-    //Spinner ageSpinner;
+    Spinner genderSpinner;
+    Spinner ageSpinner;
     Button registerBtn;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firestore;
     NavController navController;
     String userid;
+    String genderS;
+    String ageS;
 
 
 
@@ -105,8 +109,39 @@ public class RegisterFragment extends Fragment {
         emailEt = view.findViewById(R.id.register_et_email);
         passwordEt = view.findViewById(R.id.register_et_password);
         repasswordEt = view.findViewById(R.id.register_et_repassword);
-        //genderSpinner = view.findViewById(R.id.register_gender_spinner);
-        //ageSpinner = view.findViewById(R.id.register_age_spinner);
+
+        genderSpinner = view.findViewById(R.id.register_gender_spinner);
+        ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.gender, android.R.layout.simple_spinner_item);
+        adapterGender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSpinner.setAdapter(adapterGender);
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                genderS = parent.getItemAtPosition(position).toString();
+                //Toast.makeText(parent.getContext(), gender, Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ageSpinner = view.findViewById(R.id.register_age_spinner);
+        ArrayAdapter<CharSequence> adapterAge = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.age, android.R.layout.simple_spinner_item);
+        adapterAge.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ageSpinner.setAdapter(adapterAge);
+        ageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ageS = parent.getItemAtPosition(position).toString();
+                //Toast.makeText(parent.getContext(), age, Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         registerBtn = view.findViewById(R.id.register_btn_register);
         navController = Navigation.findNavController(view);
 
@@ -120,8 +155,6 @@ public class RegisterFragment extends Fragment {
                 String fullName = nameEt.getText().toString();
                 String phone = phoneEt.getText().toString();
                 String repassword = repasswordEt.getText().toString();
-                //String gender = genderSpinner.toString();
-                //String age = ageSpinner.toString();
 
 
                 //TODO:tell the user if his email already exist he can't register
@@ -151,8 +184,12 @@ public class RegisterFragment extends Fragment {
 
                 }
 
-                //signUptheUser(fullName, email, password, phone, gender, age);
-                signUptheUser(fullName, email, password, phone);
+                if(phone.isEmpty()){
+                    phoneEt.setError("Enter a phone");
+
+                }
+
+                signUptheUser(fullName, email, password, phone, genderS, ageS);
 
             }
         });
@@ -171,8 +208,7 @@ public class RegisterFragment extends Fragment {
 
     }
 
-   // private void signUptheUser(String name, String email, String password, String phone, String gender, String age) {
-    private void signUptheUser(String name, String email, String password, String phone) {
+   private void signUptheUser(String name, String email, String password, String phone, String gender, String age) {
 
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -188,8 +224,8 @@ public class RegisterFragment extends Fragment {
  //                   hashMap.put("imageUrl", "default");
                     hashMap.put("username", name);
                     hashMap.put("phone", phone);
-                    //hashMap.put("gender", gender);
-                    //hashMap.put("age", age);
+                    hashMap.put("gender", gender);
+                    hashMap.put("age", age);
 
                     firestore.collection("Users").document(userid).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -207,6 +243,7 @@ public class RegisterFragment extends Fragment {
             }
         });
     }
+
 
 //    private void validateAndSave(){
 //        registerBtn.setEnabled(false);
