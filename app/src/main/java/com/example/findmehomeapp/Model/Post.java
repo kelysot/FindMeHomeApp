@@ -2,6 +2,7 @@ package com.example.findmehomeapp.Model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.firebase.Timestamp;
@@ -33,6 +34,7 @@ public class Post {
 
     public Post(){}
 
+    @Ignore
     public Post(String id, String userId, String text, String image, String type, String age, String size, String gender, String location){  //}), List<String> likesUserId) {
         this.id = id;
         this.userId = userId;

@@ -2,7 +2,10 @@ package com.example.findmehomeapp.ui.Register;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -12,13 +15,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.ModelFirebase;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.ui.Login.LoginFragmentDirections;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -31,66 +41,200 @@ public class RegisterFragment extends Fragment {
     EditText emailEt;
     EditText passwordEt;
     EditText repasswordEt;
-    Spinner genderSpinner;
-    Spinner ageSpinner;
+    //Spinner genderSpinner;
+    //Spinner ageSpinner;
     Button registerBtn;
+    FirebaseAuth firebaseAuth;
+    FirebaseFirestore firestore;
+    NavController navController;
+    String userid;
 
-    Executor executor = Executors.newFixedThreadPool(1);
 
-    ModelFirebase modelFirebase = new ModelFirebase();
+
+    public RegisterFragment(){}
+
+    //Executor executor = Executors.newFixedThreadPool(1);
+
+    //ModelFirebase modelFirebase = new ModelFirebase();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_register, container, false);
+        return inflater.inflate(R.layout.fragment_register, container, false);
+    }
+
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+//        View view =  inflater.inflate(R.layout.fragment_register, container, false);
+//
+//
+//
+//        registerBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//               // validateAndSave();
+//
+//                User user;
+//                if (!email.equals("") && !password.equals("") && fullName.length() != 0) {
+//                    user = new User(fullName,phone,email,password,gender,age);
+//                    listener.onSignupClicked(user);
+//                } else if (fullName.length() == 0) {
+//                    Toast.makeText(getContext(), "Full Name is required! ", Toast.LENGTH_LONG).show();
+//                } else {
+//                    Toast.makeText(getContext(), "invalid email or password", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+//
+//        return view;
+//    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
 
         nameEt = view.findViewById(R.id.register_et_name);
         phoneEt = view.findViewById(R.id.register_phone_number);
         emailEt = view.findViewById(R.id.register_et_email);
         passwordEt = view.findViewById(R.id.register_et_password);
         repasswordEt = view.findViewById(R.id.register_et_repassword);
-        genderSpinner = view.findViewById(R.id.register_gender_spinner);
-        ageSpinner = view.findViewById(R.id.register_age_spinner);
+        //genderSpinner = view.findViewById(R.id.register_gender_spinner);
+        //ageSpinner = view.findViewById(R.id.register_age_spinner);
         registerBtn = view.findViewById(R.id.register_btn_register);
+        navController = Navigation.findNavController(view);
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validateAndSave();
+                // validateAndSave();
+
+                String email = emailEt.getText().toString().trim();
+                String password = passwordEt.getText().toString().trim();
+                String fullName = nameEt.getText().toString();
+                String phone = phoneEt.getText().toString();
+                String repassword = repasswordEt.getText().toString();
+                //String gender = genderSpinner.toString();
+                //String age = ageSpinner.toString();
+
+
+                //TODO:tell the user if his email already exist he can't register
+                if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+
+                    Toast.makeText(getContext(), "Fields are required", Toast.LENGTH_SHORT).show();
+                }
+
+                if (fullName.isEmpty()) {
+
+                    nameEt.setError("Enter a name");
+                }
+
+                if (password.length() < 6) {
+
+                    passwordEt.setError("Password Length Must Be 6 or more Chars");
+                }
+
+                if(!password.equals(repassword)){
+                    passwordEt.setError("Password and Re-password need to be the same");
+
+                }
+
+                if (email.isEmpty()) {
+
+                    emailEt.setError("Enter email Bitch");
+
+                }
+
+                //signUptheUser(fullName, email, password, phone, gender, age);
+                signUptheUser(fullName, email, password, phone);
+
             }
         });
 
-        return view;
+
+
+
+//        gotoSignIn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                navController.navigate(R.id.action_registerFragment_to_loginFragment);
+//            }
+//        });
+
+
     }
 
-    private void validateAndSave(){
-        registerBtn.setEnabled(false);
-        String name = nameEt.getText().toString();
-        String phone = phoneEt.getText().toString();
-        String email = emailEt.getText().toString();
-        String password = "";//passwordEt.getText().toString();
-        String repassword = "";//repasswordEt.getText().toString();
-        String gender = "";//genderSpinner.getSelectedItem().toString();
-        String age = "";//ageSpinner.getSelectedItem().toString();
+   // private void signUptheUser(String name, String email, String password, String phone, String gender, String age) {
+    private void signUptheUser(String name, String email, String password, String phone) {
 
-        User user = new User(name,phone,email,password,gender,age);
-
-        modelFirebase.getAllUsers(new ModelFirebase.GetAllUsersListener() {
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
-            public void onComplete(List<User> list) {
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if (task.isSuccessful()) {
+
+                    userid = firebaseAuth.getCurrentUser().getUid();
+
+                    HashMap<String, Object> hashMap = new HashMap<>();
+
+                    hashMap.put("userid", userid);
+ //                   hashMap.put("imageUrl", "default");
+                    hashMap.put("username", name);
+                    hashMap.put("phone", phone);
+                    //hashMap.put("gender", gender);
+                    //hashMap.put("age", age);
+
+                    firestore.collection("Users").document(userid).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                        }
+                    });
+
+                    //Toast.makeText(getContext(), "Signed Up", Toast.LENGTH_SHORT).show();
+
+                    navController.navigate(R.id.action_global_nav_profile);
+
+                }
+
             }
         });
-        //TODO: check if user email is in the list of users
-//        if (email != "") {
-            // save user in firebase
-            Model.instance.addUser(user,()->{
-                Navigation.findNavController(nameEt).navigate(RegisterFragmentDirections.actionNavRegisterToNavProfile(user.getEmail()));
-            });
-
-            Log.d("TAG", "user has registered");
-//        } else {
-//            //TODO: alert to user that the email is already in use
-//        }
     }
+
+//    private void validateAndSave(){
+//        registerBtn.setEnabled(false);
+//        String name = nameEt.getText().toString();
+//        String phone = phoneEt.getText().toString();
+//        String email = emailEt.getText().toString();
+//        String password = "";//passwordEt.getText().toString();
+//        String repassword = "";//repasswordEt.getText().toString();
+//        String gender = "";//genderSpinner.getSelectedItem().toString();
+//        String age = "";//ageSpinner.getSelectedItem().toString();
+//
+//        User user = new User(name,phone,email,password,gender,age);
+//
+//        modelFirebase.getAllUsers(new ModelFirebase.GetAllUsersListener() {
+//            @Override
+//            public void onComplete(List<User> list) {
+//            }
+//        });
+//        //TODO: check if user email is in the list of users
+////        if (email != "") {
+//            // save user in firebase
+//            Model.instance.addUser(user,()->{
+//                Navigation.findNavController(nameEt).navigate(RegisterFragmentDirections.actionNavRegisterToNavProfile(user.getEmail()));
+//            });
+//
+//            Log.d("TAG", "user has registered");
+////        } else {
+////            //TODO: alert to user that the email is already in use
+////        }
+//    }
 }
