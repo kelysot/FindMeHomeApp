@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -14,19 +15,34 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.findmehomeapp.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends Fragment {
     EditText emailEt;
     EditText passwordEt;
     Button loginBtn;
     TextView registerTv;
+    FirebaseAuth firebaseAuth;
+    NavController navController;
+
+    public LoginFragment() {}
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_login, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         emailEt = view.findViewById(R.id.login_et_email);
         passwordEt = view.findViewById(R.id.login_et_password);
@@ -34,14 +50,48 @@ public class LoginFragment extends Fragment {
         loginBtn = view.findViewById(R.id.login_btn_login);
         registerTv = view.findViewById(R.id.login_register_page);
 
-        registerTv.setOnClickListener((v)-> {
-            Navigation.findNavController(v).navigate(LoginFragmentDirections.actionNavLoginToNavRegister());
-        });
-        loginBtn.setOnClickListener((v)-> {
-            //TODO: valid user email and password
-            Navigation.findNavController(v).navigate(LoginFragmentDirections.actionGlobalNavProfile(emailEt.getText().toString()));
+        navController = Navigation.findNavController(view);
+        firebaseAuth = FirebaseAuth.getInstance();
+
+
+        registerTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               navController.navigate(R.id.action_nav_login_to_nav_register);
+            }
         });
 
-        return view;
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = emailEt.getText().toString();
+                String password = passwordEt.getText().toString();
+
+
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(getContext(), "Credentials Required", Toast.LENGTH_SHORT).show();
+                }
+
+                if (password.length() < 6) {
+
+                    passwordEt.setError("Password Length Must Be 6 or more Chars");
+
+                }
+                loginTheUser(email, password);
+            }
+        });
     }
+
+    private void loginTheUser(String email, String password) {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getContext(), "Signed In", Toast.LENGTH_SHORT).show();
+                    navController.navigate(R.id.action_global_nav_profile);
+                }
+            }
+        });
+    }
+
 }
