@@ -166,31 +166,16 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
-        android:id="@+id/register_gender_spinner"
-        android:layout_width="136dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toTopOf="@+id/register_btn_register"
-        app:layout_constraintEnd_toStartOf="@+id/register_age_spinner"
-        app:layout_constraintStart_toStartOf="@+id/view6"
-        app:layout_constraintTop_toBottomOf="@+id/register_et_repassword" />
-
-    <Spinner
-        android:id="@+id/register_age_spinner"
+        android:id="@+id/register_location_spinner"
         android:layout_width="136dp"
         android:layout_height="42dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/register_btn_register"
         app:layout_constraintEnd_toEndOf="@+id/view6"
+        app:layout_constraintStart_toStartOf="@+id/view6"
         app:layout_constraintTop_toBottomOf="@+id/register_et_repassword" />
 
     <ImageView
