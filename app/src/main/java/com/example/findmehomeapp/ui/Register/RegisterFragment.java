@@ -1,5 +1,14 @@
 package com.example.findmehomeapp.ui.Register;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,16 +26,24 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class RegisterFragment extends Fragment {
@@ -43,6 +61,13 @@ public class RegisterFragment extends Fragment {
     NavController navController;
     String userid;
     String locationS;
+    ImageView picture;
+    ImageView addPicture;
+    Bitmap imageBitmap;
+
+
+    private static final int REQUEST_CAMERA = 1;
+    private static final int REQUEST_GALLERY = 2;
 
 
     public RegisterFragment(){}
@@ -58,34 +83,6 @@ public class RegisterFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        View view =  inflater.inflate(R.layout.fragment_register, container, false);
-//
-//
-//
-//        registerBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//               // validateAndSave();
-//
-//                User user;
-//                if (!email.equals("") && !password.equals("") && fullName.length() != 0) {
-//                    user = new User(fullName,phone,email,password,gender,age);
-//                    listener.onSignupClicked(user);
-//                } else if (fullName.length() == 0) {
-//                    Toast.makeText(getContext(), "Full Name is required! ", Toast.LENGTH_LONG).show();
-//                } else {
-//                    Toast.makeText(getContext(), "invalid email or password", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
-//
-//        return view;
-//    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -94,6 +91,8 @@ public class RegisterFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
+        picture = view.findViewById(R.id.register_user_imageView);
+        addPicture = view.findViewById(R.id.register_add_pic_imv);
         nameEt = view.findViewById(R.id.register_et_name);
         phoneEt = view.findViewById(R.id.register_phone_number);
         emailEt = view.findViewById(R.id.register_et_email);
@@ -113,6 +112,13 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        addPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showImagePickDialog();
             }
         });
 
@@ -182,40 +188,110 @@ public class RegisterFragment extends Fragment {
 
     }
 
-   private void signUptheUser(String name, String email, String password, String phone, String location) {
+    private void showImagePickDialog() {
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        String[] items = {"Camera", "Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle("Choose an Option");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+            public void onClick(DialogInterface dialog, int i) {
 
-                if (task.isSuccessful()) {
+                if (i==0) {
 
-                    userid = firebaseAuth.getCurrentUser().getUid();
+                    openCam();
+                }
 
-                    HashMap<String, Object> hashMap = new HashMap<>();
+                if (i==1) {
 
-                    hashMap.put("userid", userid);
- //                   hashMap.put("imageUrl", "default");
-                    hashMap.put("username", name);
-                    hashMap.put("phone", phone);
-                    hashMap.put("location", location);
-
-                    firestore.collection("Users").document(userid).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-
-                        }
-                    });
-
-
-                    Log.d("TAG","saved name:" + name + "user Id:" + userid );
-                    //navController.navigate(RegisterFragmentDirections.actionGlobalNavProfile(userid));
-                    navController.navigate(R.id.action_global_nav_profile);
-
-
+                    openGallery();
                 }
 
             }
+        });
+
+        builder.create().show();
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"),REQUEST_GALLERY);
+    }
+
+    private void openCam() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent,REQUEST_CAMERA);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CAMERA){
+            if (resultCode == Activity.RESULT_OK){
+                Bundle extras = data.getExtras();
+                imageBitmap = (Bitmap) extras.get("data");
+                picture.setImageBitmap(imageBitmap);
+                Log.d("TAG33","imageBitmap name:" + imageBitmap );
+
+            }
+        }
+        if (requestCode == REQUEST_GALLERY) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    try {
+                        imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
+                        picture.setImageBitmap(imageBitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(getActivity(), "Canceled", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+    }
+
+    private void signUptheUser(String name, String email, String password, String phone, String location) {
+
+        Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
+            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    if (task.isSuccessful()) {
+
+                        userid = firebaseAuth.getCurrentUser().getUid();
+
+                        HashMap<String, Object> hashMap = new HashMap<>();
+
+                        hashMap.put("userid", userid);
+                        //   hashMap.put("imageUrl", imageUri.toString());
+                        hashMap.put("username", name);
+                        hashMap.put("phone", phone);
+                        hashMap.put("location", location);
+                        hashMap.put("imageUri", url);
+
+                        firestore.collection("Users").document(userid).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                            }
+                        });
+
+
+                        Log.d("TAG", "saved name:" + name + "user Id:" + userid);
+                        //navController.navigate(RegisterFragmentDirections.actionGlobalNavProfile(userid));
+                        navController.navigate(R.id.action_global_nav_profile);
+
+
+                    }
+
+                }
+            });
         });
     }
 

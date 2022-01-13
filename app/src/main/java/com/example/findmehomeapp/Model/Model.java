@@ -1,6 +1,7 @@
 package com.example.findmehomeapp.Model;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -144,5 +145,12 @@ public class Model {
     public Post getPostById(String postId, GetPostById listener){
         modelFirebase.getPostById(postId, listener);
         return null;
+    }
+
+    public interface SaveImageListener{
+        void onComplete(String url);
+    }
+    public void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
+        modelFirebase.saveImage(imageBitmap,imageName,listener);
     }
 }

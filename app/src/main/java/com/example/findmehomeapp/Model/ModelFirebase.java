@@ -1,6 +1,8 @@
 package com.example.findmehomeapp.Model;
 
+import android.graphics.Bitmap;
 import android.graphics.ColorSpace;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -15,7 +17,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -105,6 +111,32 @@ public class ModelFirebase {
                             post = Post.create(task.getResult().getData());
                         }
                         listener.onComplete(post);
+                    }
+                });
+    }
+
+    /**
+     * Firebase Storage
+     */
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+
+    public void saveImage(Bitmap imageBitmap, String imageName, Model.SaveImageListener listener) {
+        StorageReference storageRef = storage.getReference();
+        StorageReference imgRef = storageRef.child("user_avatars/" + imageName);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = imgRef.putBytes(data);
+        uploadTask.addOnFailureListener(exception -> listener.onComplete(null))
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            Uri downloadUrl = uri;
+                            listener.onComplete(downloadUrl.toString());
+                        });
                     }
                 });
     }
