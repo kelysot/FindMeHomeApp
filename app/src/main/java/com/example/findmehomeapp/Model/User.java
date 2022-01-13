@@ -18,16 +18,17 @@ public class User {
 
     @PrimaryKey
     @NonNull
-//    String id = "";
+    String id = "";
     String name = "";
     String phone = "";
     String email = "";
     String password = "";
     String location = "";
-    String gender = "";
-    String age = "";
+    //String gender = "";
+    //String age = "";
     Long updateDate = new Long(0);
 
+    //TODO: add gender and age
     //TODO: add data
     public static User create(Map<String, Object> json) {
         String id = (String) json.get("id");
@@ -41,8 +42,8 @@ public class User {
 
 //        Timestamp ts = (Timestamp)json.get("updateDate");
 //        Long updateDate = ts.getSeconds();
-
-        User user = new User(name,phone,email,password,gender,age);
+        //User user = new User(id, name,phone,email,password,gender,age);
+        User user = new User(id, name,phone,email,password);
 //        user.setUpdateDate(updateDate);
         return user;
     }
@@ -56,29 +57,30 @@ public class User {
 
     //TODO: add location
     @Ignore
-    public User(String name, String phone, String email, String password, String gender, String age) {
-//        this.id = id;
+    //public User(String id, String name, String phone, String email, String password, String gender, String age) {
+    public User(String id, String name, String phone, String email, String password) {
+        this.id = id;
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.password = password;
         this.location = location;
-        this.gender = gender;
-        this.age = age;
+        //this.gender = gender;
+        //this.age = age;
 //        this.posts = posts;
     }
 
     @Override
     public String toString() {
         return "User{" +
-//                "id='" + id + '\'' +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", location='" + location + '\'' +
-                ", gender='" + gender + '\'' +
-                ", age='" + age + '\'' +
+//                ", gender='" + gender + '\'' +
+//                ", age='" + age + '\'' +
 //                ", posts=" + posts +
                 '}';
     }
@@ -91,13 +93,13 @@ public class User {
 //        this.posts = posts;
 //    }
 
-//    public String getId() {
-//        return id;
-//    }
+    public String getId() {
+        return id;
+    }
 
-//    public void setId(String id) {
-//        this.id = id;
-//    }
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -139,21 +141,21 @@ public class User {
         this.location = location;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
-    }
+//    public String getGender() {
+//        return gender;
+//    }
+//
+//    public void setGender(String gender) {
+//        this.gender = gender;
+//    }
+//
+//    public String getAge() {
+//        return age;
+//    }
+//
+//    public void setAge(String age) {
+//        this.age = age;
+//    }
 
     public Long getUpdateDate() {
         return updateDate;
@@ -161,13 +163,13 @@ public class User {
 
     public Map<String, Object> toJson() {
         Map<String, Object> json = new HashMap<String, Object>();
-//        json.put("id",id);
+        json.put("id",id);
         json.put("name",name);
         json.put("phone",phone);
         json.put("email",email);
         json.put("password",password);
-        json.put("gender",gender);
-        json.put("age",age);
+//        json.put("gender",gender);
+//        json.put("age",age);
         json.put("updateDate", FieldValue.serverTimestamp());
 
         return json;
