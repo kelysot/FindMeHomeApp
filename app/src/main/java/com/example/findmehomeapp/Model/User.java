@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Entity
 public class User {
-    public static final String COLLECTION_NAME = "users";
+    public static final String COLLECTION_NAME = "Users";
 
     @PrimaryKey
     @NonNull
@@ -24,9 +24,21 @@ public class User {
     String email = "";
     String password = "";
     String location = "";
-    //String gender = "";
-    //String age = "";
     Long updateDate = new Long(0);
+
+    public User(){} //for room
+
+    //TODO: add location
+    @Ignore
+    public User(String id, String name, String phone, String email, String password, String location) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.location = location;
+//        this.posts = posts;
+    }
 
     //TODO: add gender and age
     //TODO: add data
@@ -37,13 +49,10 @@ public class User {
         String email = (String) json.get("image");
         String password = (String) json.get("type");
         String location = (String) json.get("age");
-        String gender = (String) json.get("size");
-        String age = (String) json.get("gender");
 
 //        Timestamp ts = (Timestamp)json.get("updateDate");
 //        Long updateDate = ts.getSeconds();
-        //User user = new User(id, name,phone,email,password,gender,age);
-        User user = new User(id, name,phone,email,password);
+        User user = new User(id, name,phone,email,password,location);
 //        user.setUpdateDate(updateDate);
         return user;
     }
@@ -51,24 +60,8 @@ public class User {
     public void setUpdateDate(Long updateDate) {
         this.updateDate = updateDate;
     }
-//    List<Post> posts;
 
-    public User(){} //for room
 
-    //TODO: add location
-    @Ignore
-    //public User(String id, String name, String phone, String email, String password, String gender, String age) {
-    public User(String id, String name, String phone, String email, String password) {
-        this.id = id;
-        this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.password = password;
-        this.location = location;
-        //this.gender = gender;
-        //this.age = age;
-//        this.posts = posts;
-    }
 
     @Override
     public String toString() {
@@ -79,8 +72,6 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", location='" + location + '\'' +
-//                ", gender='" + gender + '\'' +
-//                ", age='" + age + '\'' +
 //                ", posts=" + posts +
                 '}';
     }
@@ -141,22 +132,6 @@ public class User {
         this.location = location;
     }
 
-//    public String getGender() {
-//        return gender;
-//    }
-//
-//    public void setGender(String gender) {
-//        this.gender = gender;
-//    }
-//
-//    public String getAge() {
-//        return age;
-//    }
-//
-//    public void setAge(String age) {
-//        this.age = age;
-//    }
-
     public Long getUpdateDate() {
         return updateDate;
     }
@@ -168,8 +143,6 @@ public class User {
         json.put("phone",phone);
         json.put("email",email);
         json.put("password",password);
-//        json.put("gender",gender);
-//        json.put("age",age);
         json.put("updateDate", FieldValue.serverTimestamp());
 
         return json;

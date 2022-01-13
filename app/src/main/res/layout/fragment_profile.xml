@@ -58,7 +58,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/profile_user_email"
+        android:id="@+id/profile_user_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -70,7 +70,7 @@
         app:layout_constraintTop_toBottomOf="@+id/profile_user_name" />
 
     <TextView
-        android:id="@+id/profile_user_phone"
+        android:id="@+id/profile_user_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -79,7 +79,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/profile_user_email" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_user_phone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/profile_post_rv"

@@ -19,11 +19,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.findmehomeapp.Model.Model;
-import com.example.findmehomeapp.Model.ModelFirebase;
-import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
-import com.example.findmehomeapp.ui.Login.LoginFragmentDirections;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -31,9 +27,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class RegisterFragment extends Fragment {
     // TODO: add image
@@ -43,16 +36,13 @@ public class RegisterFragment extends Fragment {
     EditText emailEt;
     EditText passwordEt;
     EditText repasswordEt;
-    Spinner genderSpinner;
-    Spinner ageSpinner;
+    Spinner locationSpinner;
     Button registerBtn;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firestore;
     NavController navController;
     String userid;
-    String genderS;
-    String ageS;
-
+    String locationS;
 
 
     public RegisterFragment(){}
@@ -110,31 +100,15 @@ public class RegisterFragment extends Fragment {
         passwordEt = view.findViewById(R.id.register_et_password);
         repasswordEt = view.findViewById(R.id.register_et_repassword);
 
-        genderSpinner = view.findViewById(R.id.register_gender_spinner);
+        locationSpinner = view.findViewById(R.id.register_location_spinner);
         ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this.getContext(),
-                R.array.gender, android.R.layout.simple_spinner_item);
+                R.array.location, android.R.layout.simple_spinner_item);
         adapterGender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        genderSpinner.setAdapter(adapterGender);
-        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        locationSpinner.setAdapter(adapterGender);
+        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                genderS = parent.getItemAtPosition(position).toString();
+                locationS = parent.getItemAtPosition(position).toString();
                 //Toast.makeText(parent.getContext(), gender, Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        ageSpinner = view.findViewById(R.id.register_age_spinner);
-        ArrayAdapter<CharSequence> adapterAge = ArrayAdapter.createFromResource(this.getContext(),
-                R.array.age, android.R.layout.simple_spinner_item);
-        adapterAge.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ageSpinner.setAdapter(adapterAge);
-        ageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ageS = parent.getItemAtPosition(position).toString();
-                //Toast.makeText(parent.getContext(), age, Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -173,10 +147,10 @@ public class RegisterFragment extends Fragment {
                     passwordEt.setError("Password Length Must Be 6 or more Chars");
                 }
 
-                if(!password.equals(repassword)){
-                    passwordEt.setError("Password and Re-password need to be the same");
-
-                }
+//                if(!password.equals(repassword)){
+//                    passwordEt.setError("Password and Re-password need to be the same");
+//
+//                }
 
                 if (email.isEmpty()) {
 
@@ -189,7 +163,7 @@ public class RegisterFragment extends Fragment {
 
                 }
 
-                signUptheUser(fullName, email, password, phone, genderS, ageS);
+                signUptheUser(fullName, email, password, phone, locationS);
 
             }
         });
@@ -208,7 +182,7 @@ public class RegisterFragment extends Fragment {
 
     }
 
-   private void signUptheUser(String name, String email, String password, String phone, String gender, String age) {
+   private void signUptheUser(String name, String email, String password, String phone, String location) {
 
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -224,8 +198,7 @@ public class RegisterFragment extends Fragment {
  //                   hashMap.put("imageUrl", "default");
                     hashMap.put("username", name);
                     hashMap.put("phone", phone);
-                    hashMap.put("gender", gender);
-                    hashMap.put("age", age);
+                    hashMap.put("location", location);
 
                     firestore.collection("Users").document(userid).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -234,9 +207,11 @@ public class RegisterFragment extends Fragment {
                         }
                     });
 
-                    //Toast.makeText(getContext(), "Signed Up", Toast.LENGTH_SHORT).show();
 
+                    Log.d("TAG","saved name:" + name + "user Id:" + userid );
+                    //navController.navigate(RegisterFragmentDirections.actionGlobalNavProfile(userid));
                     navController.navigate(R.id.action_global_nav_profile);
+
 
                 }
 
