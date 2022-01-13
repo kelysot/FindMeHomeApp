@@ -12,6 +12,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,6 +31,7 @@ import java.util.Map;
 
 public class ModelFirebase {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     public ModelFirebase(){
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -38,13 +41,47 @@ public class ModelFirebase {
     }
 
     public void addUser(User user, Model.AddUserListener listener) {
-        Map<String, Object> json = user.toJson();
-        db.collection(User.COLLECTION_NAME)
-                .document(user.getEmail())
-                .set(json)
-                .addOnSuccessListener(unused -> listener.onComplete())
-                .addOnFailureListener(e -> listener.onComplete());
+
+        firebaseAuth.createUserWithEmailAndPassword(user.email, user.password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if (task.isSuccessful()) {
+
+                    user.id = firebaseAuth.getCurrentUser().getUid();
+                     Log.d("TAG", "saved name:" + user.name + "user Id:" + user.id);
+
+
+                    Map<String, Object> json = user.toJson();
+                    db.collection(User.COLLECTION_NAME)
+                            .document(user.getId())
+                            .set(json)
+                            .addOnSuccessListener(unused -> listener.onComplete())
+                            .addOnFailureListener(e -> listener.onComplete());
+
+//                    HashMap<String, Object> hashMap = new HashMap<>();
+//
+//                    hashMap.put("userid", user.id);
+//                    //   hashMap.put("imageUrl", imageUri.toString());
+//                    hashMap.put("username", user.name);
+//                    hashMap.put("phone", user.phone);
+//                    hashMap.put("location", user.location);
+//                    hashMap.put("imageUri", user.avatarUrl);
+//
+//                    firestore.collection("Users").document(user.id).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//
+//                        }
+//                    });
+                }
+            }
+        });
+
+
+
     }
+
 
     public interface GetAllPostsListener{
         void onComplete(List<Post> list);
@@ -111,6 +148,22 @@ public class ModelFirebase {
                             post = Post.create(task.getResult().getData());
                         }
                         listener.onComplete(post);
+                    }
+                });
+    }
+
+    public void getUserById(String userId, Model.GetUserById listener) {
+        db.collection(User.COLLECTION_NAME)
+                .document(userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        User user = null;
+                        if (task.isSuccessful() & task.getResult()!= null) {
+                            user = User.create(task.getResult().getData());
+                        }
+                        listener.onComplete(user);
                     }
                 });
     }

@@ -31,6 +31,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.findmehomeapp.Model.Model;
+import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,8 +57,6 @@ public class RegisterFragment extends Fragment {
     EditText repasswordEt;
     Spinner locationSpinner;
     Button registerBtn;
-    FirebaseAuth firebaseAuth;
-    FirebaseFirestore firestore;
     NavController navController;
     String userid;
     String locationS;
@@ -70,7 +69,8 @@ public class RegisterFragment extends Fragment {
     private static final int REQUEST_GALLERY = 2;
 
 
-    public RegisterFragment(){}
+    public RegisterFragment() {
+    }
 
     //Executor executor = Executors.newFixedThreadPool(1);
 
@@ -86,10 +86,6 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        firestore = FirebaseFirestore.getInstance();
 
         picture = view.findViewById(R.id.register_user_imageView);
         addPicture = view.findViewById(R.id.register_add_pic_imv);
@@ -111,7 +107,6 @@ public class RegisterFragment extends Fragment {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -139,42 +134,33 @@ public class RegisterFragment extends Fragment {
 
                 //TODO:tell the user if his email already exist he can't register
                 if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-
                     Toast.makeText(getContext(), "Fields are required", Toast.LENGTH_SHORT).show();
                 }
 
                 if (fullName.isEmpty()) {
-
                     nameEt.setError("Enter a name");
                 }
 
                 if (password.length() < 6) {
-
                     passwordEt.setError("Password Length Must Be 6 or more Chars");
                 }
 
 //                if(!password.equals(repassword)){
 //                    passwordEt.setError("Password and Re-password need to be the same");
-//
 //                }
 
                 if (email.isEmpty()) {
-
                     emailEt.setError("Enter email Bitch");
-
                 }
 
-                if(phone.isEmpty()){
+                if (phone.isEmpty()) {
                     phoneEt.setError("Enter a phone");
-
                 }
 
-                signUptheUser(fullName, email, password, phone, locationS);
+                registerUser(fullName, email, password, phone, locationS);
 
             }
         });
-
-
 
 
 //        gotoSignIn.setOnClickListener(new View.OnClickListener() {
@@ -198,16 +184,13 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int i) {
 
-                if (i==0) {
-
+                if (i == 0) {
                     openCam();
                 }
 
-                if (i==1) {
-
+                if (i == 1) {
                     openGallery();
                 }
-
             }
         });
 
@@ -218,23 +201,23 @@ public class RegisterFragment extends Fragment {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"),REQUEST_GALLERY);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_GALLERY);
     }
 
     private void openCam() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent,REQUEST_CAMERA);
+        startActivityForResult(intent, REQUEST_CAMERA);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CAMERA){
-            if (resultCode == Activity.RESULT_OK){
+        if (requestCode == REQUEST_CAMERA) {
+            if (resultCode == Activity.RESULT_OK) {
                 Bundle extras = data.getExtras();
                 imageBitmap = (Bitmap) extras.get("data");
                 picture.setImageBitmap(imageBitmap);
-                Log.d("TAG33","imageBitmap name:" + imageBitmap );
+                Log.d("TAG33", "imageBitmap name:" + imageBitmap);
 
             }
         }
@@ -255,74 +238,22 @@ public class RegisterFragment extends Fragment {
         }
     }
 
-    private void signUptheUser(String name, String email, String password, String phone, String location) {
+    private void registerUser(String name, String email, String password, String phone, String location) {
 
-        Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
-            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
+        User user = new User("0", name, phone, email, password, location, "0");
 
-                    if (task.isSuccessful()) {
+        if (imageBitmap == null) {
+            Model.instance.addUser(user, () -> {
+                navController.navigate(R.id.action_global_nav_profile);
 
-                        userid = firebaseAuth.getCurrentUser().getUid();
-
-                        HashMap<String, Object> hashMap = new HashMap<>();
-
-                        hashMap.put("userid", userid);
-                        //   hashMap.put("imageUrl", imageUri.toString());
-                        hashMap.put("username", name);
-                        hashMap.put("phone", phone);
-                        hashMap.put("location", location);
-                        hashMap.put("imageUri", url);
-
-                        firestore.collection("Users").document(userid).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-
-                            }
-                        });
-
-
-                        Log.d("TAG", "saved name:" + name + "user Id:" + userid);
-                        //navController.navigate(RegisterFragmentDirections.actionGlobalNavProfile(userid));
-                        navController.navigate(R.id.action_global_nav_profile);
-
-
-                    }
-
-                }
             });
-        });
+        } else {
+            Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
+                user.setAvatarUrl(url);
+                Model.instance.addUser(user, () -> {
+                    navController.navigate(R.id.action_global_nav_profile);
+                });
+            });
+        }
     }
-
-
-//    private void validateAndSave(){
-//        registerBtn.setEnabled(false);
-//        String name = nameEt.getText().toString();
-//        String phone = phoneEt.getText().toString();
-//        String email = emailEt.getText().toString();
-//        String password = "";//passwordEt.getText().toString();
-//        String repassword = "";//repasswordEt.getText().toString();
-//        String gender = "";//genderSpinner.getSelectedItem().toString();
-//        String age = "";//ageSpinner.getSelectedItem().toString();
-//
-//        User user = new User(name,phone,email,password,gender,age);
-//
-//        modelFirebase.getAllUsers(new ModelFirebase.GetAllUsersListener() {
-//            @Override
-//            public void onComplete(List<User> list) {
-//            }
-//        });
-//        //TODO: check if user email is in the list of users
-////        if (email != "") {
-//            // save user in firebase
-//            Model.instance.addUser(user,()->{
-//                Navigation.findNavController(nameEt).navigate(RegisterFragmentDirections.actionNavRegisterToNavProfile(user.getEmail()));
-//            });
-//
-//            Log.d("TAG", "user has registered");
-////        } else {
-////            //TODO: alert to user that the email is already in use
-////        }
-//    }
 }

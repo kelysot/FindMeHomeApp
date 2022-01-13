@@ -11,6 +11,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.findmehomeapp.MyApplication;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -117,7 +119,7 @@ public class Model {
 
     public void addUser(User user, AddUserListener listener){
         //TODO: should we save in the localdb..?
-        modelFirebase.addUser( user,  listener);
+        modelFirebase.addUser( user, listener);
     }
 
     public interface AddPostListener{
@@ -134,8 +136,12 @@ public class Model {
 
     }
 
-    public User getUserById(String userId){
+    public interface GetUserById{
+        void onComplete(User user);
+    }
 
+    public User getUserById(String userId, GetUserById listener){
+        modelFirebase.getUserById(userId, listener);
         return null;
     }
 

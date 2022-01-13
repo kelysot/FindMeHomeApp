@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Entity
 public class User {
-    public static final String COLLECTION_NAME = "Users";
+    public static final String COLLECTION_NAME = "users";
 
     @PrimaryKey
     @NonNull
@@ -25,43 +25,29 @@ public class User {
     String password = "";
     String location = "";
     Long updateDate = new Long(0);
+    String avatarUrl = "";
 
     public User(){} //for room
 
     //TODO: add location
     @Ignore
-    public User(String id, String name, String phone, String email, String password, String location) {
+    public User(String id, String name, String phone, String email, String password, String location, String avatarUrl) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.password = password;
         this.location = location;
+        this.avatarUrl = avatarUrl;
 //        this.posts = posts;
     }
 
-    //TODO: add gender and age
-    //TODO: add data
-    public static User create(Map<String, Object> json) {
-        String id = (String) json.get("id");
-        String name = (String) json.get("userId");
-        String phone = (String) json.get("text");
-        String email = (String) json.get("image");
-        String password = (String) json.get("type");
-        String location = (String) json.get("age");
 
-//        Timestamp ts = (Timestamp)json.get("updateDate");
-//        Long updateDate = ts.getSeconds();
-        User user = new User(id, name,phone,email,password,location);
-//        user.setUpdateDate(updateDate);
-        return user;
-    }
+
 
     public void setUpdateDate(Long updateDate) {
         this.updateDate = updateDate;
     }
-
-
 
     @Override
     public String toString() {
@@ -72,9 +58,11 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", location='" + location + '\'' +
-//                ", posts=" + posts +
+                ", updateDate=" + updateDate +
+                ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
     }
+
 
 //    public List<Post> getPosts() {
 //        return posts;
@@ -136,6 +124,30 @@ public class User {
         return updateDate;
     }
 
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public static User create(Map<String, Object> json) {
+        String id = (String) json.get("id");
+        String name = (String) json.get("name");
+        String phone = (String) json.get("phone");
+        String email = (String) json.get("email");
+        String password = (String) json.get("password");
+        String location = (String) json.get("location");
+        String avatarUrl = (String) json.get("avatarUrl");
+
+//        Timestamp ts = (Timestamp)json.get("updateDate");
+//        Long updateDate = ts.getSeconds();
+        User user = new User(id, name,phone,email,password,location,avatarUrl);
+//        user.setUpdateDate(updateDate);
+        return user;
+    }
+
     public Map<String, Object> toJson() {
         Map<String, Object> json = new HashMap<String, Object>();
         json.put("id",id);
@@ -143,7 +155,9 @@ public class User {
         json.put("phone",phone);
         json.put("email",email);
         json.put("password",password);
-        json.put("updateDate", FieldValue.serverTimestamp());
+        json.put("location",location);
+        json.put("avatarUrl",avatarUrl);
+        //json.put("updateDate", FieldValue.serverTimestamp());
 
         return json;
     }

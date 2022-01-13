@@ -95,12 +95,12 @@ public class LoginFragment extends Fragment {
     }
 
     //This func is for that if the user is login to the app then he won't need to login but immediately will go to a profile page.
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (firebaseAuth.getCurrentUser()!=null) {
-            navController.navigate(R.id.action_global_nav_profile);
-        }
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//
+//        if (firebaseAuth.getCurrentUser()!=null) {
+//            navController.navigate(R.id.action_global_nav_profile);
+//        }
+//    }
 }
