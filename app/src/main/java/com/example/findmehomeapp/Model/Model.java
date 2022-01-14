@@ -1,9 +1,13 @@
 package com.example.findmehomeapp.Model;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.core.os.HandlerCompat;
@@ -156,6 +160,7 @@ public class Model {
     public interface SaveImageListener{
         void onComplete(String url);
     }
+
     public void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
         modelFirebase.saveImage(imageBitmap,imageName,listener);
     }
