@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -108,4 +109,32 @@ public class ModelFirebase {
                     }
                 });
     }
+
+//    public void getPostsByUserId(String userId, Model.GetPostsByUserId listener) {
+//        db.collection(Post.COLLECTION_NAME)
+//                .whereEqualTo("userId", userId)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    List<Post> posts = new LinkedList<Post>();
+//                    if (task.isSuccessful()){
+//                        for (QueryDocumentSnapshot doc : task.getResult()){
+//                            Post post = Post.create(doc.getData());
+//                            if (posts != null){
+//                                posts.add(post);
+//                            }
+//                        }
+//                    }
+//                    listener.onComplete(posts);
+//                });
+////                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+////                    @Override
+////                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+////                        Post post = null;
+////                        if (task.isSuccessful() & task.getResult()!= null) {
+////                            post = Post.create(task.getResult().getData());
+////                        }
+////                        listener.onComplete(post);
+////                    }
+////                });
+//    }
 }

@@ -25,6 +25,7 @@ import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.databinding.FragmentHomeBinding;
+import com.example.findmehomeapp.ui.Profile.ProfileFragmentArgs;
 
 public class HomeFragment extends Fragment {
 
@@ -45,8 +46,10 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
+        String stId = HomeFragmentArgs.fromBundle(getArguments()).getUserId();
+
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
-        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList());
+        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList(stId));
 
         RecyclerView list = view.findViewById(R.id.home_post_rv) ;
         list.setHasFixedSize(true);
@@ -139,19 +142,4 @@ public class HomeFragment extends Fragment {
             return homeViewModel.getData().getValue().size();
         }
     }
-
-//    @Override
-//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        inflater.inflate(R.menu.student_list_menu, menu);
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if (item.getItemId() == R.id.addStudentFragment) {
-//            return true;
-//        } else {
-//            return super.onOptionsItemSelected(item);
-//        }
-//    }
 }

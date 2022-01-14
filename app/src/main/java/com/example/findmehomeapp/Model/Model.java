@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.findmehomeapp.MyApplication;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -37,14 +38,28 @@ public class Model {
     }
 
     MutableLiveData<List<Post>> postsList = new MutableLiveData<List<Post>>();
+    MutableLiveData<List<Post>> userPostsList = new MutableLiveData<List<Post>>();
+
     public LiveData<List<Post>> getAllPosts() {
         if (postsList.getValue() == null ) {
-            refreshPostsList();
+            refreshPostsList("");
         }
         return postsList;
     }
 
-    public void refreshPostsList() {
+    public LiveData<List<Post>> getAllUserPosts() {
+        if (userPostsList.getValue() == null ) {
+            refreshPostsList("");
+        }
+        return userPostsList;
+    }
+
+    //TODO: continue
+    public void refreshUserPostsList(String id) {
+
+    }
+
+    public void refreshPostsList(String userId) {
         postListLoadingState.setValue(PostListLoadingState.loading);
 
         // get last local update date
@@ -54,7 +69,6 @@ public class Model {
         modelFirebase.getAllPosts(new ModelFirebase.GetAllPostsListener() {
             @Override
             public void onComplete(List<Post> list) {
-                // add all records to the local db
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -75,7 +89,17 @@ public class Model {
 
                         //return all data to caller
                         List<Post> stList = AppLocalDb.db.postDao().getAll();
+                        List<Post> stUserList = new ArrayList<>();
+
+                        for (Post post : stList) {
+                            if (post.getUserId() == "") {
+                                stUserList.add(post);
+                            }
+                        }
+
                         postsList.postValue(stList);
+                        userPostsList.postValue(stUserList);
+
                         postListLoadingState.postValue(PostListLoadingState.loaded);
                     }
                 });
@@ -145,4 +169,12 @@ public class Model {
         modelFirebase.getPostById(postId, listener);
         return null;
     }
+
+//    public interface GetPostsByUserId {
+//        void onComplete(List<Post> post);
+//    }
+//    public Post getPostByUserId(String userId){
+//        modelFirebase.getPostsByUserId(postId, listener);
+//        return null;
+//    }
 }
