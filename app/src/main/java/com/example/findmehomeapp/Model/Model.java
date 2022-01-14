@@ -1,6 +1,7 @@
 package com.example.findmehomeapp.Model;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -10,6 +11,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.findmehomeapp.MyApplication;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +72,7 @@ public class Model {
         modelFirebase.getAllPosts(new ModelFirebase.GetAllPostsListener() {
             @Override
             public void onComplete(List<Post> list) {
+                // add all records to the local db
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -140,7 +144,7 @@ public class Model {
 
     public void addUser(User user, AddUserListener listener){
         //TODO: should we save in the localdb..?
-        modelFirebase.addUser( user,  listener);
+        modelFirebase.addUser( user, listener);
     }
 
     public interface AddPostListener{
@@ -157,8 +161,12 @@ public class Model {
 
     }
 
-    public User getUserById(String userId){
+    public interface GetUserById{
+        void onComplete(User user);
+    }
 
+    public User getUserById(String userId, GetUserById listener){
+        modelFirebase.getUserById(userId, listener);
         return null;
     }
 
@@ -168,6 +176,13 @@ public class Model {
     public Post getPostById(String postId, GetPostById listener){
         modelFirebase.getPostById(postId, listener);
         return null;
+    }
+
+    public interface SaveImageListener{
+        void onComplete(String url);
+    }
+    public void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
+        modelFirebase.saveImage(imageBitmap,imageName,listener);
     }
 
 //    public interface GetPostsByUserId {

@@ -109,7 +109,7 @@
             android:id="@+id/action_nav_profile_to_nav_post2"
             app:destination="@id/nav_post" />
         <argument
-            android:name="email"
+            android:name="userId"
             app:argType="string" />
     </fragment>
     <action android:id="@+id/action_global_nav_home" app:destination="@id/nav_home" />

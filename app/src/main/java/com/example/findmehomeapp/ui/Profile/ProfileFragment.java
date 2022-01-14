@@ -4,30 +4,62 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.findmehomeapp.Model.Model;
+import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 import com.example.findmehomeapp.ui.Post.PostFragmentArgs;
 import com.example.findmehomeapp.ui.home.HomeFragment;
 import com.example.findmehomeapp.ui.home.HomeFragmentDirections;
 import com.example.findmehomeapp.ui.home.HomeViewModel;
 
+
 public class ProfileFragment extends Fragment {
+
+    TextView nameTv;
+    TextView locationTv;
+    TextView phoneTv;
+    ImageView avatarImv;
+    Button addPostBtn;
+    Button editProfileBtn;
+    RecyclerView postList;
+    FirebaseFirestore firestore;
+    FirebaseAuth firebaseAuth;
+    NavController navController;
+    String userId;
 
     private HomeViewModel homeViewModel;
     ProfileFragment.MyAdapter adapter;
+
+    public ProfileFragment() {
+        // Required empty public constructor
+    }
 
     SwipeRefreshLayout swipeRefresh;
 
@@ -44,10 +76,15 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        String stId = ProfileFragmentArgs.fromBundle(getArguments()).getEmail();
+        firebaseAuth = FirebaseAuth.getInstance();
+
+//        String stId = ProfileFragmentArgs.fromBundle(getArguments()).getUserId();
+        userId = firebaseAuth.getCurrentUser().getUid();
+        Log.d("TAG1", "user Id:" + userId );
+
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
-        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshUserPostsList(stId));
+        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshUserPostsList(userId));
 
         RecyclerView list = view.findViewById(R.id.profile_post_rv) ;
         list.setHasFixedSize(true);
@@ -70,6 +107,19 @@ public class ProfileFragment extends Fragment {
 
         swipeRefresh.setRefreshing(Model.instance.getPostListLoadingState().getValue() == Model.PostListLoadingState.loading);
 
+        Model.instance.getUserById(userId, new Model.GetUserById() {
+            @Override
+            public void onComplete(User user) {
+                Log.d("TAG111", "user Id:" + user.getId() );
+                nameTv.setText(user.getName());
+                phoneTv.setText(user.getPhone());
+                locationTv.setText(user.getLocation());
+                if (user.getAvatarUrl() != null) {
+                    Picasso.get().load(user.getAvatarUrl()).into(avatarImv);
+                }
+            }
+        });
+
         Model.instance.getPostListLoadingState().observe(getViewLifecycleOwner(), postListLoadingState -> {
             if(postListLoadingState == Model.PostListLoadingState.loading) {
                 swipeRefresh.setRefreshing(true);
@@ -78,9 +128,23 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        nameTv = view.findViewById(R.id.profile_user_name);
+        phoneTv = view.findViewById(R.id.profile_user_phone);
+        locationTv = view.findViewById(R.id.profile_user_location);
+        avatarImv = view.findViewById(R.id.profile_image);
+
+        addPostBtn = view.findViewById(R.id.profile_btn_add_post);
+        editProfileBtn = view.findViewById(R.id.profile_btn_edit_profile);
+
+        addPostBtn.setOnClickListener((v)->{
+            navController.navigate(R.id.action_nav_profile_to_nav_create_post);
+        });
+
+        editProfileBtn.setOnClickListener((v)->{
+            navController.navigate(R.id.action_nav_profile_to_nav_edit_profile);
+        });
         return view;
     }
-
     private void refresh() {
         adapter.notifyDataSetChanged();
         swipeRefresh.setRefreshing(false);
