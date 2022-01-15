@@ -164,4 +164,14 @@ public class Model {
     public void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
         modelFirebase.saveImage(imageBitmap,imageName,listener);
     }
+
+    public interface EditUserListener {
+        void onComplete();
+    }
+
+    public void editUser(User newUser, EditUserListener listener){
+        modelFirebase.editUser(newUser, ()->{
+            listener.onComplete();
+        });
+    }
 }

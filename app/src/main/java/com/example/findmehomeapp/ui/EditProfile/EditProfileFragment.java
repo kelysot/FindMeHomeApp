@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
@@ -32,6 +34,7 @@ import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
@@ -56,6 +59,7 @@ public class EditProfileFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     String userId;
     String myLocation = "";
+    String img;
     int locationPos;
 
     private static final int REQUEST_CAMERA = 1;
@@ -72,22 +76,20 @@ public class EditProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
-
         firebaseAuth = FirebaseAuth.getInstance();
 
 //        String stId = ProfileFragmentArgs.fromBundle(getArguments()).getUserId();
         userId = firebaseAuth.getCurrentUser().getUid();
-        Log.d("TAG12", "user Id:" + userId);
 
         Model.instance.getUserById(userId, new Model.GetUserById() {
             @Override
             public void onComplete(User user) {
-                Log.d("TAG1112", "user Id:" + user.getId());
                 nameEt.setText(user.getName());
                 phoneEt.setText(user.getPhone());
                 emailEt.setText(user.getEmail());
                 passwordEt.setText(user.getPassword());
                 if (user.getAvatarUrl() != null) {
+                    img = user.getAvatarUrl();
                     Picasso.get().load(user.getAvatarUrl()).into(picture);
                 }
             }
@@ -126,6 +128,12 @@ public class EditProfileFragment extends Fragment {
         });
 
         saveBtn = view.findViewById(R.id.edit_profile_btn_register);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save();
+            }
+        });
 
         return view;
     }
@@ -219,4 +227,52 @@ public class EditProfileFragment extends Fragment {
             }
         });
     }
+
+    public void save(){
+        saveBtn.setEnabled(false);
+
+        String email = emailEt.getText().toString().trim();
+        String password = passwordEt.getText().toString().trim();
+        String fullName = nameEt.getText().toString();
+        String phone = phoneEt.getText().toString();
+        String repassword = repasswordEt.getText().toString();
+
+
+        //TODO:tell the user if his email already exist he can't edit his email
+        if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(getContext(), "Fields are required", Toast.LENGTH_SHORT).show();
+        }
+
+        if (fullName.isEmpty()) {
+            nameEt.setError("Enter a name");
+        }
+
+        if (password.length() < 6) {
+            passwordEt.setError("Password Length Must Be 6 or more Chars");
+        }
+
+//                if(!password.equals(repassword)){
+//                    passwordEt.setError("Password and Re-password need to be the same");
+//                }
+
+        if (email.isEmpty()) {
+            emailEt.setError("Enter email");
+        }
+
+        if (phone.isEmpty()) {
+            phoneEt.setError("Enter a phone");
+        }
+
+        User user = new User(userId, fullName, phone, email, password, locationS, img);
+
+        Model.instance.editUser(user, () -> {
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
+        });
+
+    }
+
+
+
+
+
 }
