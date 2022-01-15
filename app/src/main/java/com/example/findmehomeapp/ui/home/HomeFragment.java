@@ -26,6 +26,7 @@ import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.databinding.FragmentHomeBinding;
 import com.example.findmehomeapp.ui.Profile.ProfileFragmentArgs;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeFragment extends Fragment {
 
@@ -46,7 +47,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
-        String stId = HomeFragmentArgs.fromBundle(getArguments()).getUserId();
+        //String stId = HomeFragmentArgs.fromBundle(getArguments()).getUserId();
+        String stId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
         swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList(stId));

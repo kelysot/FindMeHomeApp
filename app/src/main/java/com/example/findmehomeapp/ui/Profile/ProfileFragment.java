@@ -57,11 +57,11 @@ public class ProfileFragment extends Fragment {
     private HomeViewModel homeViewModel;
     ProfileFragment.MyAdapter adapter;
 
+    SwipeRefreshLayout swipeRefresh;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
-
-    SwipeRefreshLayout swipeRefresh;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -82,9 +82,26 @@ public class ProfileFragment extends Fragment {
         userId = firebaseAuth.getCurrentUser().getUid();
         Log.d("TAG1", "user Id:" + userId );
 
+        Model.instance.getUserById(userId, new Model.GetUserById() {
+            @Override
+            public void onComplete(User user) {
+                Log.d("TAG111", "user Id:" + user.getId() );
+                nameTv.setText(user.getName());
+                phoneTv.setText(user.getPhone());
+                locationTv.setText(user.getLocation());
+                if (user.getAvatarUrl() != null) {
+                    Picasso.get().load(user.getAvatarUrl()).into(avatarImv);
+                }
+            }
+        });
+
+        nameTv = view.findViewById(R.id.profile_user_name);
+        phoneTv = view.findViewById(R.id.profile_user_phone);
+        locationTv = view.findViewById(R.id.profile_user_location);
+        avatarImv = view.findViewById(R.id.profile_image);
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
-        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshUserPostsList(userId));
+//        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshUserPostsList(userId));
 
         RecyclerView list = view.findViewById(R.id.profile_post_rv) ;
         list.setHasFixedSize(true);
@@ -103,35 +120,17 @@ public class ProfileFragment extends Fragment {
         });
 
         setHasOptionsMenu(true);
-        homeViewModel.getData().observe(getViewLifecycleOwner(), list1 -> refresh());
+//        homeViewModel.getData().observe(getViewLifecycleOwner(), list1 -> refresh());
+//
+//        swipeRefresh.setRefreshing(Model.instance.getPostListLoadingState().getValue() == Model.PostListLoadingState.loading);
 
-        swipeRefresh.setRefreshing(Model.instance.getPostListLoadingState().getValue() == Model.PostListLoadingState.loading);
-
-        Model.instance.getUserById(userId, new Model.GetUserById() {
-            @Override
-            public void onComplete(User user) {
-                Log.d("TAG111", "user Id:" + user.getId() );
-                nameTv.setText(user.getName());
-                phoneTv.setText(user.getPhone());
-                locationTv.setText(user.getLocation());
-                if (user.getAvatarUrl() != null) {
-                    Picasso.get().load(user.getAvatarUrl()).into(avatarImv);
-                }
-            }
-        });
-
-        Model.instance.getPostListLoadingState().observe(getViewLifecycleOwner(), postListLoadingState -> {
-            if(postListLoadingState == Model.PostListLoadingState.loading) {
-                swipeRefresh.setRefreshing(true);
-            } else {
-                swipeRefresh.setRefreshing(false);
-            }
-        });
-
-        nameTv = view.findViewById(R.id.profile_user_name);
-        phoneTv = view.findViewById(R.id.profile_user_phone);
-        locationTv = view.findViewById(R.id.profile_user_location);
-        avatarImv = view.findViewById(R.id.profile_image);
+//        Model.instance.getPostListLoadingState().observe(getViewLifecycleOwner(), postListLoadingState -> {
+//            if(postListLoadingState == Model.PostListLoadingState.loading) {
+//                swipeRefresh.setRefreshing(true);
+//            } else {
+//                swipeRefresh.setRefreshing(false);
+//            }
+//        });
 
         addPostBtn = view.findViewById(R.id.profile_btn_add_post);
         editProfileBtn = view.findViewById(R.id.profile_btn_edit_profile);
@@ -145,10 +144,10 @@ public class ProfileFragment extends Fragment {
         });
         return view;
     }
-    private void refresh() {
-        adapter.notifyDataSetChanged();
-        swipeRefresh.setRefreshing(false);
-    }
+//    private void refresh() {
+//        adapter.notifyDataSetChanged();
+//        swipeRefresh.setRefreshing(false);
+//    }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
         TextView petTextTv;

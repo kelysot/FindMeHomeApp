@@ -16,7 +16,7 @@ public class HomeViewModel extends ViewModel {
     LiveData<List<Post>> data;
     LiveData<List<Post>> userData;
 
-    public HomeViewModel(String userId){
+    public HomeViewModel(){
         data = Model.instance.getAllPosts();
         userData = Model.instance.getAllUserPosts();
 
