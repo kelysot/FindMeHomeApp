@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,8 @@ public class EditProfileFragment extends Fragment {
     Bitmap imageBitmap;
     FirebaseAuth firebaseAuth;
     String userId;
+    String myLocation = "";
+    int locationPos;
 
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_GALLERY = 2;
@@ -69,27 +72,27 @@ public class EditProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
+
         firebaseAuth = FirebaseAuth.getInstance();
 
 //        String stId = ProfileFragmentArgs.fromBundle(getArguments()).getUserId();
         userId = firebaseAuth.getCurrentUser().getUid();
-        Log.d("TAG12", "user Id:" + userId );
-
+        Log.d("TAG12", "user Id:" + userId);
 
         Model.instance.getUserById(userId, new Model.GetUserById() {
             @Override
             public void onComplete(User user) {
-                Log.d("TAG1112", "user Id:" + user.getId() );
+                Log.d("TAG1112", "user Id:" + user.getId());
                 nameEt.setText(user.getName());
                 phoneEt.setText(user.getPhone());
                 emailEt.setText(user.getEmail());
                 passwordEt.setText(user.getPassword());
-//                locationTv.setText(user.getLocation());
                 if (user.getAvatarUrl() != null) {
                     Picasso.get().load(user.getAvatarUrl()).into(picture);
                 }
             }
         });
+
 
         picture = view.findViewById(R.id.edit_profile_user_imageView);
         addPicture = view.findViewById(R.id.edit_profile_add_pic_imv);
@@ -100,15 +103,16 @@ public class EditProfileFragment extends Fragment {
         repasswordEt = view.findViewById(R.id.edit_profile_et_repassword);
 
         locationSpinner = view.findViewById(R.id.edit_profile_location_spinner);
-        ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this.getContext(),
+        ArrayAdapter<CharSequence> adapterLocation = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.location, android.R.layout.simple_spinner_item);
-        adapterGender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        locationSpinner.setAdapter(adapterGender);
+        adapterLocation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationSpinner.setAdapter(adapterLocation);
         locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 locationS = parent.getItemAtPosition(position).toString();
                 //Toast.makeText(parent.getContext(), gender, Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -122,7 +126,6 @@ public class EditProfileFragment extends Fragment {
         });
 
         saveBtn = view.findViewById(R.id.edit_profile_btn_register);
-//        navController = Navigation.findNavController(view);
 
         return view;
     }
@@ -189,5 +192,31 @@ public class EditProfileFragment extends Fragment {
 
             }
         }
+    }
+
+
+    //To show user's location information from the database.
+    @Override
+    public void onResume() {
+        super.onResume();
+        Model.instance.getUserById(userId, new Model.GetUserById() {
+            @Override
+            public void onComplete(User user) {
+                myLocation = user.getLocation();
+                switch (myLocation) {
+                    case "Center":
+                        locationPos = 0;
+                        break;
+                    case "North":
+                        locationPos = 1;
+                        break;
+
+                    case "South":
+                        locationPos = 2;
+                        break;
+                }
+                locationSpinner.setSelection(locationPos);
+            }
+        });
     }
 }
