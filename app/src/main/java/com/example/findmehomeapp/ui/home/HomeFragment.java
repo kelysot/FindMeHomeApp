@@ -2,6 +2,7 @@ package com.example.findmehomeapp.ui.home;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,15 +25,19 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.Post;
+import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.databinding.FragmentHomeBinding;
 import com.example.findmehomeapp.ui.Profile.ProfileFragmentArgs;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     MyAdapter adapter;
+    TextView nameTv;
+    ImageView avatarImv;
 
     SwipeRefreshLayout swipeRefresh;
 
@@ -47,11 +53,27 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
-        //String stId = HomeFragmentArgs.fromBundle(getArguments()).getUserId();
-        String stId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        //String userId = HomeFragmentArgs.fromBundle(getArguments()).getUserId();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.d("TAG23", "user Id:" + userId );
+        Log.d("TAG244", "user Id:" );
+
+
+        Model.instance.getUserById(userId, new Model.GetUserById() {
+            @Override
+            public void onComplete(User user) {
+                nameTv.setText("Hey, " + user.getName() + " \uD83D\uDC4B");
+                if (user.getAvatarUrl() != null) {
+                    Picasso.get().load(user.getAvatarUrl()).into(avatarImv);
+                }
+            }
+        });
+
+        nameTv = view.findViewById(R.id.home_username_tv);
+        avatarImv = view.findViewById(R.id.home_user_img);
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
-        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList(stId));
+        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList(userId));
 
         RecyclerView list = view.findViewById(R.id.home_post_rv) ;
         list.setHasFixedSize(true);
