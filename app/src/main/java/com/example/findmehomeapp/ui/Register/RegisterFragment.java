@@ -244,14 +244,14 @@ public class RegisterFragment extends Fragment {
 
         if (imageBitmap == null) {
             Model.instance.addUser(user, () -> {
-                navController.navigate(R.id.action_global_nav_profile);
+                navController.navigate(R.id.action_global_nav_home);
 
             });
         } else {
             Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
                 user.setAvatarUrl(url);
                 Model.instance.addUser(user, () -> {
-                    navController.navigate(R.id.action_global_nav_profile);
+                    navController.navigate(R.id.action_global_nav_home);
                 });
             });
         }

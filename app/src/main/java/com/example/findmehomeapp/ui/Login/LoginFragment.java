@@ -88,19 +88,19 @@ public class LoginFragment extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(getContext(), "Signed In", Toast.LENGTH_SHORT).show();
-                    navController.navigate(R.id.action_global_nav_profile);
+                    navController.navigate(R.id.action_global_nav_home);
                 }
             }
         });
     }
 
     //This func is for that if the user is login to the app then he won't need to login but immediately will go to a profile page.
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//
-//        if (firebaseAuth.getCurrentUser()!=null) {
-//            navController.navigate(R.id.action_global_nav_profile);
-//        }
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (firebaseAuth.getCurrentUser()!=null) {
+            navController.navigate(R.id.action_global_nav_home);
+        }
+    }
 }
