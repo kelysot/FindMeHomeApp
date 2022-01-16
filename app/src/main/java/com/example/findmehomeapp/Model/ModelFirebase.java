@@ -1,5 +1,7 @@
 package com.example.findmehomeapp.Model;
 
+import static android.content.ContentValues.TAG;
+
 import android.graphics.Bitmap;
 import android.graphics.ColorSpace;
 import android.net.Uri;
@@ -12,8 +14,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,7 +37,10 @@ import java.util.Map;
 
 public class ModelFirebase {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseStorage storage = FirebaseStorage.getInstance();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
 
     public ModelFirebase(){
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -168,10 +176,21 @@ public class ModelFirebase {
                 });
     }
 
+    public void editUser(User user, Model.EditUserListener listener) {
+        Map<String, Object> json = user.toJson();
+        db.collection(User.COLLECTION_NAME)
+                .document(user.getId())
+                .set(json)
+                .addOnSuccessListener(unused -> listener.onComplete())
+                .addOnFailureListener(e -> listener.onComplete());
+
+        currentUser.updateEmail(user.email);
+        currentUser.updatePassword(user.password);
+    }
+
     /**
      * Firebase Storage
      */
-    FirebaseStorage storage = FirebaseStorage.getInstance();
 
     public void saveImage(Bitmap imageBitmap, String imageName, Model.SaveImageListener listener) {
         StorageReference storageRef = storage.getReference();

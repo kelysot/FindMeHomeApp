@@ -51,7 +51,6 @@ public class ProfileFragment extends Fragment {
     RecyclerView postList;
     FirebaseFirestore firestore;
     FirebaseAuth firebaseAuth;
-    NavController navController;
     String userId;
 
     private HomeViewModel homeViewModel;
@@ -77,6 +76,7 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
 
 //        String stId = ProfileFragmentArgs.fromBundle(getArguments()).getUserId();
         userId = firebaseAuth.getCurrentUser().getUid();
@@ -135,12 +135,13 @@ public class ProfileFragment extends Fragment {
         addPostBtn = view.findViewById(R.id.profile_btn_add_post);
         editProfileBtn = view.findViewById(R.id.profile_btn_edit_profile);
 
+
         addPostBtn.setOnClickListener((v)->{
-            navController.navigate(R.id.action_nav_profile_to_nav_create_post);
+            Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_create_post);
         });
 
         editProfileBtn.setOnClickListener((v)->{
-            navController.navigate(R.id.action_nav_profile_to_nav_edit_profile);
+            Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_edit_profile);
         });
         return view;
     }
