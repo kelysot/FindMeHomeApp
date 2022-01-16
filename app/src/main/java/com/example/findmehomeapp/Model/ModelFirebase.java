@@ -38,6 +38,7 @@ public class ModelFirebase {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
 
     public ModelFirebase(){
@@ -183,6 +184,8 @@ public class ModelFirebase {
                 .addOnSuccessListener(unused -> listener.onComplete())
                 .addOnFailureListener(e -> listener.onComplete());
 
+        currentUser.updateEmail(user.email);
+        currentUser.updatePassword(user.password);
     }
 
     /**
