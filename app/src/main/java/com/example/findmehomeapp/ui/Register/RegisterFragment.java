@@ -150,7 +150,7 @@ public class RegisterFragment extends Fragment {
 //                }
 
                 if (email.isEmpty()) {
-                    emailEt.setError("Enter email Bitch");
+                    emailEt.setError("Enter email");
                 }
 
                 if (phone.isEmpty()) {

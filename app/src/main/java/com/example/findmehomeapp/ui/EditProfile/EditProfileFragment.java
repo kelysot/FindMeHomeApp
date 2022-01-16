@@ -265,9 +265,19 @@ public class EditProfileFragment extends Fragment {
 
         User user = new User(userId, fullName, phone, email, password, locationS, img);
 
-        Model.instance.editUser(user, () -> {
-            NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
-        });
+        if (imageBitmap == null) {
+            Model.instance.editUser(user, () -> {
+                NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
+            });
+        } else {
+            Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
+                user.setAvatarUrl(url);
+                Model.instance.editUser(user, () -> {
+                    NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
+                });
+            });
+        }
+
 
     }
 
