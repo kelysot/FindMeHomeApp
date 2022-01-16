@@ -19,11 +19,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.findmehomeapp.Model.Model;
+import com.example.findmehomeapp.Model.ModelFirebase;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
@@ -38,6 +40,7 @@ public class HomeFragment extends Fragment {
     MyAdapter adapter;
     TextView nameTv;
     ImageView avatarImv;
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     SwipeRefreshLayout swipeRefresh;
 
@@ -55,9 +58,6 @@ public class HomeFragment extends Fragment {
 
         //String userId = HomeFragmentArgs.fromBundle(getArguments()).getUserId();
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.d("TAG23", "user Id:" + userId );
-        Log.d("TAG244", "user Id:" );
-
 
         Model.instance.getUserById(userId, new Model.GetUserById() {
             @Override
@@ -164,6 +164,26 @@ public class HomeFragment extends Fragment {
                 return 0;
             }
             return homeViewModel.getData().getValue().size();
+        }
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.home_logout_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.logout) {
+            Log.d("TAG55", "logout...");
+            firebaseAuth.signOut();
+            NavHostFragment.findNavController(this).navigate(HomeFragmentDirections.actionNavHomeToNavLogin());
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+
         }
     }
 }
