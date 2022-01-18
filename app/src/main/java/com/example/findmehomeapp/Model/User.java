@@ -29,18 +29,28 @@ public class User {
 
     public User(){} //for room
 
-    //TODO: add location
-    @Ignore
-    public User(String id, String name, String phone, String email, String password, String location, String avatarUrl) {
+    public User(String id, String name, String phone, String email, String password, String location) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.password = password;
         this.location = location;
-        this.avatarUrl = avatarUrl;
+        this.avatarUrl = null;
 //        this.posts = posts;
     }
+//    //TODO: add location
+//    @Ignore
+//    public User(String id, String name, String phone, String email, String password, String location, String avatarUrl) {
+//        this.id = id;
+//        this.name = name;
+//        this.phone = phone;
+//        this.email = email;
+//        this.password = password;
+//        this.location = location;
+//        this.avatarUrl = avatarUrl;
+////        this.posts = posts;
+//    }
 
 
 
@@ -143,7 +153,9 @@ public class User {
 
 //        Timestamp ts = (Timestamp)json.get("updateDate");
 //        Long updateDate = ts.getSeconds();
-        User user = new User(id, name,phone,email,password,location,avatarUrl);
+        User user = new User(id, name,phone,email,password,location);
+        user.setAvatarUrl(avatarUrl);
+
 //        user.setUpdateDate(updateDate);
         return user;
     }

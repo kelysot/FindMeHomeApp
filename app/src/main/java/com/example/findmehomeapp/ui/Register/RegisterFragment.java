@@ -240,7 +240,7 @@ public class RegisterFragment extends Fragment {
 
     private void registerUser(String name, String email, String password, String phone, String location) {
 
-        User user = new User("0", name, phone, email, password, location, "0");
+        User user = new User("0", name, phone, email, password, location);
 
         if (imageBitmap == null) {
             Model.instance.addUser(user, () -> {
