@@ -140,7 +140,7 @@ public class EditProfileFragment extends Fragment {
 
     private void showImagePickDialog() {
 
-        String[] items = {"Camera", "Gallery"};
+        String[] items = {"Camera", "Gallery", "Delete Photo"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle("Choose an Option");
@@ -155,11 +155,21 @@ public class EditProfileFragment extends Fragment {
                 if (i == 1) {
                     openGallery();
                 }
+                //TODO:Delete photo.
+//                if (i == 2){
+//                    deleteImage();
+//                }
             }
         });
 
         builder.create().show();
     }
+
+//    private void deleteImage() {
+//        imageBitmap = null;
+//        if()
+//        picture.setImageBitmap(null);
+//    }
 
     private void openGallery() {
         Intent intent = new Intent();
@@ -263,7 +273,7 @@ public class EditProfileFragment extends Fragment {
             phoneEt.setError("Enter a phone");
         }
 
-        User user = new User(userId, fullName, phone, email, password, locationS, img);
+        User user = new User(userId, fullName, phone, email, password, locationS);
 
         if (imageBitmap == null) {
             Model.instance.editUser(user, () -> {
