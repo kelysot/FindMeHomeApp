@@ -2,13 +2,16 @@ package com.example.findmehomeapp.Model;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.example.findmehomeapp.MyApplication;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,12 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class Model {
     public static final Model instance = new Model();
 
     Executor executor = Executors.newFixedThreadPool(1);
     Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
+    FirebaseAuth firebaseAuth;
 
     public enum PostListLoadingState{
         loading,
@@ -38,31 +43,48 @@ public class Model {
 
     private Model(){
         postListLoadingState.setValue(PostListLoadingState.loaded);
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     MutableLiveData<List<Post>> postsList = new MutableLiveData<List<Post>>();
     MutableLiveData<List<Post>> userPostsList = new MutableLiveData<List<Post>>();
+//    MutableLiveData<String> userId = new MutableLiveData<String>();
 
     public LiveData<List<Post>> getAllPosts() {
         if (postsList.getValue() == null ) {
-            refreshPostsList("");
+            refreshPostsList();
         }
         return postsList;
     }
 
     public LiveData<List<Post>> getAllUserPosts() {
         if (userPostsList.getValue() == null ) {
-            refreshPostsList("");
+            refreshUserPostsList();
         }
         return userPostsList;
     }
 
-    //TODO: continue
-    public void refreshUserPostsList(String id) {
+    public void refreshUserPostsList() {
+        refreshPostsList();
+        postListLoadingState.setValue(PostListLoadingState.loading);
+        String userId = firebaseAuth.getCurrentUser().getUid();
 
+        List<Post> posts = postsList.getValue();
+        List<Post> filteredPosts = new ArrayList<Post>();
+
+        if (posts != null) {
+            for (Post post: posts) {
+                if (post.getId() == userId) {
+                    filteredPosts.add(post);
+                }
+            }
+        }
+
+        userPostsList.postValue(filteredPosts);
+        postListLoadingState.postValue(PostListLoadingState.loaded);
     }
 
-    public void refreshPostsList(String userId) {
+    public void refreshPostsList() {
         postListLoadingState.setValue(PostListLoadingState.loading);
 
         // get last local update date
@@ -93,16 +115,7 @@ public class Model {
 
                         //return all data to caller
                         List<Post> stList = AppLocalDb.db.postDao().getAll();
-                        List<Post> stUserList = new ArrayList<>();
-
-                        for (Post post : stList) {
-                            if (post.getUserId() == "") {
-                                stUserList.add(post);
-                            }
-                        }
-
                         postsList.postValue(stList);
-                        userPostsList.postValue(stUserList);
 
                         postListLoadingState.postValue(PostListLoadingState.loaded);
                     }

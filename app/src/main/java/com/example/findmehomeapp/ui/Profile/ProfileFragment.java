@@ -101,7 +101,7 @@ public class ProfileFragment extends Fragment {
         avatarImv = view.findViewById(R.id.profile_image);
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
-//        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshUserPostsList(userId));
+        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshUserPostsList());
 
         RecyclerView list = view.findViewById(R.id.profile_post_rv) ;
         list.setHasFixedSize(true);
@@ -114,7 +114,7 @@ public class ProfileFragment extends Fragment {
         adapter.setOnItemClickListener(new ProfileFragment.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                String postId = homeViewModel.getData().getValue().get(position).getId();
+                String postId = homeViewModel.getFilteredData().getValue().get(position).getId();
                 Navigation.findNavController(v).navigate(HomeFragmentDirections.actionNavHomeToNavPost(postId));
             }
         });
@@ -122,15 +122,15 @@ public class ProfileFragment extends Fragment {
         setHasOptionsMenu(true);
 //        homeViewModel.getData().observe(getViewLifecycleOwner(), list1 -> refresh());
 //
-//        swipeRefresh.setRefreshing(Model.instance.getPostListLoadingState().getValue() == Model.PostListLoadingState.loading);
+        swipeRefresh.setRefreshing(Model.instance.getPostListLoadingState().getValue() == Model.PostListLoadingState.loading);
 
-//        Model.instance.getPostListLoadingState().observe(getViewLifecycleOwner(), postListLoadingState -> {
-//            if(postListLoadingState == Model.PostListLoadingState.loading) {
-//                swipeRefresh.setRefreshing(true);
-//            } else {
-//                swipeRefresh.setRefreshing(false);
-//            }
-//        });
+        Model.instance.getPostListLoadingState().observe(getViewLifecycleOwner(), postListLoadingState -> {
+            if(postListLoadingState == Model.PostListLoadingState.loading) {
+                swipeRefresh.setRefreshing(true);
+            } else {
+                swipeRefresh.setRefreshing(false);
+            }
+        });
 
         addPostBtn = view.findViewById(R.id.profile_btn_add_post);
         editProfileBtn = view.findViewById(R.id.profile_btn_edit_profile);
@@ -145,10 +145,10 @@ public class ProfileFragment extends Fragment {
         });
         return view;
     }
-//    private void refresh() {
-//        adapter.notifyDataSetChanged();
-//        swipeRefresh.setRefreshing(false);
-//    }
+    private void refresh() {
+        adapter.notifyDataSetChanged();
+        swipeRefresh.setRefreshing(false);
+    }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
         TextView petTextTv;
@@ -190,7 +190,7 @@ public class ProfileFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ProfileFragment.MyViewHolder holder, int position) {
-            Post post = homeViewModel.getData().getValue().get(position);
+            Post post = homeViewModel.getFilteredData().getValue().get(position);
             //TODO: set relevants from holder
             holder.petTextTv.setText(post.getText());
 //            holder.idTv.setText(student.getId());
@@ -198,10 +198,10 @@ public class ProfileFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            if(homeViewModel.getData().getValue() == null) {
+            if(homeViewModel.getFilteredData().getValue() == null) {
                 return 0;
             }
-            return homeViewModel.getData().getValue().size();
+            return homeViewModel.getFilteredData().getValue().size();
         }
     }
 }
