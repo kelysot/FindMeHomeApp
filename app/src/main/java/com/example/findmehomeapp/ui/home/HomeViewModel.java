@@ -25,7 +25,7 @@ public class HomeViewModel extends ViewModel {
         return data;
     }
 
-    public LiveData<List<Post>> getFilteredData(String userId) {
+    public LiveData<List<Post>> getFilteredData() {
         return userData;
     }
 

@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
         avatarImv = view.findViewById(R.id.home_user_img);
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
-        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList(userId));
+        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList());
 
         RecyclerView list = view.findViewById(R.id.home_post_rv) ;
         list.setHasFixedSize(true);
