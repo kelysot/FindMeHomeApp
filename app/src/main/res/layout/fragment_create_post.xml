@@ -70,18 +70,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/view3"
         app:layout_constraintEnd_toEndOf="@+id/view3" />
 
-    <TextView
-        android:id="@+id/create_post_text"
-        android:layout_width="233dp"
-        android:layout_height="90dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:hint="Write something.."
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toTopOf="@+id/view3"
-        tools:ignore="MissingConstraints" />
-
     <View
         android:id="@+id/create_post_divider"
         android:layout_width="0dp"
@@ -98,12 +86,10 @@
         android:id="@+id/create_post_add_photo_btn"
         android:layout_width="54dp"
         android:layout_height="51dp"
-        android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:src="@drawable/add_photo"
         app:layout_constraintBottom_toBottomOf="@+id/create_post_divider"
         app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintStart_toEndOf="@+id/create_post_text"
         app:layout_constraintTop_toTopOf="@+id/view3" />
 
     <TextView
@@ -307,13 +293,6 @@
             android:layout_marginLeft="5dp"
             android:spinnerMode="dropdown" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center" />
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -329,23 +308,28 @@
         app:layout_constraintTop_toBottomOf="@+id/create_post_type"
         tools:ignore="MissingConstraints">
 
-        <Spinner
-            android:id="@+id/create_post_age_spinner"
+        <EditText
+            android:id="@+id/create_post_age_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_gravity="center"
             android:layout_marginLeft="5dp"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:spinnerMode="dropdown" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center" />
+            android:background="#E2FDFF"
+            android:gravity="center" />
 
     </RelativeLayout>
+
+    <EditText
+        android:id="@+id/create_post_text"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:text="Write somthing..."
+        app:layout_constraintBottom_toBottomOf="@+id/create_post_divider"
+        app:layout_constraintEnd_toStartOf="@+id/create_post_add_photo_btn"
+        app:layout_constraintStart_toStartOf="@+id/view3"
+        app:layout_constraintTop_toTopOf="@+id/view3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,65 +2,145 @@ package com.example.findmehomeapp.ui.CreatePost;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 
+import com.example.findmehomeapp.Model.Model;
+import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.R;
+import com.example.findmehomeapp.ui.home.HomeFragmentDirections;
+import com.google.firebase.auth.FirebaseAuth;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CreatePostFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CreatePostFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    FirebaseAuth firebaseAuth;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    EditText petTextEt;
+    ImageView pictureIv;
 
-    public CreatePostFragment() {
-        // Required empty public constructor
-    }
+    String petText;
+    String type;
+    String age;
+    String size;
+    String gender;
+    String location;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CreatePostFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CreatePostFragment newInstance(String param1, String param2) {
-        CreatePostFragment fragment = new CreatePostFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    EditText ageEt;
+    Spinner typeSpinner;
+    Spinner sizeSpinner;
+    Spinner genderSpinner;
+    Spinner locationSpinner;
 
+    Button creteBtn;
+
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_create_post, container, false);
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        // Type
+        typeSpinner = view.findViewById(R.id.create_post_type_spinner);
+        ArrayAdapter<CharSequence> adapterType = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.types, android.R.layout.simple_spinner_item);
+        adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(adapterType);
+        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                type = parent.getItemAtPosition(position).toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        // Size
+        sizeSpinner = view.findViewById(R.id.create_post_size_spinner);
+        ArrayAdapter<CharSequence> adapterSize = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.sizes, android.R.layout.simple_spinner_item);
+        adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sizeSpinner.setAdapter(adapterSize);
+        sizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                size = parent.getItemAtPosition(position).toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        // Gender
+        genderSpinner = view.findViewById(R.id.create_post_gender_spinner);
+        ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.gender, android.R.layout.simple_spinner_item);
+        adapterGender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSpinner.setAdapter(adapterGender);
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                gender = parent.getItemAtPosition(position).toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        // Location
+        locationSpinner = view.findViewById(R.id.create_post_location_spinner);
+        ArrayAdapter<CharSequence> adapterLocation = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.location, android.R.layout.simple_spinner_item);
+        adapterLocation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationSpinner.setAdapter(adapterLocation);
+        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                location = parent.getItemAtPosition(position).toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        // create post btn
+        creteBtn = view.findViewById(R.id.create_post_btn);
+        creteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // pet text
+                petTextEt = view.findViewById(R.id.create_post_text);
+                petText = petTextEt.getText().toString();
+
+                // Age
+                ageEt = view.findViewById(R.id.create_post_age_et);
+                age = ageEt.getText().toString();
+
+                //TODO: Validate user input
+                savePost();
+            }
+        });
+
+        return view;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_post, container, false);
+    private void savePost(){
+
+        String userId = firebaseAuth.getCurrentUser().getUid();
+        Post post = new Post(userId, petText, "s", type, age, size, gender, location);
+
+        Model.instance.addPost(post, () -> {
+            NavHostFragment.findNavController(this).navigate(CreatePostFragmentDirections.actionNavCreatePostToNavProfile());
+        });
     }
 }

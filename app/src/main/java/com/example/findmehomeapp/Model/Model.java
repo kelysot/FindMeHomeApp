@@ -48,7 +48,6 @@ public class Model {
 
     MutableLiveData<List<Post>> postsList = new MutableLiveData<List<Post>>();
     MutableLiveData<List<Post>> userPostsList = new MutableLiveData<List<Post>>();
-//    MutableLiveData<String> userId = new MutableLiveData<String>();
 
     public LiveData<List<Post>> getAllPosts() {
         if (postsList.getValue() == null ) {
@@ -59,14 +58,12 @@ public class Model {
 
     public LiveData<List<Post>> getAllUserPosts() {
         if (userPostsList.getValue() == null ) {
-            refreshUserPostsList();
+            refreshPostsList();
         }
         return userPostsList;
     }
 
-    public void refreshUserPostsList() {
-        refreshPostsList();
-        postListLoadingState.setValue(PostListLoadingState.loading);
+    public void filterUserPostsList() {
         String userId = firebaseAuth.getCurrentUser().getUid();
 
         List<Post> posts = postsList.getValue();
@@ -74,14 +71,13 @@ public class Model {
 
         if (posts != null) {
             for (Post post: posts) {
-                if (post.getId() == userId) {
+                if (post.getUserId().equals(userId)) {
                     filteredPosts.add(post);
                 }
             }
         }
 
         userPostsList.postValue(filteredPosts);
-        postListLoadingState.postValue(PostListLoadingState.loaded);
     }
 
     public void refreshPostsList() {
@@ -116,6 +112,8 @@ public class Model {
                         //return all data to caller
                         List<Post> stList = AppLocalDb.db.postDao().getAll();
                         postsList.postValue(stList);
+
+                        filterUserPostsList();
 
                         postListLoadingState.postValue(PostListLoadingState.loaded);
                     }
@@ -165,13 +163,7 @@ public class Model {
     }
 
     public void addPost(Post post, AddPostListener listener){
-        executor.execute(()->{
-            AppLocalDb.db.postDao().insertAll(post);
-            mainThread.post(()->{
-                listener.onComplete();
-            });
-        });
-
+        modelFirebase.addPost(post, listener);
     }
 
     public interface GetUserById{
