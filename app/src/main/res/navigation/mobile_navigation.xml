@@ -25,7 +25,11 @@
         android:id="@+id/nav_create_post"
         android:name="com.example.findmehomeapp.ui.CreatePost.CreatePostFragment"
         android:label="@string/menu_create_post"
-        tools:layout="@layout/fragment_create_post" />
+        tools:layout="@layout/fragment_create_post" >
+        <action
+            android:id="@+id/action_nav_create_post_to_nav_profile"
+            app:destination="@id/nav_profile" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_edit_post"
@@ -96,9 +100,6 @@
         <action
             android:id="@+id/action_nav_profile_to_nav_post2"
             app:destination="@id/nav_post" />
-        <argument
-            android:name="userId"
-            app:argType="string" />
     </fragment>
     <action android:id="@+id/action_global_nav_home" app:destination="@id/nav_home" />
     <action android:id="@+id/action_global_nav_profile" app:destination="@id/nav_profile" /><action android:id="@+id/action_global_nav_filter" app:destination="@id/nav_filter"/>
