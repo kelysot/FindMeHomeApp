@@ -2,6 +2,7 @@ package com.example.findmehomeapp.Model;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -148,28 +149,12 @@ public class Model {
                     @Override
                     public void run() {
                         Long lud = new Long(0);
-                        Log.d("TAG45", "fb returned " + users.size());
                         for (User user : users) {
-                            Log.d("TAG455", "fb returned " + user.getConnected());
                             if (user.getConnected().equals("true")) {
-                                Log.d("TAG100", "AppLocalDb.db.userDao() true: " + user.getName());
                                 AppLocalDb.db.userDao().insertAll(user);
-                                Log.d("TAG99", "AppLocalDb.db.userDao() true: " + AppLocalDb.db.userDao());
                             }
 //                            if (lud < user.getUpdateDate()) {
 //                                lud = user.getUpdateDate();
-//                            }
-                            //delete from room
-//                            if(user.getConnected().equals("false")) {
-//                                Log.d("TAG100", "AppLocalDb.db.userDao() true: ");
-//                                Model.instance.getUserById(Model.instance.getConnectedUserId(), new Model.GetUserById() {
-//                                    @Override
-//                                    public void onComplete(User user) {
-//                                        Log.d("TAG99", "user name: " + user.getName());
-//                                        AppLocalDb.db.userDao().delete(user);
-//                                    }
-//                                });
-//                                Log.d("TAG990", "AppLocalDb.db.userDao() false: " + AppLocalDb.db.userDao());
 //                            }
                         }
                         //update last local update date
@@ -213,41 +198,11 @@ public class Model {
     }
 
     public interface LoginListener{
-        void onComplete();
+        void onComplete(String userId);
     }
 
     public void login(String email, String password, LoginListener listener) {
-        executor.execute(()->{
-            modelFirebase.login(email, password, ()->{
-                listener.onComplete();
-            });
-//            mainThread.post(()->{
-//                listener.onComplete();
-//            });
-        });
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        //Adding to room
-        getUserById(getConnectedUserId(), new Model.GetUserById() {
-            @Override
-            public void onComplete(User user) {
-                if(user.getConnected() == "false"){
-                    user.setConnected("true");
-                    editUser(user, new EditUserListener() {
-                        @Override
-                        public void onComplete() {
-                            refreshUserList();
-                        }
-                    });
-                }
-
-            }
-        });
+        modelFirebase.login(email, password, listener);
     }
 
     public interface LogoutListener{
@@ -255,16 +210,22 @@ public class Model {
     }
 
     public void logout(LogoutListener listener){
-//        getUserById(Model.instance.getConnectedUserId(), new Model.GetUserById() {
-//            @Override
-//            public void onComplete(User user) {
-//                user.setConnected("false");
-//            }
-//        });
-        //  user.setConnected(false);
+        getUserById(getConnectedUserId(), new Model.GetUserById() {
+            @Override
+            public void onComplete(User user) {
+                if(user.getConnected().equals("true")){
+                    user.setConnected("false");
+                    Model.instance.editUser(user, new Model.EditUserListener() {
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+                }
+            }
+        });
+
         modelFirebase.logout(()-> {
             listener.onComplete();
-           // refreshUserList();
         });
 
 ;
@@ -283,6 +244,7 @@ public class Model {
     }
 
     public User getUserById(String userId, GetUserById listener){
+        Log.d("TAG113", "userId: " + userId);
         modelFirebase.getUserById(userId, listener);
         return null;
     }

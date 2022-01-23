@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.findmehomeapp.Model.AppLocalDb;
 import com.example.findmehomeapp.Model.Model;
+import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -83,8 +86,24 @@ public class LoginFragment extends Fragment {
         });
     }
 
+    String newUserID = null;
     private void loginTheUser(String email, String password) {
-        Model.instance.login(email, password, () -> {
+        Model.instance.login(email, password, newUserID -> {
+            //Add to room
+            Model.instance.getUserById(newUserID, new Model.GetUserById() {
+                @Override
+                public void onComplete(User user) {
+                    if(user.getConnected().equals("false")){
+                        user.setConnected("true");
+                        Model.instance.editUser(user, new Model.EditUserListener() {
+                            @Override
+                            public void onComplete() {
+                            }
+                        });
+                    }
+                    Model.instance.refreshUserList();
+                }
+            });
             navController.navigate(R.id.action_global_nav_home);
         });
 

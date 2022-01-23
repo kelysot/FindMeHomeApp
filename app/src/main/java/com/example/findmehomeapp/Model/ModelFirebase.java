@@ -30,7 +30,7 @@ public class ModelFirebase {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+    FirebaseUser currentUser= firebaseAuth.getCurrentUser();
 
 
     public ModelFirebase(){
@@ -70,12 +70,18 @@ public class ModelFirebase {
     }
 
     public void login(String email, String password, Model.LoginListener listener) {
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                  //  Toast.makeText(getContext(), "Signed In", Toast.LENGTH_SHORT).show();
-                    listener.onComplete();
+                    //  Toast.makeText(getContext(), "Signed In", Toast.LENGTH_SHORT).show();
+                    currentUser= firebaseAuth.getCurrentUser();
+                    listener.onComplete(currentUser.getUid());
+                }
+                else {
+                    Log.d("TAG", "cant login");
+                    listener.onComplete(null);
                 }
             }
         });
