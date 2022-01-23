@@ -1,25 +1,18 @@
 package com.example.findmehomeapp.Model;
 
-import static android.content.ContentValues.TAG;
-
 import android.graphics.Bitmap;
-import android.graphics.ColorSpace;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -27,10 +20,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -68,27 +59,26 @@ public class ModelFirebase {
                             .addOnSuccessListener(unused -> listener.onComplete())
                             .addOnFailureListener(e -> listener.onComplete());
 
-//                    HashMap<String, Object> hashMap = new HashMap<>();
-//
-//                    hashMap.put("userid", user.id);
-//                    //   hashMap.put("imageUrl", imageUri.toString());
-//                    hashMap.put("username", user.name);
-//                    hashMap.put("phone", user.phone);
-//                    hashMap.put("location", user.location);
-//                    hashMap.put("imageUri", user.avatarUrl);
-//
-//                    firestore.collection("Users").document(user.id).set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//
-//                        }
-//                    });
                 }
             }
         });
+    }
 
+    public void logout(Model.LogoutListener listener) {
+        firebaseAuth.signOut();
+        listener.onComplete();
+    }
 
-
+    public void login(String email, String password, Model.LoginListener listener) {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                  //  Toast.makeText(getContext(), "Signed In", Toast.LENGTH_SHORT).show();
+                    listener.onComplete();
+                }
+            }
+        });
     }
 
     public interface GetAllPostsListener{
@@ -174,6 +164,10 @@ public class ModelFirebase {
                         listener.onComplete(user);
                     }
                 });
+    }
+
+    public String getConnectedUserId(){
+        return currentUser.getUid();
     }
 
     public void editUser(User user, Model.EditUserListener listener) {

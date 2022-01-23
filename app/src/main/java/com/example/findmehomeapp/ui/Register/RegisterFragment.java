@@ -84,7 +84,7 @@ public class RegisterFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         picture = view.findViewById(R.id.register_user_imageView);
@@ -240,7 +240,7 @@ public class RegisterFragment extends Fragment {
 
     private void registerUser(String name, String email, String password, String phone, String location) {
 
-        User user = new User("0", name, phone, email, password, location);
+        User user = new User("0", name, phone, email, password, location, "true");
 
         if (imageBitmap == null) {
             Model.instance.addUser(user, () -> {

@@ -40,7 +40,6 @@ public class HomeFragment extends Fragment {
     MyAdapter adapter;
     TextView nameTv;
     ImageView avatarImv;
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     SwipeRefreshLayout swipeRefresh;
 
@@ -178,8 +177,10 @@ public class HomeFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.logout) {
             Log.d("TAG55", "logout...");
-            firebaseAuth.signOut();
-            NavHostFragment.findNavController(this).navigate(HomeFragmentDirections.actionNavHomeToNavLogin());
+            Model.instance.logout(()->{
+                NavHostFragment.findNavController(this).navigate(HomeFragmentDirections.actionNavHomeToNavLogin());
+            });
+           // firebaseAuth.signOut();
             return true;
         } else {
             return super.onOptionsItemSelected(item);

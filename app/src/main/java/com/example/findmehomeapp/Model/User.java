@@ -26,10 +26,11 @@ public class User {
     String location = "";
     Long updateDate = new Long(0);
     String avatarUrl = "";
+    String connected = "";
 
     public User(){} //for room
 
-    public User(String id, String name, String phone, String email, String password, String location) {
+    public User(String id, String name, String phone, String email, String password, String location, String connected) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -37,6 +38,7 @@ public class User {
         this.password = password;
         this.location = location;
         this.avatarUrl = null;
+        this.connected = connected;
 //        this.posts = posts;
     }
 //    //TODO: add location
@@ -142,6 +144,14 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
+    public String getConnected() {
+        return connected;
+    }
+
+    public void setConnected(String connected) {
+        this.connected = connected;
+    }
+
     public static User create(Map<String, Object> json) {
         String id = (String) json.get("id");
         String name = (String) json.get("name");
@@ -150,10 +160,11 @@ public class User {
         String password = (String) json.get("password");
         String location = (String) json.get("location");
         String avatarUrl = (String) json.get("avatarUrl");
+        String connected = (String) json.get("connected");
 
 //        Timestamp ts = (Timestamp)json.get("updateDate");
 //        Long updateDate = ts.getSeconds();
-        User user = new User(id, name,phone,email,password,location);
+        User user = new User(id, name,phone,email,password,location,connected);
         user.setAvatarUrl(avatarUrl);
 
 //        user.setUpdateDate(updateDate);
@@ -169,6 +180,7 @@ public class User {
         json.put("password",password);
         json.put("location",location);
         json.put("avatarUrl",avatarUrl);
+        json.put("connected",connected);
         //json.put("updateDate", FieldValue.serverTimestamp());
 
         return json;

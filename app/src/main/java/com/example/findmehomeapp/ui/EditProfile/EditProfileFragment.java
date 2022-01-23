@@ -273,7 +273,7 @@ public class EditProfileFragment extends Fragment {
             phoneEt.setError("Enter a phone");
         }
 
-        User user = new User(userId, fullName, phone, email, password, locationS);
+        User user = new User(userId, fullName, phone, email, password, locationS, "true");
 
         if (imageBitmap == null) {
             Model.instance.editUser(user, () -> {
