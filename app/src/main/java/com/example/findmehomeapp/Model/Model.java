@@ -90,7 +90,7 @@ public class Model {
         return usersList;
     }
 
-    public void refreshPostsList(String userId) {
+    public void refreshPostsList() {
         postListLoadingState.setValue(PostListLoadingState.loading);
 
         // get last local update date
