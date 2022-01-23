@@ -49,7 +49,8 @@ public class ModelFirebase {
 
                 if (task.isSuccessful()) {
 
-                    user.id = firebaseAuth.getCurrentUser().getUid();
+                    currentUser = firebaseAuth.getCurrentUser();
+                    user.id = currentUser.getUid();
                     Log.d("TAG", "saved name:" + user.name + "user Id:" + user.id);
 
 
@@ -212,12 +213,6 @@ public class ModelFirebase {
                 .set(json)
                 .addOnSuccessListener(unused -> listener.onComplete())
                 .addOnFailureListener(e -> listener.onComplete());
-
-        //from edit and not login
-        if(currentUser != null){
-            currentUser.updateEmail(user.email);
-            currentUser.updatePassword(user.password);
-        }
     }
 
     /**

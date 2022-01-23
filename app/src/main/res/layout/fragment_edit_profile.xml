@@ -97,57 +97,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_profile_et_name" />
 
-    <EditText
-        android:id="@+id/edit_profile_et_email"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="80dp"
-        android:background="@drawable/edit_text_box"
-        android:fontFamily="sans-serif"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:padding="15dp"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile_phone_number" />
-
-    <EditText
-        android:id="@+id/edit_profile_et_password"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="80dp"
-        android:background="@drawable/edit_text_box"
-        android:fontFamily="sans-serif"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:padding="15dp"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile_et_email" />
-
-
-    <EditText
-        android:id="@+id/edit_profile_et_repassword"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="80dp"
-        android:background="@drawable/edit_text_box"
-        android:fontFamily="sans-serif"
-        android:hint="Re-type Password"
-        android:inputType="textPassword"
-        android:padding="15dp"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile_et_password" />
 
     <Button
         android:id="@+id/edit_profile_btn_register"
@@ -169,14 +118,12 @@
         android:id="@+id/edit_profile_location_spinner"
         android:layout_width="136dp"
         android:layout_height="42dp"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="8dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/edit_profile_btn_register"
         app:layout_constraintEnd_toEndOf="@+id/view6"
-        app:layout_constraintStart_toStartOf="@+id/view6"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile_et_repassword" />
+        app:layout_constraintStart_toStartOf="@+id/view6" />
 
     <ImageView
         android:id="@+id/edit_profile_add_pic_imv"
