@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/shire/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_dropdown_item.xml" value="0.1" />
+        <entry key="..\:/Users/shire/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_item.xml" value="0.1" />
+        <entry key="..\:/Users/shire/OneDrive/shirel/לימודים/שנה ד/אפליקציות למערכות הפעלה/finalProject/FindMeHomeApp/app/src/main/res/layout/app_bar_main.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/shire/OneDrive/shirel/לימודים/שנה ד/אפליקציות למערכות הפעלה/finalProject/FindMeHomeApp/app/src/main/res/layout/fragment_create_post.xml" value="0.22" />
+        <entry key="..\:/Users/shire/OneDrive/shirel/לימודים/שנה ד/אפליקציות למערכות הפעלה/finalProject/FindMeHomeApp/app/src/main/res/layout/fragment_home.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/shire/OneDrive/shirel/לימודים/שנה ד/אפליקציות למערכות הפעלה/finalProject/FindMeHomeApp/app/src/main/res/layout/fragment_profile.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/shire/OneDrive/shirel/לימודים/שנה ד/אפליקציות למערכות הפעלה/finalProject/FindMeHomeApp/app/src/main/res/layout/fragment_register.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/shire/OneDrive/shirel/לימודים/שנה ד/אפליקציות למערכות הפעלה/finalProject/FindMeHomeApp/app/src/main/res/layout/post_list_row.xml" value="0.23072916666666668" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1933876811594203" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.1933876811594203" />

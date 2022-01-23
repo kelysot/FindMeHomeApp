@@ -25,6 +25,22 @@
         <item>South</item>
     </string-array>
 
+    <string-array name="types">
+        <item>Dog</item>
+        <item>Cat</item>
+        <item>Rabbit</item>
+    </string-array>
+
+    <string-array name="sizes">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Big</item>
+    </string-array>
+
+    <string-array name="gender">
+        <item>Woman</item>
+        <item>Man</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

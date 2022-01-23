@@ -94,7 +94,7 @@ public class ModelFirebase {
                     List<Post> list = new LinkedList<Post>();
                     if (task.isSuccessful()){
                         for (QueryDocumentSnapshot doc : task.getResult()){
-                            Post post = Post.create(doc.getData());
+                            Post post = Post.create(doc.getId(), doc.getData());
                             if (post != null){
                                 list.add(post);
                             }
@@ -128,7 +128,7 @@ public class ModelFirebase {
     public void addPost(Post post, Model.AddPostListener listener) {
         Map<String, Object> json = post.toJson();
         db.collection(Post.COLLECTION_NAME)
-                .document(post.getId())
+                .document()
                 .set(json)
                 .addOnSuccessListener(unused -> listener.onComplete())
                 .addOnFailureListener(e -> listener.onComplete());
@@ -143,7 +143,7 @@ public class ModelFirebase {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         Post post = null;
                         if (task.isSuccessful() & task.getResult()!= null) {
-                            post = Post.create(task.getResult().getData());
+                            post = Post.create(postId, task.getResult().getData());
                         }
                         listener.onComplete(post);
                     }

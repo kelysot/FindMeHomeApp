@@ -30,7 +30,6 @@ import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.databinding.FragmentHomeBinding;
-import com.example.findmehomeapp.ui.Profile.ProfileFragmentArgs;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
@@ -72,7 +71,7 @@ public class HomeFragment extends Fragment {
         avatarImv = view.findViewById(R.id.home_user_img);
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
-        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList(userId));
+        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList());
 
         RecyclerView list = view.findViewById(R.id.home_post_rv) ;
         list.setHasFixedSize(true);
@@ -85,7 +84,7 @@ public class HomeFragment extends Fragment {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                String postId = homeViewModel.getData().getValue().get(position).getId();
+                String postId = homeViewModel.getData().getValue().get(position).getId().toString();
                 Navigation.findNavController(v).navigate(HomeFragmentDirections.actionNavHomeToNavPost(postId));
             }
         });

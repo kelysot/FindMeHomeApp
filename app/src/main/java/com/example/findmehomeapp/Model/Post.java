@@ -35,8 +35,7 @@ public class Post {
     public Post(){}
 
     @Ignore
-    public Post(String id, String userId, String text, String image, String type, String age, String size, String gender, String location){  //}), List<String> likesUserId) {
-        this.id = id;
+    public Post(String userId, String text, String image, String type, String age, String size, String gender, String location){  //}), List<String> likesUserId) {
         this.userId = userId;
         this.text = text;
         this.image = image;
@@ -50,8 +49,8 @@ public class Post {
 //        this.likesUserId = likesUserId;
     }
 
-    public static Post create(Map<String, Object> json) {
-        String id = (String) json.get("id");
+    public static Post create(String postId, Map<String, Object> json) {
+        String id = postId;
         String userId = (String) json.get("userId");
         String text = (String) json.get("text");
         String image = (String) json.get("image");
@@ -64,7 +63,8 @@ public class Post {
 //        Timestamp ts = (Timestamp)json.get("updateDate");
 //        Long updateDate = ts.getSeconds();
 
-        Post post = new Post(id,userId,text,image,type,age,size, gender,location);
+        Post post = new Post(userId,text,image,type,age,size, gender,location);
+        post.setId(postId);
 //        post.setUpdateDate(updateDate);
         return post;
     }
