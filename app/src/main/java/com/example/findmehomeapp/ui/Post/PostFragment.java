@@ -23,7 +23,7 @@ import com.squareup.picasso.Picasso;
 public class PostFragment extends Fragment {
 
     ImageView profileImage;
-    Button editBtn;
+    ImageButton editBtn;
     TextView usernameTv;
     TextView postTimeTv;
     TextView petTextTv;
@@ -69,11 +69,11 @@ public class PostFragment extends Fragment {
         petTextTv = view.findViewById(R.id.post_pet_text_tv);
         profileImage = view.findViewById(R.id.post_user_img);
         petImage = view.findViewById(R.id.post_pet_img);
-        //TODO: do we need the back button?
-//        Button backBtn = view.findViewById(R.id.details_back_btn);
-//        backBtn.setOnClickListener((v)->{
-//            Navigation.findNavController(v).navigateUp();
-//        });
+        editBtn = view.findViewById(R.id.post_edit_btn);
+
+        editBtn.setOnClickListener((v)->{
+            Navigation.findNavController(v).navigate(PostFragmentDirections.actionNavPostToNavEditPost(postId));
+        });
         return view;
     }
 }
