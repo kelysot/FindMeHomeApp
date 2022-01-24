@@ -2,6 +2,7 @@ package com.example.findmehomeapp.Model;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -31,7 +32,7 @@ public class Model {
     Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
     FirebaseAuth firebaseAuth;
 
-    public enum PostListLoadingState{
+    public enum PostListLoadingState {
         loading,
         loaded
     }
@@ -42,7 +43,7 @@ public class Model {
 
     ModelFirebase modelFirebase = new ModelFirebase();
 
-    private Model(){
+    private Model() {
         postListLoadingState.setValue(PostListLoadingState.loaded);
         firebaseAuth = FirebaseAuth.getInstance();
     }
@@ -52,14 +53,14 @@ public class Model {
     MutableLiveData<List<User>> usersList = new MutableLiveData<List<User>>();
 
     public LiveData<List<Post>> getAllPosts() {
-        if (postsList.getValue() == null ) {
+        if (postsList.getValue() == null) {
             refreshPostsList();
         }
         return postsList;
     }
 
     public LiveData<List<Post>> getAllUserPosts() {
-        if (userPostsList.getValue() == null ) {
+        if (userPostsList.getValue() == null) {
             refreshPostsList();
         }
         return userPostsList;
@@ -72,7 +73,7 @@ public class Model {
         List<Post> filteredPosts = new ArrayList<Post>();
 
         if (posts != null) {
-            for (Post post: posts) {
+            for (Post post : posts) {
                 if (post.getUserId().equals(userId)) {
                     filteredPosts.add(post);
                 }
@@ -82,13 +83,13 @@ public class Model {
         userPostsList.postValue(filteredPosts);
     }
 
-    public LiveData<List<User>> getAllUsers(){
-        if (usersList.getValue() == null) {
-            refreshUserList();
-        }
-        ;
-        return usersList;
-    }
+//    public LiveData<List<User>> getAllUsers() {
+//        if (usersList.getValue() == null) {
+//            refreshUserList();
+//        }
+//        ;
+//        return usersList;
+//    }
 
     public void refreshPostsList() {
         postListLoadingState.setValue(PostListLoadingState.loading);
@@ -105,8 +106,8 @@ public class Model {
                     @Override
                     public void run() {
 //                        Long lud = new Long(0);
-                        Log.d("TAG","fb returned " + list.size());
-                        for (Post post: list) {
+                        Log.d("TAG", "fb returned " + list.size());
+                        for (Post post : list) {
                             AppLocalDb.db.postDao().insertAll(post);
 //                            if (lud < student.getUpdateDate()){
 //                                lud = student.getUpdateDate();
@@ -114,7 +115,7 @@ public class Model {
                         }
                         // update last local update date
                         MyApplication.getContext()
-                                .getSharedPreferences("TAG",Context.MODE_PRIVATE)
+                                .getSharedPreferences("TAG", Context.MODE_PRIVATE)
                                 .edit()
 //                                .putLong("PostsLastUpdateDate",lud)
                                 .commit();
@@ -132,7 +133,6 @@ public class Model {
         });
     }
 
-
     public void refreshUserList() {
         // userListLoadingState.setValue(UserListLoadingState.loading);
 
@@ -147,29 +147,30 @@ public class Model {
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        Long lud = new Long(0);
-                        Log.d("TAG45", "fb returned " + users.size());
+                  //      Long lud = new Long(0);
                         for (User user : users) {
-                            Log.d("TAG455", "fb returned " + user.getConnected());
-                            if (user.getConnected().equals("true")) {
-                                Log.d("TAG100", "AppLocalDb.db.userDao() true: " + user.getName());
-                                AppLocalDb.db.userDao().insertAll(user);
-                                Log.d("TAG99", "AppLocalDb.db.userDao() true: " + AppLocalDb.db.userDao());
+                            if(user.getConnected().equals("true")){
+                                List<User> daoUsers = AppLocalDb.db.userDao().getAll();
+                                int daoSize = daoUsers.size();
+                                if(daoSize != 0){
+                                    for(int i = 0; i < daoSize; i ++){
+                                        if (!user.getId().equals(daoUsers.get(i).getId())){
+                                            if(i == (daoSize - 1)){
+                                                AppLocalDb.db.userDao().insertAll(user);
+                                            }
+                                        }
+                                    }
+                                }
+                                else{
+                                    AppLocalDb.db.userDao().insertAll(user);
+                                }
+
                             }
+
+//                            if (user.getConnected().equals("true")) {
+//                            }
 //                            if (lud < user.getUpdateDate()) {
 //                                lud = user.getUpdateDate();
-//                            }
-                            //delete from room
-//                            if(user.getConnected().equals("false")) {
-//                                Log.d("TAG100", "AppLocalDb.db.userDao() true: ");
-//                                Model.instance.getUserById(Model.instance.getConnectedUserId(), new Model.GetUserById() {
-//                                    @Override
-//                                    public void onComplete(User user) {
-//                                        Log.d("TAG99", "user name: " + user.getName());
-//                                        AppLocalDb.db.userDao().delete(user);
-//                                    }
-//                                });
-//                                Log.d("TAG990", "AppLocalDb.db.userDao() false: " + AppLocalDb.db.userDao());
 //                            }
                         }
                         //update last local update date
@@ -188,129 +189,126 @@ public class Model {
         });
     }
 
-    public interface GetAllPostsListener{
+    public interface GetAllPostsListener {
         void onComplete(List<Post> list);
     }
 
-    public void getAllPosts(GetAllPostsListener listener){
-        executor.execute(()-> {
+    public void getAllPosts(GetAllPostsListener listener) {
+        executor.execute(() -> {
             List<Post> list = AppLocalDb.db.postDao().getAll();
-            mainThread.post(()->{
+            mainThread.post(() -> {
                 listener.onComplete(list);
             });
         });
     }
 
-    public interface AddUserListener{
+    public interface AddUserListener {
         void onComplete();
     }
 
-    public void addUser(User user, AddUserListener listener){
-        modelFirebase.addUser(user, ()->{
+    public void addUser(User user, AddUserListener listener) {
+        modelFirebase.addUser(user, () -> {
             listener.onComplete();
             refreshUserList();
         });
     }
 
-    public interface LoginListener{
+    public interface LoginListener {
         void onComplete();
     }
 
     public void login(String email, String password, LoginListener listener) {
-        executor.execute(()->{
-            modelFirebase.login(email, password, ()->{
-                listener.onComplete();
-            });
-//            mainThread.post(()->{
-//                listener.onComplete();
-//            });
-        });
+        modelFirebase.login(email, password, () -> {
+           // Log.d("TAG00", "login:" + email);
+            getUserByEmail(email, new Model.GetUserByEmail() {
+                @Override
+                public void onComplete(User user) {
+                 //   Log.d("TAG01", "login:");
+                    if (user.getConnected().equals("false")) {
+                        user.setConnected("true");
+                        Model.instance.editUser(user, new Model.EditUserListener() {
+                            @Override
+                            public void onComplete() {
+                                refreshUserList();
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+                                listener.onComplete();
+                            }
+                        });
 
-        //Adding to room
-        getUserById(getConnectedUserId(), new Model.GetUserById() {
-            @Override
-            public void onComplete(User user) {
-                if(user.getConnected() == "false"){
-                    user.setConnected("true");
-                    editUser(user, new EditUserListener() {
-                        @Override
-                        public void onComplete() {
-                            refreshUserList();
-                        }
-                    });
+                    }
                 }
-
-            }
+            });
         });
     }
 
-    public interface LogoutListener{
+
+    public interface LogoutListener {
         void onComplete();
     }
 
-    public void logout(LogoutListener listener){
-//        getUserById(Model.instance.getConnectedUserId(), new Model.GetUserById() {
-//            @Override
-//            public void onComplete(User user) {
-//                user.setConnected("false");
-//            }
-//        });
-        //  user.setConnected(false);
-        modelFirebase.logout(()-> {
+    public void logout(LogoutListener listener) {
+
+
+        modelFirebase.logout(() -> {
             listener.onComplete();
-           // refreshUserList();
         });
 
-;
+        ;
     }
 
-    public interface AddPostListener{
+    public interface AddPostListener {
         void onComplete();
     }
 
-    public void addPost(Post post, AddPostListener listener){
+    public void addPost(Post post, AddPostListener listener) {
         modelFirebase.addPost(post, listener);
     }
 
-    public interface GetUserById{
+    public interface GetUserById {
         void onComplete(User user);
     }
 
-    public User getUserById(String userId, GetUserById listener){
+    public User getUserById(String userId, GetUserById listener) {
         modelFirebase.getUserById(userId, listener);
         return null;
     }
 
-    public String getConnectedUserId(){
+    public interface GetUserByEmail {
+        void onComplete(User user);
+    }
+
+    public User getUserByEmail(String email, GetUserByEmail listener) {
+        modelFirebase.getUserByEmail(email, listener);
+        return null;
+    }
+
+    public String getConnectedUserId() {
         return modelFirebase.getConnectedUserId();
     }
 
     public interface GetPostById {
         void onComplete(Post post);
     }
-    public Post getPostById(String postId, GetPostById listener){
+
+    public Post getPostById(String postId, GetPostById listener) {
         modelFirebase.getPostById(postId, listener);
         return null;
     }
 
-    public interface SaveImageListener{
+    public interface SaveImageListener {
         void onComplete(String url);
     }
+
     public void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
-        modelFirebase.saveImage(imageBitmap,imageName,listener);
+        modelFirebase.saveImage(imageBitmap, imageName, listener);
     }
+
     public interface EditUserListener {
         void onComplete();
     }
 
-    public void editUser(User newUser, EditUserListener listener){
-        modelFirebase.editUser(newUser, ()->{
+    public void editUser(User newUser, EditUserListener listener) {
+        modelFirebase.editUser(newUser, () -> {
             listener.onComplete();
         });
     }

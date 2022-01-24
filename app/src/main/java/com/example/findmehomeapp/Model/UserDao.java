@@ -14,9 +14,6 @@ public interface UserDao {
     @Query("select * from User")
     List<User> getAll();
 
-    @Query("SELECT * FROM User WHERE id=:id")
-    List<Post> getUsersById(String id);
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(User... users);
 

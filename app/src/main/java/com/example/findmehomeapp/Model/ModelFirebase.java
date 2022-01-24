@@ -17,11 +17,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class ModelFirebase {
     FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
 
-    public ModelFirebase(){
+    public ModelFirebase() {
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(false)
                 .build();
@@ -48,8 +49,9 @@ public class ModelFirebase {
 
                 if (task.isSuccessful()) {
 
-                    user.id = firebaseAuth.getCurrentUser().getUid();
-                     Log.d("TAG", "saved name:" + user.name + "user Id:" + user.id);
+                    currentUser = firebaseAuth.getCurrentUser();
+                    user.id = currentUser.getUid();
+                    Log.d("TAG", "saved name:" + user.name + "user Id:" + user.id);
 
 
                     Map<String, Object> json = user.toJson();
@@ -70,18 +72,22 @@ public class ModelFirebase {
     }
 
     public void login(String email, String password, Model.LoginListener listener) {
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                  //  Toast.makeText(getContext(), "Signed In", Toast.LENGTH_SHORT).show();
-                    listener.onComplete();
-                }
-            }
-        });
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            currentUser= firebaseAuth.getCurrentUser();
+                            listener.onComplete();
+                        }
+
+                    }
+                });
     }
 
-    public interface GetAllPostsListener{
+
+
+    public interface GetAllPostsListener {
         void onComplete(List<Post> list);
     }
 
@@ -92,10 +98,10 @@ public class ModelFirebase {
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Post> list = new LinkedList<Post>();
-                    if (task.isSuccessful()){
-                        for (QueryDocumentSnapshot doc : task.getResult()){
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
                             Post post = Post.create(doc.getId(), doc.getData());
-                            if (post != null){
+                            if (post != null) {
                                 list.add(post);
                             }
                         }
@@ -104,7 +110,7 @@ public class ModelFirebase {
                 });
     }
 
-    public interface GetAllUsersListener{
+    public interface GetAllUsersListener {
         void onComplete(List<User> list);
     }
 
@@ -113,10 +119,10 @@ public class ModelFirebase {
                 .get()
                 .addOnCompleteListener(task -> {
                     List<User> list = new LinkedList<User>();
-                    if (task.isSuccessful()){
-                        for (QueryDocumentSnapshot doc : task.getResult()){
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
                             User user = User.create(doc.getData());
-                            if (user != null){
+                            if (user != null) {
                                 list.add(user);
                             }
                         }
@@ -142,7 +148,7 @@ public class ModelFirebase {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         Post post = null;
-                        if (task.isSuccessful() & task.getResult()!= null) {
+                        if (task.isSuccessful() & task.getResult() != null) {
                             post = Post.create(postId, task.getResult().getData());
                         }
                         listener.onComplete(post);
@@ -158,7 +164,7 @@ public class ModelFirebase {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         User user = null;
-                        if (task.isSuccessful() & task.getResult()!= null) {
+                        if (task.isSuccessful() & task.getResult() != null) {
                             user = User.create(task.getResult().getData());
                         }
                         listener.onComplete(user);
@@ -166,9 +172,39 @@ public class ModelFirebase {
                 });
     }
 
-    public String getConnectedUserId(){
+    public String getConnectedUserId() {
         return currentUser.getUid();
     }
+
+    public void getUserByEmail(String email, Model.GetUserByEmail listener) {
+        //Map<String, Object> json = recipe.toJson();
+        db.collection(User.COLLECTION_NAME)
+                .whereEqualTo("email",email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() & task.getResult()!= null && task.getResult().getDocuments().size()!=0) {
+                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                            String documentId = documentSnapshot.getId();
+                            db.collection(User.COLLECTION_NAME)
+                                    .document(documentId).get()
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            User user= null;
+                                            if (task.isSuccessful() & task.getResult() != null) {
+                                                user = User.create(task.getResult().getData());
+                                                Log.d("TAG09", "login:" + user.getName());
+                                                listener.onComplete(user);
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
+    }
+
 
     public void editUser(User user, Model.EditUserListener listener) {
         Map<String, Object> json = user.toJson();
@@ -177,9 +213,6 @@ public class ModelFirebase {
                 .set(json)
                 .addOnSuccessListener(unused -> listener.onComplete())
                 .addOnFailureListener(e -> listener.onComplete());
-
-        currentUser.updateEmail(user.email);
-        currentUser.updatePassword(user.password);
     }
 
     /**

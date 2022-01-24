@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.findmehomeapp.Model.AppLocalDb;
 import com.example.findmehomeapp.Model.Model;
+import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -87,8 +90,9 @@ public class LoginFragment extends Fragment {
         Model.instance.login(email, password, () -> {
             navController.navigate(R.id.action_global_nav_home);
         });
-
     }
+
+
 
     //This func is for that if the user is login to the app then he won't need to login but immediately will go to a profile page.
 //    @Override
