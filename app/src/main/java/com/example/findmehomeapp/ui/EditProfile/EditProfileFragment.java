@@ -45,9 +45,6 @@ public class EditProfileFragment extends Fragment {
 
     EditText nameEt;
     EditText phoneEt;
-    EditText emailEt;
-    EditText passwordEt;
-    EditText repasswordEt;
     Spinner locationSpinner;
     Button saveBtn;
     NavController navController;
@@ -62,6 +59,8 @@ public class EditProfileFragment extends Fragment {
     String img;
     int locationPos;
 
+    String userEmail;
+    String userPass;
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_GALLERY = 2;
 
@@ -86,8 +85,8 @@ public class EditProfileFragment extends Fragment {
             public void onComplete(User user) {
                 nameEt.setText(user.getName());
                 phoneEt.setText(user.getPhone());
-                emailEt.setText(user.getEmail());
-                passwordEt.setText(user.getPassword());
+                userEmail = user.getEmail();
+                userPass = user.getPassword();
                 if (user.getAvatarUrl() != null) {
                     img = user.getAvatarUrl();
                     Picasso.get().load(user.getAvatarUrl()).into(picture);
@@ -100,9 +99,6 @@ public class EditProfileFragment extends Fragment {
         addPicture = view.findViewById(R.id.edit_profile_add_pic_imv);
         nameEt = view.findViewById(R.id.edit_profile_et_name);
         phoneEt = view.findViewById(R.id.edit_profile_phone_number);
-        emailEt = view.findViewById(R.id.edit_profile_et_email);
-        passwordEt = view.findViewById(R.id.edit_profile_et_password);
-        repasswordEt = view.findViewById(R.id.edit_profile_et_repassword);
 
         locationSpinner = view.findViewById(R.id.edit_profile_location_spinner);
         ArrayAdapter<CharSequence> adapterLocation = ArrayAdapter.createFromResource(this.getContext(),
@@ -241,15 +237,11 @@ public class EditProfileFragment extends Fragment {
     public void save(){
         saveBtn.setEnabled(false);
 
-        String email = emailEt.getText().toString().trim();
-        String password = passwordEt.getText().toString().trim();
         String fullName = nameEt.getText().toString();
         String phone = phoneEt.getText().toString();
-        String repassword = repasswordEt.getText().toString();
-
 
         //TODO:tell the user if his email already exist he can't edit his email
-        if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        if (fullName.isEmpty() || phone.isEmpty()) {
             Toast.makeText(getContext(), "Fields are required", Toast.LENGTH_SHORT).show();
         }
 
@@ -257,30 +249,19 @@ public class EditProfileFragment extends Fragment {
             nameEt.setError("Enter a name");
         }
 
-        if (password.length() < 6) {
-            passwordEt.setError("Password Length Must Be 6 or more Chars");
-        }
-
-//                if(!password.equals(repassword)){
-//                    passwordEt.setError("Password and Re-password need to be the same");
-//                }
-
-        if (email.isEmpty()) {
-            emailEt.setError("Enter email");
-        }
-
         if (phone.isEmpty()) {
             phoneEt.setError("Enter a phone");
         }
 
-        User user = new User(userId, fullName, phone, email, password, locationS, "true");
+        User user = new User(userId, fullName, phone, userEmail, userPass, locationS, "true");
+        user.setAvatarUrl(img);
 
         if (imageBitmap == null) {
             Model.instance.editUser(user, () -> {
                 NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
             });
         } else {
-            Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
+            Model.instance.saveImage(imageBitmap, userEmail + ".jpg", url -> {
                 user.setAvatarUrl(url);
                 Model.instance.editUser(user, () -> {
                     NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);

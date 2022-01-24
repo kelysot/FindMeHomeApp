@@ -134,8 +134,6 @@ public class Model {
     }
 
     public void refreshUserList() {
-        Log.d("TAG08", "refresh");
-
         // userListLoadingState.setValue(UserListLoadingState.loading);
 
         //get last local update date
@@ -151,29 +149,19 @@ public class Model {
                     public void run() {
                   //      Long lud = new Long(0);
                         for (User user : users) {
-                          //  Log.d("TAG000", "user: " + user.getName());
-
                             if(user.getConnected().equals("true")){
-                                Log.d("TAG000", "user: " + user.getName());
                                 List<User> daoUsers = AppLocalDb.db.userDao().getAll();
                                 int daoSize = daoUsers.size();
-                                Log.d("TAG05", " dao size:" +  daoSize);
-                               // Log.d("TAG03", "dao:" +AppLocalDb.db.userDao().getAll().get(0).getName() );
                                 if(daoSize != 0){
                                     for(int i = 0; i < daoSize; i ++){
                                         if (!user.getId().equals(daoUsers.get(i).getId())){
-                                            Log.d("TAG01", "dao: excist" + user.getName() + " " + daoUsers.get(i).getName() );
                                             if(i == (daoSize - 1)){
-                                                Log.d("TAG02", "dao: daoUsers.size() - 1 " + daoUsers.get(daoUsers.size() - 1).getName() );
-                                                Log.d("TAG02", "dao: add to dao" + user.getName() + " " + daoUsers.get(i).getName() );
                                                 AppLocalDb.db.userDao().insertAll(user);
-                                                Log.d("TAG03", "dao:" +AppLocalDb.db.userDao());
                                             }
                                         }
                                     }
                                 }
                                 else{
-                                    Log.d("TAG03", "first user to dao:" );
                                     AppLocalDb.db.userDao().insertAll(user);
                                 }
 
@@ -238,13 +226,10 @@ public class Model {
                  //   Log.d("TAG01", "login:");
                     if (user.getConnected().equals("false")) {
                         user.setConnected("true");
-                        Log.d("TAG07", "login:" + user.getName());
                         Model.instance.editUser(user, new Model.EditUserListener() {
                             @Override
                             public void onComplete() {
-                                Log.d("TAG02", "login:" + user.getName());
                                 refreshUserList();
-                                Log.d("TAG02", "login:" + user.getName());
 
                                 listener.onComplete();
                             }
@@ -284,7 +269,6 @@ public class Model {
     }
 
     public User getUserById(String userId, GetUserById listener) {
-        Log.d("TAG113", "userId: " + userId);
         modelFirebase.getUserById(userId, listener);
         return null;
     }
