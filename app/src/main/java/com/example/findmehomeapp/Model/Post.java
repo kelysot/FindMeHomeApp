@@ -22,7 +22,7 @@ public class Post {
     String id = "";
     String name ="";
     String userId = "";
-    Long postTime = new Long(0);
+    Long postTime = new Long(22);
     String text = "";
     String image = "";
     String type = "";
