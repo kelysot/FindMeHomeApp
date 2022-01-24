@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.findmehomeapp.Model.Model;
@@ -17,9 +19,14 @@ import com.example.findmehomeapp.R;
 
 public class PostFragment extends Fragment {
 
+    ImageView profileImage;
+    Button editBtn;
     TextView usernameTv;
     TextView postTimeTv;
     TextView petTextTv;
+    ImageView petImage;
+    ImageView likeImg;
+    TextView likesNumberTv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,9 +34,9 @@ public class PostFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post, container, false);
 
-        String stId = PostFragmentArgs.fromBundle(getArguments()).getPostId();
+        String postId = PostFragmentArgs.fromBundle(getArguments()).getPostId();
 
-        Model.instance.getPostById(stId, new Model.GetPostById() {
+        Model.instance.getPostById(postId, new Model.GetPostById() {
             @Override
             public void onComplete(Post post) {
                 usernameTv.setText(post.getName());
