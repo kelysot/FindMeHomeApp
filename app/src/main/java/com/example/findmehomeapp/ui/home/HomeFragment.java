@@ -176,9 +176,24 @@ public class HomeFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.logout) {
             Log.d("TAG55", "logout...");
-            Model.instance.logout(()->{
-                NavHostFragment.findNavController(this).navigate(HomeFragmentDirections.actionNavHomeToNavLogin());
+            Model.instance.getUserById(Model.instance.getConnectedUserId(), new Model.GetUserById() {
+                @Override
+                public void onComplete(User user) {
+                    if (user.getConnected().equals("true")) {
+                        user.setConnected("false");
+                        Model.instance.editUser(user, new Model.EditUserListener() {
+                            @Override
+                            public void onComplete() {
+                                Model.instance.logout(()->{
+                                    NavHostFragment.findNavController(HomeFragment.this).navigate(HomeFragmentDirections.actionNavHomeToNavLogin());
+                                });
+                            }
+                        });
+                    }
+                }
             });
+
+
            // firebaseAuth.signOut();
             return true;
         } else {
@@ -186,4 +201,5 @@ public class HomeFragment extends Fragment {
 
         }
     }
+
 }

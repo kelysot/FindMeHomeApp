@@ -86,28 +86,13 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    String newUserID = null;
     private void loginTheUser(String email, String password) {
-        Model.instance.login(email, password, newUserID -> {
-            //Add to room
-            Model.instance.getUserById(newUserID, new Model.GetUserById() {
-                @Override
-                public void onComplete(User user) {
-                    if(user.getConnected().equals("false")){
-                        user.setConnected("true");
-                        Model.instance.editUser(user, new Model.EditUserListener() {
-                            @Override
-                            public void onComplete() {
-                            }
-                        });
-                    }
-                    Model.instance.refreshUserList();
-                }
-            });
+        Model.instance.login(email, password, () -> {
             navController.navigate(R.id.action_global_nav_home);
         });
-
     }
+
+
 
     //This func is for that if the user is login to the app then he won't need to login but immediately will go to a profile page.
 //    @Override
