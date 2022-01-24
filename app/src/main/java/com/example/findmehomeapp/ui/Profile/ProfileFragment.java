@@ -111,7 +111,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onItemClick(View v, int position) {
                 String postId = homeViewModel.getFilteredData().getValue().get(position).getId().toString();
-                Navigation.findNavController(v).navigate(HomeFragmentDirections.actionNavHomeToNavPost(postId));
+                Navigation.findNavController(v).navigate(ProfileFragmentDirections.actionNavProfileToNavPost2(postId));
             }
         });
 
