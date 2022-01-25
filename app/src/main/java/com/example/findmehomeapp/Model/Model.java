@@ -264,6 +264,14 @@ public class Model {
         modelFirebase.addPost(post, listener);
     }
 
+    public interface UpdatePostListener {
+        void onComplete();
+    }
+
+    public void savePost(Post post, UpdatePostListener listener) {
+        modelFirebase.savePost(post, listener);
+    }
+
     public interface GetUserById {
         void onComplete(User user);
     }
