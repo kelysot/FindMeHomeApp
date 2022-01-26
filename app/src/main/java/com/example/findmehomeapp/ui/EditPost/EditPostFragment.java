@@ -164,7 +164,9 @@ public class EditPostFragment extends Fragment {
     }
 
     private void savePost(){
+
         Model.instance.savePost(updatedPost, () -> {
+            //TODO:navigate up
             NavHostFragment.findNavController(this).navigate(EditPostFragmentDirections.actionNavEditPostToNavProfile());
         });
     }
