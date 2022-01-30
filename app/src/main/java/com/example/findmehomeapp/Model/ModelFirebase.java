@@ -85,6 +85,14 @@ public class ModelFirebase {
                 });
     }
 
+    public void savePost(Post post, Model.UpdatePostListener listener) {
+        Map<String, Object> json = post.toJson();
+        db.collection(Post.COLLECTION_NAME)
+                .document(post.getId())
+                .set(json)
+                .addOnSuccessListener(unused -> listener.onComplete())
+                .addOnFailureListener(e -> listener.onComplete());
+    }
 
 
     public interface GetAllPostsListener {
