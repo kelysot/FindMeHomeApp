@@ -70,10 +70,8 @@ public class EditPostFragment extends Fragment {
 
         String postId = PostFragmentArgs.fromBundle(getArguments()).getPostId();
 
-        //TODO:
         petTextTv = view.findViewById(R.id.edit_post_text);
         petImage = view.findViewById(R.id.edit_post_img);
-
         editImage = view.findViewById(R.id.edit_post_change_image);
 
         editImage.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +177,7 @@ public class EditPostFragment extends Fragment {
         Model.instance.getPostById(postId, new Model.GetPostById() {
             @Override
             public void onComplete(Post post) {
+                //TODO: gender location size type
                 updatedPost = post;
                 if (post.getText()!= null) {
                     petTextTv.setText(post.getText());
@@ -190,12 +189,20 @@ public class EditPostFragment extends Fragment {
                     Picasso.get().load(post.getImage()).into(petImage);
                 }
                 if (post.getGender() != null) {
-                    int SpinnerPosition = adapterGender.getPosition(gender);
+                    int SpinnerPosition = adapterGender.getPosition(post.getGender());
                     genderSpinner.setSelection(SpinnerPosition);
                 }
                 if (post.getType() != null) {
-                    int SpinnerPosition = adapterType.getPosition(type);
+                    int SpinnerPosition = adapterType.getPosition(post.getType());
                     typeSpinner.setSelection(SpinnerPosition);
+                }
+                if (post.getLocation() != null) {
+                    int SpinnerPosition = adapterLocation.getPosition(post.getLocation());
+                    locationSpinner.setSelection(SpinnerPosition);
+                }
+                if (post.getSize() != null) {
+                    int SpinnerPosition = adapterSize.getPosition(post.getSize());
+                    sizeSpinner.setSelection(SpinnerPosition);
                 }
             }
         });
