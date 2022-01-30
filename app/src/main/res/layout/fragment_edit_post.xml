@@ -70,7 +70,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/view3"
         app:layout_constraintEnd_toEndOf="@+id/view3" />
 
-    <TextView
+    <EditText
         android:id="@+id/edit_post_text"
         android:layout_width="279dp"
         android:layout_height="83dp"
@@ -324,4 +324,12 @@
             android:gravity="center" />
 
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/edit_post_change_image"
+        android:layout_width="59dp"
+        android:layout_height="59dp"
+        android:src="@drawable/add_photo"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_post_img"
+        app:layout_constraintEnd_toEndOf="@+id/edit_post_img" />
 </androidx.constraintlayout.widget.ConstraintLayout>

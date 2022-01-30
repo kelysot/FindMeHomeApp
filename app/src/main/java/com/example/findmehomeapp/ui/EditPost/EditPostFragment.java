@@ -1,11 +1,18 @@
 package com.example.findmehomeapp.ui.EditPost;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.Post;
@@ -28,9 +36,12 @@ import com.example.findmehomeapp.ui.Post.PostFragmentDirections;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+
 public class EditPostFragment extends Fragment {
     Post updatedPost;
-    TextView petTextTv;
+
+    EditText petTextTv;
     ImageView petImage;
     Spinner typeSpinner;
     EditText ageEt;
@@ -38,13 +49,18 @@ public class EditPostFragment extends Fragment {
     Spinner genderSpinner;
     Spinner locationSpinner;
     Button saveBtn;
+    ImageView editImage;
 
+    Bitmap imageBitmap;
     String type;
     String age;
     String size;
     String gender;
     String location;
     String text;
+
+    private static final int REQUEST_CAMERA = 1;
+    private static final int REQUEST_GALLERY = 2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,6 +73,15 @@ public class EditPostFragment extends Fragment {
         //TODO:
         petTextTv = view.findViewById(R.id.edit_post_text);
         petImage = view.findViewById(R.id.edit_post_img);
+
+        editImage = view.findViewById(R.id.edit_post_change_image);
+
+        editImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showImagePickDialog();
+            }
+        });
 
         // Type
         typeSpinner = view.findViewById(R.id.edit_post_type_spinner);
@@ -129,11 +154,21 @@ public class EditPostFragment extends Fragment {
             public void onClick(View v) {
                 // pet text
                 petTextTv = view.findViewById(R.id.edit_post_text);
-                text = petTextTv.getText().toString();
+                updatedPost.setText(petTextTv.getText().toString());
 
                 // Age
                 ageEt = view.findViewById(R.id.edit_post_age_et);
-                age = ageEt.getText().toString();
+                updatedPost.setAge(ageEt.getText().toString());
+
+                updatedPost.setGender(gender);
+                updatedPost.setLocation(location);
+                updatedPost.setSize(size);
+                updatedPost.setType(type);
+//                updatedPost.setImage(imageBitmap.);
+
+                Model.instance.saveImage(imageBitmap, postId + ".jpg", url -> {
+                    updatedPost.setImage(url);
+                });
 
                 //TODO: Validate user input
                 savePost();
@@ -154,8 +189,12 @@ public class EditPostFragment extends Fragment {
                     Picasso.get().load(post.getImage()).into(petImage);
                 }
                 if (post.getGender() != null) {
-                    int genderSpinnerPosition = adapterGender.getPosition(gender);
-                    genderSpinner.setSelection(genderSpinnerPosition);
+                    int SpinnerPosition = adapterGender.getPosition(gender);
+                    genderSpinner.setSelection(SpinnerPosition);
+                }
+                if (post.getType() != null) {
+                    int SpinnerPosition = adapterType.getPosition(type);
+                    typeSpinner.setSelection(SpinnerPosition);
                 }
             }
         });
@@ -164,10 +203,73 @@ public class EditPostFragment extends Fragment {
     }
 
     private void savePost(){
-
         Model.instance.savePost(updatedPost, () -> {
             //TODO:navigate up
             NavHostFragment.findNavController(this).navigate(EditPostFragmentDirections.actionNavEditPostToNavProfile());
         });
+    }
+
+    private void showImagePickDialog() {
+
+        String[] items = {"Camera", "Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle("Choose an Option");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+
+                if (i == 0) {
+                    openCam();
+                }
+
+                if (i == 1) {
+                    openGallery();
+                }
+            }
+        });
+
+        builder.create().show();
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_GALLERY);
+    }
+
+    private void openCam() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_CAMERA);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CAMERA) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bundle extras = data.getExtras();
+                imageBitmap = (Bitmap) extras.get("data");
+                petImage.setImageBitmap(imageBitmap);
+                Log.d("TAG33", "imageBitmap name:" + imageBitmap);
+
+            }
+        }
+        if (requestCode == REQUEST_GALLERY) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    try {
+                        imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
+                        petImage.setImageBitmap(imageBitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(getActivity(), "Canceled", Toast.LENGTH_SHORT).show();
+
+            }
+        }
     }
 }
