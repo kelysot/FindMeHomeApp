@@ -307,7 +307,7 @@ public class Model {
         void onComplete(String url);
     }
 
-    public void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
+    public  void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
         modelFirebase.saveImage(imageBitmap, imageName, listener);
     }
 

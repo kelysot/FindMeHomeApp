@@ -152,8 +152,6 @@ public class EditPostFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // not working: gender? image type
-
                 // pet text
                 petTextTv = view.findViewById(R.id.edit_post_text);
                 updatedPost.setText(petTextTv.getText().toString());
@@ -166,17 +164,15 @@ public class EditPostFragment extends Fragment {
                 updatedPost.setLocation(location);
                 updatedPost.setSize(size);
                 updatedPost.setType(type);
-//                updatedPost.setImage(imageBitmap.);
 
                 if(imageBitmap != null){
                     Model.instance.saveImage(imageBitmap, postId + ".jpg", url -> {
                         updatedPost.setImage(url);
                         savePost();
                     });
+                } else {
+                    savePost();
                 }
-
-                //TODO: Validate user input
-                savePost();
             }
         });
 
@@ -210,7 +206,7 @@ public class EditPostFragment extends Fragment {
     private void savePost(){
         Model.instance.savePost(updatedPost, () -> {
             //TODO:navigate up
-            NavHostFragment.findNavController(this).navigate(EditPostFragmentDirections.actionNavEditPostToNavProfile());
+            NavHostFragment.findNavController(this).navigateUp();
         });
     }
 
