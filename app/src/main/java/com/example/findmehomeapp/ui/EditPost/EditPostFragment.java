@@ -99,7 +99,7 @@ public class EditPostFragment extends Fragment {
         });
 
         // Size
-        sizeSpinner = view.findViewById(R.id.edit_post_type_spinner);
+        sizeSpinner = view.findViewById(R.id.edit_post_size_spinner);
         ArrayAdapter<CharSequence> adapterSize = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.sizes, android.R.layout.simple_spinner_item);
         adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -152,6 +152,8 @@ public class EditPostFragment extends Fragment {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // not working: gender? image type
+
                 // pet text
                 petTextTv = view.findViewById(R.id.edit_post_text);
                 updatedPost.setText(petTextTv.getText().toString());
@@ -166,9 +168,12 @@ public class EditPostFragment extends Fragment {
                 updatedPost.setType(type);
 //                updatedPost.setImage(imageBitmap.);
 
-                Model.instance.saveImage(imageBitmap, postId + ".jpg", url -> {
-                    updatedPost.setImage(url);
-                });
+                if(imageBitmap != null){
+                    Model.instance.saveImage(imageBitmap, postId + ".jpg", url -> {
+                        updatedPost.setImage(url);
+                        savePost();
+                    });
+                }
 
                 //TODO: Validate user input
                 savePost();
