@@ -140,7 +140,7 @@ public class CreatePostFragment extends Fragment {
         Post post = new Post(userId, petText, "s", type, age, size, gender, location);
 
         Model.instance.addPost(post, () -> {
-            NavHostFragment.findNavController(this).navigate(CreatePostFragmentDirections.actionNavCreatePostToNavProfile());
+            NavHostFragment.findNavController(this).navigateUp();
         });
     }
 }
