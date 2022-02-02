@@ -71,8 +71,9 @@
         android:layout_width="124dp"
         android:layout_height="104dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/divider"
+        app:layout_constraintBottom_toTopOf="@+id/post_age_tv"
         app:layout_constraintStart_toStartOf="@+id/view5"
         app:layout_constraintTop_toBottomOf="@+id/post_user_img" />
 
@@ -91,9 +92,10 @@
         android:id="@+id/divider"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="160dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="@+id/view5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/view5"
         app:layout_constraintTop_toBottomOf="@+id/post_pet_img" />
 
@@ -130,5 +132,55 @@
         app:layout_constraintEnd_toEndOf="@+id/view5"
         app:layout_constraintStart_toEndOf="@+id/post_like_text"
         app:layout_constraintTop_toTopOf="@+id/divider" />
+
+    <TextView
+        android:id="@+id/post_age_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="TextView"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/view5"
+        tools:layout_editor_absoluteY="294dp" />
+
+    <TextView
+        android:id="@+id/post_gender_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/post_type_tv"
+        app:layout_constraintTop_toBottomOf="@+id/post_type_tv"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/post_size_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/post_location_tv"
+        app:layout_constraintTop_toBottomOf="@+id/post_location_tv"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/post_location_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/post_gender_tv"
+        app:layout_constraintTop_toBottomOf="@+id/post_gender_tv"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/post_type_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="TextView"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/post_age_tv"
+        app:layout_constraintTop_toBottomOf="@+id/post_age_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
