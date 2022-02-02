@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ public class HomeFragment extends Fragment {
     MyAdapter adapter;
     TextView nameTv;
     ImageView avatarImv;
+    Button addPostBtn;
 
     SwipeRefreshLayout swipeRefresh;
 
@@ -69,6 +71,11 @@ public class HomeFragment extends Fragment {
 
         nameTv = view.findViewById(R.id.home_username_tv);
         avatarImv = view.findViewById(R.id.home_user_img);
+        addPostBtn = view.findViewById(R.id.home_btn_add_post);
+
+        addPostBtn.setOnClickListener((v)->{
+            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_create_post);
+        });
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
         swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList());
