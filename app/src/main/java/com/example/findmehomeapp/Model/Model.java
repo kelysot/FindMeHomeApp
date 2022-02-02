@@ -106,6 +106,7 @@ public class Model {
                     @Override
                     public void run() {
 //                        Long lud = new Long(0);
+//                        AppLocalDb.db.postDao().deleteAll();
                         Log.d("TAG", "fb returned " + list.size());
                         for (Post post : list) {
                             AppLocalDb.db.postDao().insertAll(post);
