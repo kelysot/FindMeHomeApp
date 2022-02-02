@@ -27,6 +27,11 @@ public class PostFragment extends Fragment {
     TextView usernameTv;
     TextView postTimeTv;
     TextView petTextTv;
+    TextView petAge;
+    TextView petLocation;
+    TextView petSize;
+    TextView petType;
+    TextView petGender;
     ImageView petImage;
     ImageView likeImg;
     TextView likesNumberTv;
@@ -42,8 +47,29 @@ public class PostFragment extends Fragment {
         Model.instance.getPostById(postId, new Model.GetPostById() {
             @Override
             public void onComplete(Post post) {
+
                 postTimeTv.setText(post.getPostTime().toString());
                 petTextTv.setText(post.getText());
+                if (post.getAge() != null) {
+                    petAge.setText("Age: " + post.getAge());
+                    petAge.setVisibility(View.VISIBLE);
+                }
+                if(post.getGender() != null){
+                    petGender.setText("Gender: "+post.getGender());
+                    petGender.setVisibility(View.VISIBLE);
+                }
+                if (post.getLocation() != null) {
+                    petLocation.setText("Location: " + post.getLocation());
+                    petLocation.setVisibility(View.VISIBLE);
+                }
+                if (post.getSize() != null) {
+                    petSize.setText("Size: " + post.getSize());
+                    petSize.setVisibility(View.VISIBLE);
+                }
+                if (post.getType() != null) {
+                    petType.setText("Type: " + post.getType());
+                    petType.setVisibility(View.VISIBLE);
+                }
                 if (post.getImage() != null){
                     Picasso.get().load(post.getImage()).into(petImage);
                 }
@@ -64,12 +90,17 @@ public class PostFragment extends Fragment {
         });
 
         usernameTv = view.findViewById(R.id.post_username_tv);
-        //TODO:
+        //TODO: age gender location size type
         postTimeTv = view.findViewById(R.id.post_post_time_tv);
         petTextTv = view.findViewById(R.id.post_pet_text_tv);
         profileImage = view.findViewById(R.id.post_user_img);
         petImage = view.findViewById(R.id.post_pet_img);
         editBtn = view.findViewById(R.id.post_edit_btn);
+        petAge = view.findViewById(R.id.post_age_tv);
+        petGender = view.findViewById(R.id.post_gender_tv);
+        petLocation = view.findViewById(R.id.post_location_tv);
+        petSize = view.findViewById(R.id.post_size_tv);
+        petType = view.findViewById(R.id.post_type_tv);
 
         editBtn.setOnClickListener((v)->{
             Navigation.findNavController(v).navigate(PostFragmentDirections.actionNavPostToNavEditPost(postId));
