@@ -111,15 +111,17 @@ public class HomeFragment extends Fragment {
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
+        //TODO: add heart
         TextView petTextTv;
-//        TextView idTv;
-//        CheckBox cb;
+        ImageView petImage;
+        ImageView userImage;
 
         public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             petTextTv = itemView.findViewById(R.id.post_pet_text_tv);
-//            idTv = itemView.findViewById(R.id.listrow_id_tv);
-//            cb = itemView.findViewById(R.id.listrow_cb);
+            petImage = itemView.findViewById(R.id.post_pet_img);
+            userImage = itemView.findViewById(R.id.post_user_img);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -153,7 +155,18 @@ public class HomeFragment extends Fragment {
             Post post = homeViewModel.getData().getValue().get(position);
             //TODO: set relevants from holder
             holder.petTextTv.setText(post.getText());
-//            holder.idTv.setText(student.getId());
+            if (post.getImage() != null) {
+                Picasso.get().load(post.getImage()).into(holder.petImage);
+            }
+
+            Model.instance.getUserById(post.getUserId(), new Model.GetUserById() {
+                @Override
+                public void onComplete(User user) {
+                    if (user.getAvatarUrl() != null) {
+                        Picasso.get().load(user.getAvatarUrl()).into(holder.userImage);
+                    }
+                }
+            });
         }
 
         @Override
