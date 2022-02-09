@@ -45,19 +45,19 @@ public class EditProfileFragment extends Fragment {
 
     EditText nameEt;
     EditText phoneEt;
-    Spinner locationSpinner;
+    Spinner genderSpinner;
     Button saveBtn;
     NavController navController;
     String userid;
-    String locationS;
+    String genderS;
     ImageView picture;
     ImageView addPicture;
     Bitmap imageBitmap;
-    FirebaseAuth firebaseAuth;
     String userId;
-    String myLocation = "";
+    String myGender = "";
     String img = null;
-    int locationPos;
+    int genderPos;
+    int flag = 0;
 
     String userEmail;
     String userPass;
@@ -75,12 +75,10 @@ public class EditProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-
 //        String stId = ProfileFragmentArgs.fromBundle(getArguments()).getUserId();
-        userId = firebaseAuth.getCurrentUser().getUid();
+        //userId = Model.instance.getConnectedUserId();
 
-        Model.instance.getUserById(userId, new Model.GetUserById() {
+        Model.instance.getUserById(Model.instance.getConnectedUserId(), new Model.GetUserById() {
             @Override
             public void onComplete(User user) {
                 nameEt.setText(user.getName());
@@ -100,14 +98,14 @@ public class EditProfileFragment extends Fragment {
         nameEt = view.findViewById(R.id.edit_profile_et_name);
         phoneEt = view.findViewById(R.id.edit_profile_phone_number);
 
-        locationSpinner = view.findViewById(R.id.edit_profile_location_spinner);
-        ArrayAdapter<CharSequence> adapterLocation = ArrayAdapter.createFromResource(this.getContext(),
-                R.array.location, android.R.layout.simple_spinner_item);
-        adapterLocation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        locationSpinner.setAdapter(adapterLocation);
-        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        genderSpinner = view.findViewById(R.id.edit_profile_gender_spinner);
+        ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.gender, android.R.layout.simple_spinner_item);
+        adapterGender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSpinner.setAdapter(adapterGender);
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                locationS = parent.getItemAtPosition(position).toString();
+                genderS = parent.getItemAtPosition(position).toString();
                 //Toast.makeText(parent.getContext(), gender, Toast.LENGTH_SHORT).show();
             }
 
@@ -151,7 +149,6 @@ public class EditProfileFragment extends Fragment {
                 if (i == 1) {
                     openGallery();
                 }
-                //TODO:Delete photo.
                 if (i == 2){
                     deleteImage();
                 }
@@ -166,6 +163,7 @@ public class EditProfileFragment extends Fragment {
         //  if()
         picture.setImageBitmap(null);
         picture.setBackgroundResource(R.drawable.user);
+        flag = 1;
     }
 
     private void openGallery() {
@@ -210,75 +208,68 @@ public class EditProfileFragment extends Fragment {
     }
 
 
-    //To show user's location information from the database.
+    //To show user's gender information from the database.
     @Override
     public void onResume() {
         super.onResume();
-        Model.instance.getUserById(userId, new Model.GetUserById() {
+        Model.instance.getUserById(Model.instance.getConnectedUserId(), new Model.GetUserById() {
             @Override
             public void onComplete(User user) {
-                myLocation = user.getLocation();
-                switch (myLocation) {
-                    case "Center":
-                        locationPos = 0;
+                myGender = user.getGender();
+                switch (myGender) {
+                    case "Woman":
+                        genderPos = 0;
                         break;
-                    case "North":
-                        locationPos = 1;
-                        break;
-
-                    case "South":
-                        locationPos = 2;
+                    case "Man":
+                        genderPos = 1;
                         break;
                 }
-                locationSpinner.setSelection(locationPos);
+                genderSpinner.setSelection(genderPos);
             }
         });
     }
 
     public void save(){
-        saveBtn.setEnabled(false);
 
         String fullName = nameEt.getText().toString();
         String phone = phoneEt.getText().toString();
 
-        //TODO:tell the user if his email already exist he can't edit his email
-        if (fullName.isEmpty() || phone.isEmpty()) {
-            Toast.makeText(getContext(), "Fields are required", Toast.LENGTH_SHORT).show();
-        }
-
         if (fullName.isEmpty()) {
-            nameEt.setError("Enter a name");
+            nameEt.setError("Please enter your full name.");
         }
-
-        if (phone.isEmpty()) {
-            phoneEt.setError("Enter a phone");
+        else if (phone.isEmpty()) {
+            phoneEt.setError("Please enter your phone number.");
         }
+        else{
+           // saveBtn.setEnabled(true);
+            User user = new User(Model.instance.getConnectedUserId(), fullName, phone, userEmail, userPass, genderS, "true");
+            user.setAvatarUrl(img);
 
-        User user = new User(userId, fullName, phone, userEmail, userPass, locationS, "true");
-        user.setAvatarUrl(img);
-
-        if (imageBitmap == null) {
-            if(img != null){
-                user.setAvatarUrl(null);
-                Model.instance.deleteImage(userEmail + ".jpg", ()->{
+            if (imageBitmap == null) {
+                if(flag == 1){
+                    user.setAvatarUrl(null);
+                    Model.instance.deleteImage(userEmail + ".jpg", ()->{
+                        Model.instance.editUser(user, () -> {
+                            NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
+                        });
+                    });
+                }
+                else{
+                    Model.instance.editUser(user, () -> {
+                        NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
+                    });
+                }
+            } else {
+                Model.instance.saveImage(imageBitmap, userEmail + ".jpg", url -> {
+                    user.setAvatarUrl(url);
                     Model.instance.editUser(user, () -> {
                         NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
                     });
                 });
             }
-            else{
-                Model.instance.editUser(user, () -> {
-                    NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
-                });
-            }
-        } else {
-            Model.instance.saveImage(imageBitmap, userEmail + ".jpg", url -> {
-                user.setAvatarUrl(url);
-                Model.instance.editUser(user, () -> {
-                    NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
-                });
-            });
+
         }
+
 
 
     }

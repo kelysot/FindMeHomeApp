@@ -23,6 +23,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/register_tv_gologin"
+        android:layout_width="232dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif"
+        android:text="Have an account? Login :)"
+        android:textColor="#090909"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view6"
+        app:layout_constraintEnd_toEndOf="@+id/view6"
+        app:layout_constraintStart_toStartOf="@+id/view6"
+        app:layout_constraintTop_toBottomOf="@+id/register_btn_register" />
+
     <ImageView
         android:id="@+id/register_imv"
         android:layout_width="182dp"
@@ -132,51 +147,32 @@
         app:layout_constraintTop_toBottomOf="@+id/register_et_email" />
 
 
-    <EditText
-        android:id="@+id/register_et_repassword"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="80dp"
-        android:background="@drawable/edit_text_box"
-        android:fontFamily="sans-serif"
-        android:hint="Re-type Password"
-        android:inputType="textPassword"
-        android:padding="15dp"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_et_password" />
-
     <Button
         android:id="@+id/register_btn_register"
         android:layout_width="165dp"
         android:layout_height="48dp"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/blue_btn"
         android:fontFamily="sans-serif"
         android:text="Register"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/view6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_gender_spinner" />
 
     <Spinner
-        android:id="@+id/register_location_spinner"
+        android:id="@+id/register_gender_spinner"
         android:layout_width="136dp"
         android:layout_height="42dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toTopOf="@+id/register_btn_register"
         app:layout_constraintEnd_toEndOf="@+id/view6"
         app:layout_constraintStart_toStartOf="@+id/view6"
-        app:layout_constraintTop_toBottomOf="@+id/register_et_repassword" />
+        app:layout_constraintTop_toBottomOf="@+id/register_et_password" />
 
     <ImageView
         android:id="@+id/register_add_pic_imv"

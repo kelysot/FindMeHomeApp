@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.findmehomeapp.Model.Model;
@@ -48,18 +49,17 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class RegisterFragment extends Fragment {
-    // TODO: add image
 
     EditText nameEt;
     EditText phoneEt;
     EditText emailEt;
     EditText passwordEt;
-    EditText repasswordEt;
-    Spinner locationSpinner;
+    TextView goLoginTv;
+    Spinner genderSpinner;
     Button registerBtn;
     NavController navController;
     String userid;
-    String locationS;
+    String genderS;
     ImageView picture;
     ImageView addPicture;
     Bitmap imageBitmap;
@@ -71,10 +71,6 @@ public class RegisterFragment extends Fragment {
 
     public RegisterFragment() {
     }
-
-    //Executor executor = Executors.newFixedThreadPool(1);
-
-    //ModelFirebase modelFirebase = new ModelFirebase();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,16 +89,16 @@ public class RegisterFragment extends Fragment {
         phoneEt = view.findViewById(R.id.register_phone_number);
         emailEt = view.findViewById(R.id.register_et_email);
         passwordEt = view.findViewById(R.id.register_et_password);
-        repasswordEt = view.findViewById(R.id.register_et_repassword);
+        goLoginTv = view.findViewById(R.id.register_tv_gologin);
 
-        locationSpinner = view.findViewById(R.id.register_location_spinner);
+        genderSpinner = view.findViewById(R.id.register_gender_spinner);
         ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this.getContext(),
-                R.array.location, android.R.layout.simple_spinner_item);
+                R.array.gender, android.R.layout.simple_spinner_item);
         adapterGender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        locationSpinner.setAdapter(adapterGender);
-        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        genderSpinner.setAdapter(adapterGender);
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                locationS = parent.getItemAtPosition(position).toString();
+                genderS = parent.getItemAtPosition(position).toString();
                 //Toast.makeText(parent.getContext(), gender, Toast.LENGTH_SHORT).show();
             }
             @Override
@@ -123,55 +119,16 @@ public class RegisterFragment extends Fragment {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // validateAndSave();
-
-                String email = emailEt.getText().toString().trim();
-                String password = passwordEt.getText().toString().trim();
-                String fullName = nameEt.getText().toString();
-                String phone = phoneEt.getText().toString();
-                String repassword = repasswordEt.getText().toString();
-
-
-                //TODO:tell the user if his email already exist he can't register
-                if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(getContext(), "Fields are required", Toast.LENGTH_SHORT).show();
-                }
-
-                if (fullName.isEmpty()) {
-                    nameEt.setError("Enter a name");
-                }
-
-                if (password.length() < 6) {
-                    passwordEt.setError("Password Length Must Be 6 or more Chars");
-                }
-
-//                if(!password.equals(repassword)){
-//                    passwordEt.setError("Password and Re-password need to be the same");
-//                }
-
-                if (email.isEmpty()) {
-                    emailEt.setError("Enter email");
-                }
-
-                if (phone.isEmpty()) {
-                    phoneEt.setError("Enter a phone");
-                }
-
-                registerUser(fullName, email, password, phone, locationS);
-
+                registerUser();
             }
         });
 
-
-//        gotoSignIn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                navController.navigate(R.id.action_registerFragment_to_loginFragment);
-//            }
-//        });
-
-
+        goLoginTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.action_global_nav_login);
+            }
+        });
     }
 
     private void showImagePickDialog() {
@@ -238,22 +195,43 @@ public class RegisterFragment extends Fragment {
         }
     }
 
-    private void registerUser(String name, String email, String password, String phone, String location) {
+    private void registerUser() {
+        String email = emailEt.getText().toString().trim();
+        String password = passwordEt.getText().toString().trim();
+        String name = nameEt.getText().toString();
+        String phone = phoneEt.getText().toString();
 
-        User user = new User("0", name, phone, email, password, location, "true");
+        if (name.isEmpty()) {
+            nameEt.setError("Please enter your full name.");
+        }
+        else if (phone.isEmpty()) {
+            phoneEt.setError("Please enter your phone number.");
+        }
+        else if (email.isEmpty()) {
+            emailEt.setError("Please enter your email address.");
+        }
+        else if(!email.contains("@") || !email.contains(".")){
+            emailEt.setError("Please enter a valid email address.");
+        }
+        else if (password.length() < 6) {
+            passwordEt.setError("Password length must be 6 or more chars.");
+        }
+        else{
+            User user = new User("0", name, phone, email, password, genderS, "true");
 
-        if (imageBitmap == null) {
-            Model.instance.addUser(user, () -> {
-                navController.navigate(R.id.action_global_nav_home);
-
-            });
-        } else {
-            Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
-                user.setAvatarUrl(url);
+            if (imageBitmap == null) {
                 Model.instance.addUser(user, () -> {
                     navController.navigate(R.id.action_global_nav_home);
                 });
-            });
+            }
+            else {
+                Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
+                    user.setAvatarUrl(url);
+                    Model.instance.addUser(user, () -> {
+                        navController.navigate(R.id.action_global_nav_home);
+                    });
+                });
+            }
         }
     }
 }
