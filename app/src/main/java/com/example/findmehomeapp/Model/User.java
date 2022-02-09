@@ -23,25 +23,24 @@ public class User {
     String phone = "";
     String email = "";
     String password = "";
-    String location = "";
+    String gender = "";
     Long updateDate = new Long(0);
     String avatarUrl = "";
     String connected = "";
 
     public User(){} //for room
 
-    public User(String id, String name, String phone, String email, String password, String location, String connected) {
+    public User(String id, String name, String phone, String email, String password, String gender, String connected) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.password = password;
-        this.location = location;
+        this.gender = gender;
         this.avatarUrl = null;
         this.connected = connected;
 //        this.posts = posts;
     }
-//    //TODO: add location
 //    @Ignore
 //    public User(String id, String name, String phone, String email, String password, String location, String avatarUrl) {
 //        this.id = id;
@@ -69,7 +68,7 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", location='" + location + '\'' +
+                ", gender='" + gender + '\'' +
                 ", updateDate=" + updateDate +
                 ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
@@ -115,12 +114,12 @@ public class User {
         this.password = password;
     }
 
-    public String getLocation() {
-        return location;
+    public String getGender() {
+        return gender;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public Long getUpdateDate() {
@@ -149,13 +148,13 @@ public class User {
         String phone = (String) json.get("phone");
         String email = (String) json.get("email");
         String password = (String) json.get("password");
-        String location = (String) json.get("location");
+        String gender = (String) json.get("gender");
         String avatarUrl = (String) json.get("avatarUrl");
         String connected = (String) json.get("connected");
 
 //        Timestamp ts = (Timestamp)json.get("updateDate");
 //        Long updateDate = ts.getSeconds();
-        User user = new User(id, name,phone,email,password,location,connected);
+        User user = new User(id, name,phone,email,password,gender,connected);
         user.setAvatarUrl(avatarUrl);
 
 //        user.setUpdateDate(updateDate);
@@ -169,7 +168,7 @@ public class User {
         json.put("phone",phone);
         json.put("email",email);
         json.put("password",password);
-        json.put("location",location);
+        json.put("gender",gender);
         json.put("avatarUrl",avatarUrl);
         json.put("connected",connected);
         //json.put("updateDate", FieldValue.serverTimestamp());

@@ -43,7 +43,6 @@ import com.example.findmehomeapp.ui.home.HomeViewModel;
 public class ProfileFragment extends Fragment {
 
     TextView nameTv;
-    TextView locationTv;
     TextView phoneTv;
     ImageView avatarImv;
     Button addPostBtn;
@@ -84,7 +83,6 @@ public class ProfileFragment extends Fragment {
                 Log.d("TAG111", "user Id:" + user.getId() );
                 nameTv.setText(user.getName());
                 phoneTv.setText(user.getPhone());
-                locationTv.setText(user.getLocation());
                 if (user.getAvatarUrl() != null) {
                     Picasso.get().load(user.getAvatarUrl()).into(avatarImv);
                 }
@@ -93,7 +91,6 @@ public class ProfileFragment extends Fragment {
 
         nameTv = view.findViewById(R.id.profile_user_name);
         phoneTv = view.findViewById(R.id.profile_user_phone);
-        locationTv = view.findViewById(R.id.profile_user_location);
         avatarImv = view.findViewById(R.id.profile_image);
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);

@@ -57,7 +57,8 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
         //String userId = HomeFragmentArgs.fromBundle(getArguments()).getUserId();
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userId = Model.instance.getConnectedUserId();
+        Log.d("TAG13", "login:" + userId);
 
         Model.instance.getUserById(userId, new Model.GetUserById() {
             @Override
@@ -165,15 +166,15 @@ public class HomeFragment extends Fragment {
             if (post.getImage() != null) {
                 Picasso.get().load(post.getImage()).into(holder.petImage);
             }
-
-            Model.instance.getUserById(post.getUserId(), new Model.GetUserById() {
-                @Override
-                public void onComplete(User user) {
-                    if (user.getAvatarUrl() != null) {
-                        Picasso.get().load(user.getAvatarUrl()).into(holder.userImage);
-                    }
-                }
-            });
+            //why it was twice ?
+//            Model.instance.getUserById(post.getUserId(), new Model.GetUserById() {
+//                @Override
+//                public void onComplete(User user) {
+//                    if (user.getAvatarUrl() != null) {
+//                        Picasso.get().load(user.getAvatarUrl()).into(holder.userImage);
+//                    }
+//                }
+//            });
         }
 
         @Override
