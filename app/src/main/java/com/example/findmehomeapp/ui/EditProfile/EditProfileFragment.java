@@ -56,7 +56,7 @@ public class EditProfileFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     String userId;
     String myLocation = "";
-    String img;
+    String img = null;
     int locationPos;
 
     String userEmail;
@@ -152,20 +152,21 @@ public class EditProfileFragment extends Fragment {
                     openGallery();
                 }
                 //TODO:Delete photo.
-//                if (i == 2){
-//                    deleteImage();
-//                }
+                if (i == 2){
+                    deleteImage();
+                }
             }
         });
 
         builder.create().show();
     }
 
-//    private void deleteImage() {
-//        imageBitmap = null;
-//        if()
-//        picture.setImageBitmap(null);
-//    }
+    private void deleteImage() {
+        imageBitmap = null;
+        //  if()
+        picture.setImageBitmap(null);
+        picture.setBackgroundResource(R.drawable.user);
+    }
 
     private void openGallery() {
         Intent intent = new Intent();
@@ -257,9 +258,19 @@ public class EditProfileFragment extends Fragment {
         user.setAvatarUrl(img);
 
         if (imageBitmap == null) {
-            Model.instance.editUser(user, () -> {
-                NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
-            });
+            if(img != null){
+                user.setAvatarUrl(null);
+                Model.instance.deleteImage(userEmail + ".jpg", ()->{
+                    Model.instance.editUser(user, () -> {
+                        NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
+                    });
+                });
+            }
+            else{
+                Model.instance.editUser(user, () -> {
+                    NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
+                });
+            }
         } else {
             Model.instance.saveImage(imageBitmap, userEmail + ".jpg", url -> {
                 user.setAvatarUrl(url);
@@ -271,9 +282,6 @@ public class EditProfileFragment extends Fragment {
 
 
     }
-
-
-
 
 
 }

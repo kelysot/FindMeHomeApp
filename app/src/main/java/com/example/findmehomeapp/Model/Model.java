@@ -148,7 +148,7 @@ public class Model {
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
-                  //      Long lud = new Long(0);
+                        //      Long lud = new Long(0);
                         for (User user : users) {
                             if(user.getConnected().equals("true")){
                                 List<User> daoUsers = AppLocalDb.db.userDao().getAll();
@@ -220,11 +220,11 @@ public class Model {
 
     public void login(String email, String password, LoginListener listener) {
         modelFirebase.login(email, password, () -> {
-           // Log.d("TAG00", "login:" + email);
+            // Log.d("TAG00", "login:" + email);
             getUserByEmail(email, new Model.GetUserByEmail() {
                 @Override
                 public void onComplete(User user) {
-                 //   Log.d("TAG01", "login:");
+                    //   Log.d("TAG01", "login:");
                     if (user.getConnected().equals("false")) {
                         user.setConnected("true");
                         Model.instance.editUser(user, new Model.EditUserListener() {
@@ -310,6 +310,14 @@ public class Model {
 
     public  void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
         modelFirebase.saveImage(imageBitmap, imageName, listener);
+    }
+
+    public interface DeleteImageListener {
+        void onComplete();
+    }
+
+    public  void deleteImage(String imageName, DeleteImageListener listener) {
+        modelFirebase.deleteImage(imageName, listener);
     }
 
     public interface EditUserListener {

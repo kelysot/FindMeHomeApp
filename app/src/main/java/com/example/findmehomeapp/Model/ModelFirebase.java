@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -246,6 +247,20 @@ public class ModelFirebase {
                         });
                     }
                 });
+    }
+
+    public void deleteImage(String imageName, Model.DeleteImageListener listener) {
+        StorageReference storageRef = storage.getReference();
+        StorageReference imgRef = storageRef.child("user_avatars/" + imageName);
+
+        // Delete the file
+        imgRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                listener.onComplete();
+            }
+        });
     }
 
 //    public void getPostsByUserId(String userId, Model.GetPostsByUserId listener) {
