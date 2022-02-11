@@ -95,7 +95,7 @@
         android:layout_width="165dp"
         android:layout_height="0dp"
         android:layout_below="@id/login_et_password"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/blue_btn"
         android:fontFamily="sans-serif"
         android:text="Login"
@@ -103,7 +103,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_et_password" />
+        app:layout_constraintTop_toBottomOf="@+id/login_wrong_message2" />
 
     <TextView
         android:id="@+id/login_tag2"
@@ -120,6 +120,35 @@
         app:layout_constraintEnd_toEndOf="@+id/view4"
         app:layout_constraintStart_toStartOf="@+id/view4"
         app:layout_constraintTop_toBottomOf="@+id/login_btn_login" />
+
+    <TextView
+        android:id="@+id/login_wrong_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:text="Sorry, your password or email were incorrect."
+        android:textColor="#A31717"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="@+id/view4"
+        app:layout_constraintTop_toBottomOf="@+id/login_et_password" />
+
+    <TextView
+        android:id="@+id/login_wrong_message2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif"
+        android:text="Please try again."
+        android:textColor="#A31717"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="@+id/view4"
+        app:layout_constraintTop_toBottomOf="@+id/login_wrong_message" />
 
     <TextView
         android:id="@+id/login_register_page"
