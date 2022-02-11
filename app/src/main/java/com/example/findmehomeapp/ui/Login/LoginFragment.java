@@ -32,6 +32,8 @@ public class LoginFragment extends Fragment {
     EditText passwordEt;
     Button loginBtn;
     TextView registerTv;
+    TextView wrongMessageTv;
+    TextView wrongMessage2Tv;
     FirebaseAuth firebaseAuth;
     NavController navController;
 
@@ -53,9 +55,14 @@ public class LoginFragment extends Fragment {
 
         loginBtn = view.findViewById(R.id.login_btn_login);
         registerTv = view.findViewById(R.id.login_register_page);
+        wrongMessageTv = view.findViewById(R.id.login_wrong_message);
+        wrongMessage2Tv = view.findViewById(R.id.login_wrong_message2);
 
         navController = Navigation.findNavController(view);
         firebaseAuth = FirebaseAuth.getInstance();
+
+        wrongMessageTv.setVisibility(View.GONE);
+        wrongMessage2Tv.setVisibility(View.GONE);
 
 
         registerTv.setOnClickListener(new View.OnClickListener() {
@@ -71,17 +78,18 @@ public class LoginFragment extends Fragment {
                 String email = emailEt.getText().toString();
                 String password = passwordEt.getText().toString();
 
-
-                if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(getContext(), "Credentials Required", Toast.LENGTH_SHORT).show();
+                if (email.isEmpty()) {
+                    emailEt.setError("Please enter your email.");
                 }
-
-                if (password.length() < 6) {
-
+                else if(!email.contains("@") || !email.contains(".")){
+                    emailEt.setError("Please enter a valid email address.");
+                }
+                else if (password.length() < 6) {
                     passwordEt.setError("Password Length Must Be 6 or more Chars");
-
                 }
-                loginTheUser(email, password);
+                else{
+                    loginTheUser(email, password);
+                }
             }
         });
     }
@@ -90,17 +98,22 @@ public class LoginFragment extends Fragment {
         Model.instance.login(email, password, () -> {
             navController.navigate(R.id.action_global_nav_home);
         });
+
+        wrongMessageTv.setVisibility(View.VISIBLE);
+        wrongMessage2Tv.setVisibility(View.VISIBLE);
+
+
     }
 
 
 
     //This func is for that if the user is login to the app then he won't need to login but immediately will go to a profile page.
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (firebaseAuth.getCurrentUser()!=null) {
-            navController.navigate(R.id.action_global_nav_home);
-        }
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//
+//        if (firebaseAuth.getCurrentUser()!=null) {
+//            navController.navigate(R.id.action_global_nav_home);
+//        }
+//    }
 }
