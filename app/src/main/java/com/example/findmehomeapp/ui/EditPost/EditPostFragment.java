@@ -39,6 +39,8 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 
 public class EditPostFragment extends Fragment {
+    FirebaseAuth firebaseAuth;
+
     Post updatedPost;
 
     EditText petTextTv;
@@ -51,6 +53,7 @@ public class EditPostFragment extends Fragment {
     Button saveBtn;
     ImageView editImage;
 
+    String userId;
     Bitmap imageBitmap;
     String type;
     String age;
@@ -65,6 +68,9 @@ public class EditPostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        firebaseAuth = FirebaseAuth.getInstance();
+        userId = firebaseAuth.getCurrentUser().getUid();
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_post, container, false);
 
@@ -164,7 +170,7 @@ public class EditPostFragment extends Fragment {
                 updatedPost.setType(type);
 
                 if(imageBitmap != null){
-                    Model.instance.saveImage(imageBitmap, postId + ".jpg", url -> {
+                    Model.instance.saveImage(imageBitmap, userId + ".jpg", url -> {
                         updatedPost.setImage(url);
                         savePost();
                     });
