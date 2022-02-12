@@ -18,6 +18,7 @@
     <string name="menu_login">Login</string>
     <string name="menu_post">Post</string>
     <string name="menu_register">Register</string>
+    <string name="edit_profile">Edit Profile</string>
 
     <string-array name="location">
         <item>Center</item>
