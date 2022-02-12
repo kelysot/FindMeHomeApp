@@ -3,12 +3,10 @@ package com.example.findmehomeapp.Model;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,7 +21,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +91,6 @@ public class ModelFirebase {
                 .addOnSuccessListener(unused -> listener.onComplete())
                 .addOnFailureListener(e -> listener.onComplete());
     }
-
 
     public interface GetAllPostsListener {
         void onComplete(List<Post> list);
@@ -180,7 +176,9 @@ public class ModelFirebase {
                     }
                 });
     }
-
+    public FirebaseUser getConnectedUser() {
+        return firebaseAuth.getCurrentUser();
+    }
     public String getConnectedUserId() {
         return currentUser.getUid();
     }

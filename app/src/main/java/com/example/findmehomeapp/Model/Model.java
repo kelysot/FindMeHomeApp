@@ -2,28 +2,22 @@ package com.example.findmehomeapp.Model;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 
 import com.example.findmehomeapp.MyApplication;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.squareup.picasso.Picasso;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 public class Model {
     public static final Model instance = new Model();
@@ -281,6 +275,10 @@ public class Model {
     public User getUserById(String userId, GetUserById listener) {
         modelFirebase.getUserById(userId, listener);
         return null;
+    }
+
+    public FirebaseUser getConnectedUser() {
+        return modelFirebase.getConnectedUser();
     }
 
     public interface GetUserByEmail {
