@@ -32,6 +32,7 @@ import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
 //import com.example.findmehomeapp.databinding.FragmentHomeBinding;
 import com.example.findmehomeapp.ui.TimeAgo;
+import com.example.findmehomeapp.ui.Post.PostFragmentDirections;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
@@ -128,6 +129,7 @@ public class HomeFragment extends Fragment {
         CircleImageView userImage;
         TextView userName;
         TextView postTime;
+        ImageView editPost;
 
         public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -136,6 +138,7 @@ public class HomeFragment extends Fragment {
             userImage = itemView.findViewById(R.id.post_user_img);
             userName = itemView.findViewById(R.id.post_user_name);
             postTime = itemView.findViewById(R.id.post_time);
+            editPost = itemView.findViewById(R.id.post_edit_post);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -184,6 +187,18 @@ public class HomeFragment extends Fragment {
                     if (user.getAvatarUrl() != null) {
                         Picasso.get().load(user.getAvatarUrl()).into(holder.userImage);
                     }
+                }
+            });
+
+            if(!Model.instance.getConnectedUserId().equals(post.getUserId())){
+                holder.editPost.setVisibility(View.GONE);
+                holder.editPost.setEnabled(false);
+            }
+
+            holder.editPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Navigation.findNavController(v).navigate(HomeFragmentDirections.actionNavHomeToNavEditPost(post.getId()));
                 }
             });
         }

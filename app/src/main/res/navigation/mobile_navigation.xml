@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_create_post"
             app:destination="@id/nav_create_post" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_edit_post"
+            app:destination="@id/nav_edit_post" />
     </fragment>
 
     <fragment
@@ -42,9 +45,6 @@
         <argument
             android:name="postId"
             app:argType="string" />
-        <action
-            android:id="@+id/action_nav_edit_post_to_nav_profile"
-            app:destination="@id/nav_profile" />
     </fragment>
 
     <fragment
@@ -106,6 +106,9 @@
         <action
             android:id="@+id/action_nav_profile_to_nav_post2"
             app:destination="@id/nav_post" />
+        <action
+            android:id="@+id/action_nav_profile_to_nav_edit_post"
+            app:destination="@id/nav_edit_post" />
     </fragment>
     <action android:id="@+id/action_global_nav_home" app:destination="@id/nav_home" />
     <action android:id="@+id/action_global_nav_profile" app:destination="@id/nav_profile" /><action android:id="@+id/action_global_nav_filter" app:destination="@id/nav_filter"/><action android:id="@+id/action_global_nav_login" app:destination="@id/nav_login"/>
