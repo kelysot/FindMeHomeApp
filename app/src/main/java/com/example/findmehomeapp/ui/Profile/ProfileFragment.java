@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment {
         avatarImv = view.findViewById(R.id.profile_image);
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
-        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList());
+        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshUserPostsList());
 
         RecyclerView list = view.findViewById(R.id.profile_post_rv) ;
         list.setHasFixedSize(true);
