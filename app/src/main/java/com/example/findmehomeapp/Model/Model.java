@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -89,35 +91,42 @@ public class Model {
         postListLoadingState.setValue(PostListLoadingState.loading);
 
         // get last local update date
-//        Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("PostsLastUpdateDate",0);
+        Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("PostsLastUpdateDate",0);
 
         // firebase get all updates since lastLocalUpdateDate
-        modelFirebase.getAllPosts(new ModelFirebase.GetAllPostsListener() {
+        modelFirebase.getAllPosts(lastUpdateDate, new ModelFirebase.GetAllPostsListener() {
             @Override
             public void onComplete(List<Post> list) {
                 // add all records to the local db
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
-//                        Long lud = new Long(0);
+                        Long lud = new Long(0);
                         // TODO: delete this row
-                        AppLocalDb.db.postDao().deleteAll();
+//                        AppLocalDb.db.postDao().deleteAll();
                         Log.d("TAG", "fb returned " + list.size());
                         for (Post post : list) {
                             AppLocalDb.db.postDao().insertAll(post);
-//                            if (lud < student.getUpdateDate()){
-//                                lud = student.getUpdateDate();
-//                            }
+                            if (lud < post.getUpdateDate()){
+                                lud = post.getUpdateDate();
+                            }
                         }
                         // update last local update date
                         MyApplication.getContext()
                                 .getSharedPreferences("TAG", Context.MODE_PRIVATE)
                                 .edit()
-//                                .putLong("PostsLastUpdateDate",lud)
+                                .putLong("PostsLastUpdateDate",lud)
                                 .commit();
 
                         //return all data to caller
                         List<Post> stList = AppLocalDb.db.postDao().getAll();
+
+                        Comparator<Post> compareByUpdateTime =
+                                (Post o1, Post o2) -> o1.getUpdateDate().compareTo( o2.getUpdateDate() );
+
+                        Collections.sort(stList, compareByUpdateTime);
+                        Collections.reverse(stList);
+
                         postsList.postValue(stList);
 
                         filterUserPostsList();
