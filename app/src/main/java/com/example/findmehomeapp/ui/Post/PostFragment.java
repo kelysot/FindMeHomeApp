@@ -18,6 +18,7 @@ import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
+import com.example.findmehomeapp.ui.TimeAgo;
 import com.squareup.picasso.Picasso;
 
 public class PostFragment extends Fragment {
@@ -48,7 +49,9 @@ public class PostFragment extends Fragment {
             @Override
             public void onComplete(Post post) {
 
-                postTimeTv.setText(post.getPostTime().toString());
+                String timeAgo = TimeAgo.getTimeAgo(post.getUpdateDate());
+
+                postTimeTv.setText(timeAgo);
                 petTextTv.setText(post.getText());
                 if (post.getAge() != null) {
                     petAge.setText("Age: " + post.getAge());
@@ -73,7 +76,6 @@ public class PostFragment extends Fragment {
                 if (post.getImage() != null){
                     Picasso.get().load(post.getImage()).into(petImage);
                 }
-                postTimeTv.setText(post.getPostTime().toString());
                 Model.instance.getUserById(post.getUserId(), new Model.GetUserById() {
                     @Override
                     public void onComplete(User user) {
