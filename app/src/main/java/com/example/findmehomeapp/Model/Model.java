@@ -324,9 +324,7 @@ public class Model {
     }
 
     public void editUser(User newUser, EditUserListener listener) {
-        modelFirebase.editUser(newUser, () -> {
-            listener.onComplete();
-        });
+        modelFirebase.editUser(newUser, listener);
     }
 
 //    public interface GetPostsByUserId {

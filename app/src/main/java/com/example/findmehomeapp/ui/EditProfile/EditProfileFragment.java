@@ -2,6 +2,7 @@ package com.example.findmehomeapp.ui.EditProfile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,10 +11,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -26,51 +25,43 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class EditProfileFragment extends Fragment {
 
+    EditProfileViewModel viewModel;
     EditText nameEt;
     EditText phoneEt;
     Spinner genderSpinner;
     Button saveBtn;
-    NavController navController;
-    String userid;
     String genderS;
     ImageView picture;
     ImageView addPicture;
     Bitmap imageBitmap;
-    String userId;
-    String myGender = "";
-    String img = null;
-    int genderPos;
     int flag = 0;
 
-    String userEmail;
-    String userPass;
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_GALLERY = 2;
     ProgressBar progressBar;
 
 
-    public EditProfileFragment() {
-        // Required empty public constructor
-    }
+    public EditProfileFragment() {}
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(EditProfileViewModel.class);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,23 +69,14 @@ public class EditProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
-//        String stId = ProfileFragmentArgs.fromBundle(getArguments()).getUserId();
-        //userId = Model.instance.getConnectedUserId();
-
-        Model.instance.getUserById(Model.instance.getConnectedUserId(), new Model.GetUserById() {
-            @Override
-            public void onComplete(User user) {
-                nameEt.setText(user.getName());
-                phoneEt.setText(user.getPhone());
-                userEmail = user.getEmail();
-                userPass = user.getPassword();
-                if (user.getAvatarUrl() != null) {
-                    img = user.getAvatarUrl();
-                    Picasso.get().load(user.getAvatarUrl()).into(picture);
-                }
+        viewModel.GetUserById(user -> {
+            viewModel.setData(user);
+            nameEt.setText(user.getName());
+            phoneEt.setText(user.getPhone());
+            if (user.getAvatarUrl() != null) {
+                Picasso.get().load(user.getAvatarUrl()).into(picture);
             }
         });
-
 
         picture = view.findViewById(R.id.edit_profile_user_imageView);
         addPicture = view.findViewById(R.id.edit_profile_add_pic_imv);
@@ -111,9 +93,8 @@ public class EditProfileFragment extends Fragment {
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 genderS = parent.getItemAtPosition(position).toString();
-                //Toast.makeText(parent.getContext(), gender, Toast.LENGTH_SHORT).show();
+                Log.d("TAG5", "data returned " + genderS);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -217,20 +198,19 @@ public class EditProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Model.instance.getUserById(Model.instance.getConnectedUserId(), new Model.GetUserById() {
-            @Override
-            public void onComplete(User user) {
-                myGender = user.getGender();
-                switch (myGender) {
-                    case "Woman":
-                        genderPos = 0;
-                        break;
-                    case "Man":
-                        genderPos = 1;
-                        break;
-                }
-                genderSpinner.setSelection(genderPos);
+        AtomicInteger genderPos = new AtomicInteger();
+
+        viewModel.GetUserById(user -> {
+            viewModel.setGender(user.getGender());
+            switch (viewModel.data.getValue().getGender()) {
+                case "Woman":
+                    genderPos.set(0);
+                    break;
+                case "Man":
+                    genderPos.set(1);
+                    break;
             }
+            genderSpinner.setSelection(genderPos.get());
         });
     }
 
@@ -251,27 +231,31 @@ public class EditProfileFragment extends Fragment {
         }
         else{
            // saveBtn.setEnabled(true);
-            User user = new User(Model.instance.getConnectedUserId(), fullName, phone, userEmail, userPass, genderS, "true");
-            user.setAvatarUrl(img);
+            viewModel.setGender(genderS);
+            User user = new User(Model.instance.getConnectedUserId(), fullName, phone, viewModel.data.getValue().getEmail(),
+                    viewModel.data.getValue().getPassword(), viewModel.data.getValue().getGender(), "true");
+            user.setAvatarUrl(viewModel.data.getValue().getAvatarUrl());
+
+            Log.d("TAG5e", "data returned " + user.getEmail());
 
             if (imageBitmap == null) {
                 if(flag == 1){
                     user.setAvatarUrl(null);
-                    Model.instance.deleteImage(userEmail + ".jpg", ()->{
-                        Model.instance.editUser(user, () -> {
+                    Model.instance.deleteImage( viewModel.data.getValue().getEmail() + ".jpg", ()->{
+                        viewModel.EditUser(user, () -> {
                             NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
                         });
                     });
                 }
                 else{
-                    Model.instance.editUser(user, () -> {
+                    viewModel.EditUser(user, () -> {
                         NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
                     });
                 }
             } else {
-                Model.instance.saveImage(imageBitmap, userEmail + ".jpg", url -> {
+                Model.instance.saveImage(imageBitmap,  viewModel.data.getValue().getEmail() + ".jpg", url -> {
                     user.setAvatarUrl(url);
-                    Model.instance.editUser(user, () -> {
+                    viewModel.EditUser(user, () -> {
                         NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
                     });
                 });
