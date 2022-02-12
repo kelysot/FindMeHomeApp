@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -63,6 +64,8 @@ public class EditProfileFragment extends Fragment {
     String userPass;
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_GALLERY = 2;
+    ProgressBar progressBar;
+
 
     public EditProfileFragment() {
         // Required empty public constructor
@@ -97,6 +100,8 @@ public class EditProfileFragment extends Fragment {
         addPicture = view.findViewById(R.id.edit_profile_add_pic_imv);
         nameEt = view.findViewById(R.id.edit_profile_et_name);
         phoneEt = view.findViewById(R.id.edit_profile_phone_number);
+        progressBar = view.findViewById(R.id.edit_profile_progressBar);
+        progressBar.setVisibility(View.GONE);
 
         genderSpinner = view.findViewById(R.id.edit_profile_gender_spinner);
         ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this.getContext(),
@@ -230,6 +235,10 @@ public class EditProfileFragment extends Fragment {
     }
 
     public void save(){
+        progressBar.setVisibility(View.VISIBLE);
+        saveBtn.setEnabled(false);
+        addPicture.setEnabled(false);
+        genderSpinner.setEnabled(false);
 
         String fullName = nameEt.getText().toString();
         String phone = phoneEt.getText().toString();
@@ -270,7 +279,10 @@ public class EditProfileFragment extends Fragment {
 
         }
 
-
+        progressBar.setVisibility(View.GONE);
+        saveBtn.setEnabled(true);
+        addPicture.setEnabled(true);
+        genderSpinner.setEnabled(true);
 
     }
 
