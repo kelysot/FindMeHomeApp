@@ -39,12 +39,14 @@ import com.example.findmehomeapp.ui.home.HomeFragment;
 import com.example.findmehomeapp.ui.home.HomeFragmentDirections;
 import com.example.findmehomeapp.ui.home.HomeViewModel;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class ProfileFragment extends Fragment {
 
     TextView nameTv;
     TextView phoneTv;
-    ImageView avatarImv;
+    CircleImageView avatarImv;
     Button addPostBtn;
     Button editProfileBtn;
     RecyclerView postList;

@@ -36,6 +36,8 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class EditProfileFragment extends Fragment {
 
@@ -45,7 +47,7 @@ public class EditProfileFragment extends Fragment {
     Spinner genderSpinner;
     Button saveBtn;
     String genderS;
-    ImageView picture;
+    CircleImageView picture;
     ImageView addPicture;
     Bitmap imageBitmap;
     int flag = 0;

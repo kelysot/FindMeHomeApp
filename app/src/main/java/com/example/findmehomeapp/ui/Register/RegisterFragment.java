@@ -52,6 +52,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.IOException;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class RegisterFragment extends Fragment {
 
     EditText nameEt;
@@ -65,7 +67,7 @@ public class RegisterFragment extends Fragment {
     NavController navController;
     String userid;
     String genderS;
-    ImageView picture;
+    CircleImageView picture;
     ImageView addPicture;
     Bitmap imageBitmap;
     ProgressBar progressBar;
