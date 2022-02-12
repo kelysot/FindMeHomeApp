@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_create_post"
             app:destination="@id/nav_create_post" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_edit_post"
+            app:destination="@id/nav_edit_post" />
     </fragment>
 
     <fragment
