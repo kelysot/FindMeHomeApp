@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,8 @@ public class LoginFragment extends Fragment {
     TextView wrongMessage2Tv;
     FirebaseAuth firebaseAuth;
     NavController navController;
+    ProgressBar progressBar;
+
 
     public LoginFragment() {}
 
@@ -64,6 +67,8 @@ public class LoginFragment extends Fragment {
         wrongMessageTv.setVisibility(View.GONE);
         wrongMessage2Tv.setVisibility(View.GONE);
 
+        progressBar = view.findViewById(R.id.login_progressBar);
+        progressBar.setVisibility(View.GONE);
 
         registerTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,33 +80,42 @@ public class LoginFragment extends Fragment {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailEt.getText().toString();
-                String password = passwordEt.getText().toString();
-
-                if (email.isEmpty()) {
-                    emailEt.setError("Please enter your email.");
-                }
-                else if(!email.contains("@") || !email.contains(".")){
-                    emailEt.setError("Please enter a valid email address.");
-                }
-                else if (password.length() < 6) {
-                    passwordEt.setError("Password Length Must Be 6 or more Chars");
-                }
-                else{
-                    loginTheUser(email, password);
-                }
+                loginTheUser();
             }
         });
     }
 
-    private void loginTheUser(String email, String password) {
-        Model.instance.login(email, password, () -> {
-            navController.navigate(R.id.action_global_nav_home);
-        });
+    private void loginTheUser() {
+        progressBar.setVisibility(View.VISIBLE);
+        loginBtn.setEnabled(false);
+        wrongMessageTv.setVisibility(View.GONE);
+        wrongMessage2Tv.setVisibility(View.GONE);
 
-        wrongMessageTv.setVisibility(View.VISIBLE);
-        wrongMessage2Tv.setVisibility(View.VISIBLE);
+        String email = emailEt.getText().toString();
+        String password = passwordEt.getText().toString();
 
+        if (email.isEmpty()) {
+            emailEt.setError("Please enter your email.");
+        }
+        else if(!email.contains("@") || !email.contains(".")){
+            emailEt.setError("Please enter a valid email address.");
+        }
+        else if (password.length() < 6) {
+            passwordEt.setError("Password Length Must Be 6 or more Chars");
+        }
+        else{
+            Model.instance.login(email, password, () -> {
+                navController.navigate(R.id.action_global_nav_home);
+            });
+        }
+
+        if(email.contains("@") && email.contains(".") && password.length() > 6 ){
+            wrongMessageTv.setVisibility(View.VISIBLE);
+            wrongMessage2Tv.setVisibility(View.VISIBLE);
+        }
+
+        progressBar.setVisibility(View.GONE);
+        loginBtn.setEnabled(true);
 
     }
 
