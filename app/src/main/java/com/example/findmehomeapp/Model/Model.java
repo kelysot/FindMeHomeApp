@@ -130,6 +130,8 @@ public class Model {
     }
 
     public void refreshUserList() {
+        Log.d("TAG", "fb returnedq111111111 ");
+
         // userListLoadingState.setValue(UserListLoadingState.loading);
 
         //get last local update date
@@ -199,14 +201,12 @@ public class Model {
     }
 
     public interface AddUserListener {
-        void onComplete();
+        void onComplete(User user);
     }
 
     public void addUser(User user, AddUserListener listener) {
-        modelFirebase.addUser(user, () -> {
-            listener.onComplete();
-            refreshUserList();
-        });
+        modelFirebase.addUser(user, listener);
+        refreshUserList();
     }
 
     public interface LoginListener {

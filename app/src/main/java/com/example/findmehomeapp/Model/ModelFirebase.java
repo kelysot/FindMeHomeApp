@@ -51,13 +51,12 @@ public class ModelFirebase {
                     user.id = currentUser.getUid();
                     Log.d("TAG", "saved name:" + user.name + "user Id:" + user.id);
 
-
                     Map<String, Object> json = user.toJson();
                     db.collection(User.COLLECTION_NAME)
                             .document(user.getId())
                             .set(json)
-                            .addOnSuccessListener(unused -> listener.onComplete())
-                            .addOnFailureListener(e -> listener.onComplete());
+                            .addOnSuccessListener(unused -> listener.onComplete(user))
+                            .addOnFailureListener(e -> listener.onComplete(user));
 
                 }
             }

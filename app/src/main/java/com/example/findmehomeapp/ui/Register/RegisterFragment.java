@@ -5,6 +5,7 @@ import static android.app.Activity.RESULT_OK;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -35,6 +37,7 @@ import android.widget.Toast;
 import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
+import com.example.findmehomeapp.ui.Login.LoginViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -66,6 +69,7 @@ public class RegisterFragment extends Fragment {
     ImageView addPicture;
     Bitmap imageBitmap;
     ProgressBar progressBar;
+    RegisterViewModel viewModel;
 
 
 
@@ -73,7 +77,12 @@ public class RegisterFragment extends Fragment {
     private static final int REQUEST_GALLERY = 2;
 
 
-    public RegisterFragment() {
+    public RegisterFragment() {}
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
     }
 
     @Override
@@ -234,14 +243,16 @@ public class RegisterFragment extends Fragment {
             User user = new User("0", name, phone, email, password, genderS, "true");
 
             if (imageBitmap == null) {
-                Model.instance.addUser(user, () -> {
+                viewModel.Register(user, newUser -> {
+                    viewModel.setData(newUser);
                     navController.navigate(R.id.action_global_nav_home);
                 });
             }
             else {
                 Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
                     user.setAvatarUrl(url);
-                    Model.instance.addUser(user, () -> {
+                    viewModel.Register(user, newUser -> {
+                        viewModel.setData(newUser);
                         navController.navigate(R.id.action_global_nav_home);
                     });
                 });
@@ -249,11 +260,13 @@ public class RegisterFragment extends Fragment {
 
         }
 
-        if(email.contains("@") && email.contains(".") && password.length() > 6){
-            wrongMessageTv.setVisibility(View.VISIBLE);
-        }
         progressBar.setVisibility(View.GONE);
         registerBtn.setEnabled(true);
         addPicture.setEnabled(true);
+
+        if(email.contains("@") && email.contains(".") && password.length() > 6){
+            wrongMessageTv.setVisibility(View.VISIBLE);
+        }
+
     }
 }
