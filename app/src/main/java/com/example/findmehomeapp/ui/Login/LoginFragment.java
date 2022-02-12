@@ -1,5 +1,6 @@
 package com.example.findmehomeapp.ui.Login;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -35,12 +36,18 @@ public class LoginFragment extends Fragment {
     TextView registerTv;
     TextView wrongMessageTv;
     TextView wrongMessage2Tv;
-    FirebaseAuth firebaseAuth;
     NavController navController;
     ProgressBar progressBar;
-
+    LoginViewModel viewModel;
+    int flag = 0;
 
     public LoginFragment() {}
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,7 +69,6 @@ public class LoginFragment extends Fragment {
         wrongMessage2Tv = view.findViewById(R.id.login_wrong_message2);
 
         navController = Navigation.findNavController(view);
-        firebaseAuth = FirebaseAuth.getInstance();
 
         wrongMessageTv.setVisibility(View.GONE);
         wrongMessage2Tv.setVisibility(View.GONE);
@@ -104,18 +110,19 @@ public class LoginFragment extends Fragment {
             passwordEt.setError("Password Length Must Be 6 or more Chars");
         }
         else{
-            Model.instance.login(email, password, () -> {
+            flag = 1;
+            viewModel.Login(email, password, () ->{
                 navController.navigate(R.id.action_global_nav_home);
             });
         }
 
-        if(email.contains("@") && email.contains(".") && password.length() > 6 ){
+        progressBar.setVisibility(View.GONE);
+        loginBtn.setEnabled(true);
+
+        if(email.contains("@") && email.contains(".") && password.length() > 6  && flag == 0){
             wrongMessageTv.setVisibility(View.VISIBLE);
             wrongMessage2Tv.setVisibility(View.VISIBLE);
         }
-
-        progressBar.setVisibility(View.GONE);
-        loginBtn.setEnabled(true);
 
     }
 
@@ -126,7 +133,7 @@ public class LoginFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        if (firebaseAuth.getCurrentUser()!=null) {
+        if (Model.instance.getConnectedUser() !=null) {
             navController.navigate(R.id.action_global_nav_home);
         }
     }
