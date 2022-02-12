@@ -112,8 +112,10 @@ public class LoginFragment extends Fragment {
         else{
             flag = 1;
             viewModel.Login(email, password, () ->{
+                viewModel.setData(email);
                 navController.navigate(R.id.action_global_nav_home);
             });
+
         }
 
         progressBar.setVisibility(View.GONE);
