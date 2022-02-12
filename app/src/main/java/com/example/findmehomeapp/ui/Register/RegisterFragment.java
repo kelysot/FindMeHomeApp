@@ -27,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,6 +65,8 @@ public class RegisterFragment extends Fragment {
     ImageView picture;
     ImageView addPicture;
     Bitmap imageBitmap;
+    ProgressBar progressBar;
+
 
 
     private static final int REQUEST_CAMERA = 1;
@@ -93,6 +96,9 @@ public class RegisterFragment extends Fragment {
         goLoginTv = view.findViewById(R.id.register_tv_gologin);
         wrongMessageTv = view.findViewById(R.id.register_wrong_message);
         wrongMessageTv.setVisibility(View.GONE);
+
+        progressBar = view.findViewById(R.id.register_progressBar);
+        progressBar.setVisibility(View.GONE);
 
 
         genderSpinner = view.findViewById(R.id.register_gender_spinner);
@@ -200,6 +206,10 @@ public class RegisterFragment extends Fragment {
     }
 
     private void registerUser() {
+        progressBar.setVisibility(View.VISIBLE);
+        registerBtn.setEnabled(false);
+        addPicture.setEnabled(false);
+
         String email = emailEt.getText().toString().trim();
         String password = passwordEt.getText().toString().trim();
         String name = nameEt.getText().toString();
@@ -236,9 +246,14 @@ public class RegisterFragment extends Fragment {
                     });
                 });
             }
+
         }
 
-        wrongMessageTv.setVisibility(View.VISIBLE);
-
+        if(email.contains("@") && email.contains(".") && password.length() > 6){
+            wrongMessageTv.setVisibility(View.VISIBLE);
+        }
+        progressBar.setVisibility(View.GONE);
+        registerBtn.setEnabled(true);
+        addPicture.setEnabled(true);
     }
 }
