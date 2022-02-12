@@ -37,7 +37,7 @@ import com.squareup.picasso.Picasso;
 import com.example.findmehomeapp.ui.Post.PostFragmentArgs;
 import com.example.findmehomeapp.ui.home.HomeFragment;
 import com.example.findmehomeapp.ui.home.HomeFragmentDirections;
-import com.example.findmehomeapp.ui.home.HomeViewModel;
+import com.example.findmehomeapp.ui.Profile.ProfileViewModel;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -54,7 +54,7 @@ public class ProfileFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     String userId;
 
-    private HomeViewModel homeViewModel;
+    private ProfileViewModel profileViewModel;
     ProfileFragment.MyAdapter adapter;
 
     SwipeRefreshLayout swipeRefresh;
@@ -63,7 +63,7 @@ public class ProfileFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
     }
 
     @Override
@@ -109,13 +109,13 @@ public class ProfileFragment extends Fragment {
         adapter.setOnItemClickListener(new ProfileFragment.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                String postId = homeViewModel.getFilteredData().getValue().get(position).getId().toString();
+                String postId = profileViewModel.getData().getValue().get(position).getId().toString();
                 Navigation.findNavController(v).navigate(ProfileFragmentDirections.actionNavProfileToNavPost2(postId));
             }
         });
 
         setHasOptionsMenu(true);
-        homeViewModel.getFilteredData().observe(getViewLifecycleOwner(), list1 -> refresh());
+        profileViewModel.getData().observe(getViewLifecycleOwner(), list1 -> refresh());
 
         swipeRefresh.setRefreshing(Model.instance.getPostListLoadingState().getValue() == Model.PostListLoadingState.loading);
 
@@ -193,7 +193,7 @@ public class ProfileFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ProfileFragment.MyViewHolder holder, int position) {
-            Post post = homeViewModel.getFilteredData().getValue().get(position);
+            Post post = profileViewModel.getData().getValue().get(position);
             //TODO: set relevants from holder
             holder.petTextTv.setText(post.getText());
 //            holder.idTv.setText(student.getId());
@@ -225,10 +225,10 @@ public class ProfileFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            if(homeViewModel.getFilteredData().getValue() == null) {
+            if(profileViewModel.getData().getValue() == null) {
                 return 0;
             }
-            return homeViewModel.getFilteredData().getValue().size();
+            return profileViewModel.getData().getValue().size();
         }
     }
 }
