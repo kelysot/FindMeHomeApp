@@ -13,14 +13,16 @@ public class LoginViewModel extends ViewModel {
     public LoginViewModel(){
         data = new MutableLiveData<>();
     }
-    public MutableLiveData<User> Login(String email, String password, Model.LoginListener listener){
+    public void Login(String email, String password, Model.LoginListener listener){
         Model.instance.login(email, password, listener);
+    }
+
+    public void setData(String email){
         Model.instance.getUserByEmail(email, new Model.GetUserByEmail() {
             @Override
             public void onComplete(User user) {
                 data.setValue(user);
             }
         });
-        return data;
     }
 }
