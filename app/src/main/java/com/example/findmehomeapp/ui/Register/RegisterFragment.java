@@ -55,6 +55,7 @@ public class RegisterFragment extends Fragment {
     EditText emailEt;
     EditText passwordEt;
     TextView goLoginTv;
+    TextView wrongMessageTv;
     Spinner genderSpinner;
     Button registerBtn;
     NavController navController;
@@ -90,6 +91,9 @@ public class RegisterFragment extends Fragment {
         emailEt = view.findViewById(R.id.register_et_email);
         passwordEt = view.findViewById(R.id.register_et_password);
         goLoginTv = view.findViewById(R.id.register_tv_gologin);
+        wrongMessageTv = view.findViewById(R.id.register_wrong_message);
+        wrongMessageTv.setVisibility(View.GONE);
+
 
         genderSpinner = view.findViewById(R.id.register_gender_spinner);
         ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this.getContext(),
@@ -233,5 +237,8 @@ public class RegisterFragment extends Fragment {
                 });
             }
         }
+
+        wrongMessageTv.setVisibility(View.VISIBLE);
+
     }
 }
