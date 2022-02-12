@@ -185,6 +185,7 @@ public class HomeFragment extends Fragment {
 
             if(!Model.instance.getConnectedUserId().equals(post.getUserId())){
                 holder.editPost.setVisibility(View.GONE);
+                holder.editPost.setEnabled(false);
             }
 
             holder.editPost.setOnClickListener(new View.OnClickListener() {

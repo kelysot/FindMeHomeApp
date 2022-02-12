@@ -147,12 +147,20 @@ public class ProfileFragment extends Fragment {
 
     class MyViewHolder extends RecyclerView.ViewHolder{
         TextView petTextTv;
+        ImageView petImage;
+        CircleImageView userImage;
+        TextView userName;
+        ImageView editPost;
 //        TextView idTv;
 //        CheckBox cb;
 
         public MyViewHolder(@NonNull View itemView, ProfileFragment.OnItemClickListener listener) {
             super(itemView);
             petTextTv = itemView.findViewById(R.id.post_pet_text_tv);
+            petImage = itemView.findViewById(R.id.post_pet_img);
+            userImage = itemView.findViewById(R.id.post_user_img);
+            userName = itemView.findViewById(R.id.post_user_name);
+            editPost = itemView.findViewById(R.id.post_edit_post);
 //            idTv = itemView.findViewById(R.id.listrow_id_tv);
 //            cb = itemView.findViewById(R.id.listrow_cb);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +197,30 @@ public class ProfileFragment extends Fragment {
             //TODO: set relevants from holder
             holder.petTextTv.setText(post.getText());
 //            holder.idTv.setText(student.getId());
+            if (post.getImage() != null) {
+                Picasso.get().load(post.getImage()).into(holder.petImage);
+            }
+            Model.instance.getUserById(post.getUserId(), new Model.GetUserById() {
+                @Override
+                public void onComplete(User user) {
+                    holder.userName.setText(user.getName());
+                    if (user.getAvatarUrl() != null) {
+                        Picasso.get().load(user.getAvatarUrl()).into(holder.userImage);
+                    }
+                }
+            });
+
+            if(!Model.instance.getConnectedUserId().equals(post.getUserId())){
+                holder.editPost.setVisibility(View.GONE);
+                holder.editPost.setEnabled(false);
+            }
+
+            holder.editPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Navigation.findNavController(v).navigate(ProfileFragmentDirections.actionNavProfileToNavEditPost(post.getId()));
+                }
+            });
         }
 
         @Override
