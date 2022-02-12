@@ -67,16 +67,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_imv" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/register_user_imageView"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="10dp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_tv_subtitle"
-        app:srcCompat="@drawable/user"/>
-
+        android:src="@drawable/user"/>
 
     <EditText
         android:id="@+id/register_et_name"

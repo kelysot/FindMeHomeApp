@@ -30,16 +30,18 @@ import com.example.findmehomeapp.Model.ModelFirebase;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
-import com.example.findmehomeapp.databinding.FragmentHomeBinding;
+//import com.example.findmehomeapp.databinding.FragmentHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     MyAdapter adapter;
     TextView nameTv;
-    ImageView avatarImv;
+    CircleImageView avatarImv;
     Button addPostBtn;
 
     SwipeRefreshLayout swipeRefresh;
@@ -103,11 +105,11 @@ public class HomeFragment extends Fragment {
         swipeRefresh.setRefreshing(Model.instance.getPostListLoadingState().getValue() == Model.PostListLoadingState.loading);
 
         Model.instance.getPostListLoadingState().observe(getViewLifecycleOwner(), postListLoadingState -> {
-                if(postListLoadingState == Model.PostListLoadingState.loading) {
-                    swipeRefresh.setRefreshing(true);
-                } else {
-                    swipeRefresh.setRefreshing(false);
-                }
+            if(postListLoadingState == Model.PostListLoadingState.loading) {
+                swipeRefresh.setRefreshing(true);
+            } else {
+                swipeRefresh.setRefreshing(false);
+            }
         });
 
         return view;
@@ -122,13 +124,15 @@ public class HomeFragment extends Fragment {
         //TODO: add heart
         TextView petTextTv;
         ImageView petImage;
-        ImageView userImage;
+        CircleImageView userImage;
+        TextView userName;
 
         public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             petTextTv = itemView.findViewById(R.id.post_pet_text_tv);
             petImage = itemView.findViewById(R.id.post_pet_img);
             userImage = itemView.findViewById(R.id.post_user_img);
+            userName = itemView.findViewById(R.id.post_user_name);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -166,15 +170,15 @@ public class HomeFragment extends Fragment {
             if (post.getImage() != null) {
                 Picasso.get().load(post.getImage()).into(holder.petImage);
             }
-            //why it was twice ?
-//            Model.instance.getUserById(post.getUserId(), new Model.GetUserById() {
-//                @Override
-//                public void onComplete(User user) {
-//                    if (user.getAvatarUrl() != null) {
-//                        Picasso.get().load(user.getAvatarUrl()).into(holder.userImage);
-//                    }
-//                }
-//            });
+            Model.instance.getUserById(post.getUserId(), new Model.GetUserById() {
+                @Override
+                public void onComplete(User user) {
+                    holder.userName.setText(user.getName());
+                    if (user.getAvatarUrl() != null) {
+                        Picasso.get().load(user.getAvatarUrl()).into(holder.userImage);
+                    }
+                }
+            });
         }
 
         @Override
@@ -215,7 +219,7 @@ public class HomeFragment extends Fragment {
             });
 
 
-           // firebaseAuth.signOut();
+            // firebaseAuth.signOut();
             return true;
         } else {
             return super.onOptionsItemSelected(item);

@@ -35,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
         android:layout_width="133dp"
         android:layout_height="143dp"
@@ -43,8 +43,9 @@
         android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
         tools:src="@tools:sample/avatars"
-        app:srcCompat="@drawable/user"/>
+        android:src="@drawable/user"/>
 
     <TextView
         android:id="@+id/profile_user_name"
