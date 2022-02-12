@@ -7,6 +7,8 @@ import androidx.room.PrimaryKey;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.ServerTimestamp;
+import com.google.type.Date;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,7 +24,6 @@ public class Post {
     String id = "";
     String name ="";
     String userId = "";
-    Long postTime = new Long(22);
     String text = "";
     String image = "";
     String type = "";
@@ -30,7 +31,7 @@ public class Post {
     String size = "";
     String gender = "";
     String location = "";
-//    Long updateDate = new Long(0);
+    Long updateDate = new Long(0);
 
     public Post(){}
 
@@ -44,9 +45,6 @@ public class Post {
         this.size = size;
         this.gender = gender;
         this.location = location;
-
-//        this.postTime = FieldValue.serverTimestamp();
-//        this.likesUserId = likesUserId;
     }
 
     public static Post create(String postId, Map<String, Object> json) {
@@ -60,21 +58,14 @@ public class Post {
         String gender = (String) json.get("gender");
         String location = (String) json.get("location");
 
-//        Timestamp ts = (Timestamp)json.get("updateDate");
-//        Long updateDate = ts.getSeconds();
+        Timestamp ts = (Timestamp)json.get("updateDate");
+        Long updateDate = ts.getSeconds();
 
         Post post = new Post(userId,text,image,type,age,size, gender,location);
+        post.setUpdateDate(updateDate);
+
         post.setId(postId);
-//        post.setUpdateDate(updateDate);
         return post;
-    }
-
-//    private void setUpdateDate(Long updateDate) {
-//        this.updateDate = updateDate;
-//    }
-
-    public Long getPostTime() {
-        return postTime;
     }
 
     @Override
@@ -89,17 +80,8 @@ public class Post {
                 ", size='" + size + '\'' +
                 ", gender='" + gender + '\'' +
                 ", location='" + location + '\'' +
-//                ", likesUserId=" + likesUserId +
                 '}';
     }
-
-//    public List<String> getLikesUserId() {
-//        return likesUserId;
-//    }
-
-//    public void setLikesUserId(List<String> likesUserId) {
-//        this.likesUserId = likesUserId;
-//    }
 
     public String getName() {
         return name;
@@ -181,9 +163,13 @@ public class Post {
         this.location = location;
     }
 
-//    public Long getUpdateDate() {
-//        return updateDate;
-//    }
+    public Long getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Long updateDate) {
+        this.updateDate = updateDate;
+    }
 
     public Map<String, Object> toJson() {
         Map<String, Object> json = new HashMap<String, Object>();

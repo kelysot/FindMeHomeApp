@@ -31,6 +31,7 @@ import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
 //import com.example.findmehomeapp.databinding.FragmentHomeBinding;
+import com.example.findmehomeapp.ui.TimeAgo;
 import com.example.findmehomeapp.ui.Post.PostFragmentDirections;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
@@ -127,6 +128,7 @@ public class HomeFragment extends Fragment {
         ImageView petImage;
         CircleImageView userImage;
         TextView userName;
+        TextView postTime;
         ImageView editPost;
 
         public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) {
@@ -135,6 +137,7 @@ public class HomeFragment extends Fragment {
             petImage = itemView.findViewById(R.id.post_pet_img);
             userImage = itemView.findViewById(R.id.post_user_img);
             userName = itemView.findViewById(R.id.post_user_name);
+            postTime = itemView.findViewById(R.id.post_time);
             editPost = itemView.findViewById(R.id.post_edit_post);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +173,10 @@ public class HomeFragment extends Fragment {
             Post post = homeViewModel.getData().getValue().get(position);
             //TODO: set relevants from holder
             holder.petTextTv.setText(post.getText());
+
+            String timeAgo = TimeAgo.getTimeAgo(post.getUpdateDate());
+            holder.postTime.setText(timeAgo);
+
             if (post.getImage() != null) {
                 Picasso.get().load(post.getImage()).into(holder.petImage);
             }
