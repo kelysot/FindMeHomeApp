@@ -66,7 +66,7 @@ public class Model {
         postListLoadingState.setValue(PostListLoadingState.loading);
 
         // get last local update date
-        Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("HomePostsLastUpdateDate",0);
+        Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("PostsLastUpdateDate",0);
 
         // firebase get all updates since lastLocalUpdateDate
         modelFirebase.getAllPosts(lastUpdateDate, new ModelFirebase.GetAllPostsListener() {
@@ -90,7 +90,7 @@ public class Model {
                         MyApplication.getContext()
                                 .getSharedPreferences("TAG", Context.MODE_PRIVATE)
                                 .edit()
-                                .putLong("HomePostsLastUpdateDate",lud)
+                                .putLong("PostsLastUpdateDate",lud)
                                 .commit();
 
                         //return all data to caller
@@ -115,11 +115,11 @@ public class Model {
         postListLoadingState.setValue(PostListLoadingState.loading);
 
         // get last local update date
-        Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("UserPostsLastUpdateDate",0);
+        Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("PostsLastUpdateDate",0);
         String userId = firebaseAuth.getCurrentUser().getUid();
 
         // firebase get all updates since lastLocalUpdateDate
-        modelFirebase.getUserAllPosts(userId, lastUpdateDate, new ModelFirebase.GetAllPostsListener() {
+        modelFirebase.getAllPosts(lastUpdateDate, new ModelFirebase.GetAllPostsListener() {
             @Override
             public void onComplete(List<Post> list) {
                 // add all records to the local db
@@ -140,7 +140,7 @@ public class Model {
                         MyApplication.getContext()
                                 .getSharedPreferences("TAG", Context.MODE_PRIVATE)
                                 .edit()
-                                .putLong("UserPostsLastUpdateDate",lud)
+                                .putLong("PostsLastUpdateDate",lud)
                                 .commit();
 
                         //return all data to caller

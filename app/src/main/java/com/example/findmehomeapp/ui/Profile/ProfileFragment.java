@@ -74,7 +74,6 @@ public class ProfileFragment extends Fragment {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-
 //        String stId = ProfileFragmentArgs.fromBundle(getArguments()).getUserId();
         userId = firebaseAuth.getCurrentUser().getUid();
         Log.d("TAG1", "user Id:" + userId );

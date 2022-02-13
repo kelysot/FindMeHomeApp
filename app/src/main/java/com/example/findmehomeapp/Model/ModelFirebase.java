@@ -114,25 +114,6 @@ public class ModelFirebase {
                 });
     }
 
-    public void getUserAllPosts(String userId, Long lastUpdateDate, GetAllPostsListener listener) {
-        db.collection(Post.COLLECTION_NAME)
-                .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
-                .whereEqualTo("userId", userId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    List<Post> list = new LinkedList<Post>();
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
-                            Post post = Post.create(doc.getId(), doc.getData());
-                            if (post != null) {
-                                list.add(post);
-                            }
-                        }
-                    }
-                    listener.onComplete(list);
-                });
-    }
-
     public interface GetAllUsersListener {
         void onComplete(List<User> list);
     }
