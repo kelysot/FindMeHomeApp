@@ -8,7 +8,7 @@
     android:background="#E2FDFF">
 
 
-    <View
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/view4"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -22,7 +22,10 @@
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize2Percent"
+        />
 
     <ImageView
         android:id="@+id/login_imv"

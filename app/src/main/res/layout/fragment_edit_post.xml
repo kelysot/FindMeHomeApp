@@ -44,7 +44,7 @@
         app:layout_constraintStart_toEndOf="@+id/edit_post_img"
         app:layout_constraintTop_toBottomOf="@+id/edit_post_username" />
 
-    <View
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/view3"
         android:layout_width="347dp"
         android:layout_height="510dp"
@@ -55,7 +55,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_post_img" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_post_img"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize2Percent"
+        />
 
     <Button
         android:id="@+id/edit_post_btn"
