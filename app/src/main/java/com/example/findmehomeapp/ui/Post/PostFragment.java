@@ -88,6 +88,10 @@ public class PostFragment extends Fragment {
                         }
                     }
                 });
+
+                if(!Model.instance.getConnectedUserId().equals(post.getUserId())){
+                    editBtn.setVisibility(View.GONE);
+                }
             }
         });
 
