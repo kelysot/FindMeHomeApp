@@ -72,11 +72,17 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-
+        String userId = null;
+        //firebaseAuth = FirebaseAuth.getInstance();
+        if(ProfileFragmentArgs.fromBundle(getArguments()).getUserProfileId().equals("null")){
+            userId = Model.instance.getConnectedUserId();
+        }
+        else {
+            userId = ProfileFragmentArgs.fromBundle(getArguments()).getUserProfileId();
+        }
 
 //        String stId = ProfileFragmentArgs.fromBundle(getArguments()).getUserId();
-        userId = firebaseAuth.getCurrentUser().getUid();
+        //userId = firebaseAuth.getCurrentUser().getUid();
         Log.d("TAG1", "user Id:" + userId );
 
         Model.instance.getUserById(userId, new Model.GetUserById() {
@@ -130,14 +136,20 @@ public class ProfileFragment extends Fragment {
         addPostBtn = view.findViewById(R.id.profile_btn_add_post);
         editProfileBtn = view.findViewById(R.id.profile_btn_edit_profile);
 
+        if(Model.instance.getConnectedUserId().equals(userId)){
+            addPostBtn.setOnClickListener((v)->{
+                Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_create_post);
+            });
 
-        addPostBtn.setOnClickListener((v)->{
-            Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_create_post);
-        });
+            editProfileBtn.setOnClickListener((v)->{
+                Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_edit_profile);
+            });
+        }
+        else {
+            editProfileBtn.setVisibility(View.GONE);
+            addPostBtn.setVisibility(View.GONE);
+        }
 
-        editProfileBtn.setOnClickListener((v)->{
-            Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_edit_profile);
-        });
         return view;
     }
     private void refresh() {
