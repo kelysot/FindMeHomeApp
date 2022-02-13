@@ -103,6 +103,7 @@ public class ProfileFragment extends Fragment {
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
         swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshUserPostsList());
+        Model.instance.refreshUserPostsList();
 
         RecyclerView list = view.findViewById(R.id.profile_post_rv) ;
         list.setHasFixedSize(true);

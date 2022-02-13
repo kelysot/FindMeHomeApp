@@ -84,6 +84,7 @@ public class HomeFragment extends Fragment {
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
         swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList());
+        Model.instance.refreshPostsList();
 
         RecyclerView list = view.findViewById(R.id.home_post_rv) ;
         list.setHasFixedSize(true);
