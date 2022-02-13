@@ -129,7 +129,6 @@ public class ProfileFragment extends Fragment {
         addPostBtn = view.findViewById(R.id.profile_btn_add_post);
         editProfileBtn = view.findViewById(R.id.profile_btn_edit_profile);
 
-
         addPostBtn.setOnClickListener((v)->{
             Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_create_post);
         });
