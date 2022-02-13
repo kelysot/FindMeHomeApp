@@ -144,7 +144,7 @@ public class Model {
                                 .commit();
 
                         //return all data to caller
-                        List<Post> stList = AppLocalDb.db.postDao().getAll();
+                        List<Post> stList = AppLocalDb.db.postDao().getUserAll(userId);
 
                         Comparator<Post> compareByUpdateTime =
                                 (Post o1, Post o2) -> o1.getUpdateDate().compareTo( o2.getUpdateDate() );

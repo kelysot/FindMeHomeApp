@@ -14,6 +14,9 @@ public interface PostDao {
     @Query("select * from Post")
     List<Post> getAll();
 
+    @Query("select * from Post WHERE userId LIKE :id")
+    List<Post> getUserAll(String id);
+
     @Query("DELETE FROM Post")
     void deleteAll();
 
