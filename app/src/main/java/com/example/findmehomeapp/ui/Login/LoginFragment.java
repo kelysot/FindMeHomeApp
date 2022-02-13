@@ -121,13 +121,12 @@ public class LoginFragment extends Fragment {
         progressBar.setVisibility(View.GONE);
         loginBtn.setEnabled(true);
 
-        if(email.contains("@") && email.contains(".") && password.length() > 6  && flag == 0){
+        if(flag == 0 && email.contains("@") && email.contains(".") && password.length() > 6){
             wrongMessageTv.setVisibility(View.VISIBLE);
             wrongMessage2Tv.setVisibility(View.VISIBLE);
         }
 
     }
-
 
 
     //This func is for that if the user is login to the app then he won't need to login but immediately will go to a profile page.
