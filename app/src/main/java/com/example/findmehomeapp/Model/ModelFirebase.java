@@ -96,7 +96,6 @@ public class ModelFirebase {
         void onComplete(List<Post> list);
     }
 
-    //TODO: fix since...
     public void getAllPosts(Long lastUpdateDate, GetAllPostsListener listener) {
         db.collection(Post.COLLECTION_NAME)
                 .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
@@ -211,7 +210,6 @@ public class ModelFirebase {
                     }
                 });
     }
-
 
     public void editUser(User user, Model.EditUserListener listener) {
         Map<String, Object> json = user.toJson();

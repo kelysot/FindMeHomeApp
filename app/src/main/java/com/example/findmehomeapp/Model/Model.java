@@ -57,35 +57,10 @@ public class Model {
 
     public LiveData<List<Post>> getAllUserPosts() {
         if (userPostsList.getValue() == null) {
-            refreshPostsList();
+            refreshUserPostsList();
         }
         return userPostsList;
     }
-
-    public void filterUserPostsList() {
-        String userId = firebaseAuth.getCurrentUser().getUid();
-
-        List<Post> posts = postsList.getValue();
-        List<Post> filteredPosts = new ArrayList<Post>();
-
-        if (posts != null) {
-            for (Post post : posts) {
-                if (post.getUserId().equals(userId)) {
-                    filteredPosts.add(post);
-                }
-            }
-        }
-
-        userPostsList.postValue(filteredPosts);
-    }
-
-//    public LiveData<List<User>> getAllUsers() {
-//        if (usersList.getValue() == null) {
-//            refreshUserList();
-//        }
-//        ;
-//        return usersList;
-//    }
 
     public void refreshPostsList() {
         postListLoadingState.setValue(PostListLoadingState.loading);
@@ -129,7 +104,55 @@ public class Model {
 
                         postsList.postValue(stList);
 
-                        filterUserPostsList();
+                        postListLoadingState.postValue(PostListLoadingState.loaded);
+                    }
+                });
+            }
+        });
+    }
+
+    public void refreshUserPostsList() {
+        postListLoadingState.setValue(PostListLoadingState.loading);
+
+        // get last local update date
+        Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("PostsLastUpdateDate",0);
+        String userId = firebaseAuth.getCurrentUser().getUid();
+
+        // firebase get all updates since lastLocalUpdateDate
+        modelFirebase.getAllPosts(lastUpdateDate, new ModelFirebase.GetAllPostsListener() {
+            @Override
+            public void onComplete(List<Post> list) {
+                // add all records to the local db
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Long lud = new Long(0);
+                        // TODO: delete this row
+//                        AppLocalDb.db.postDao().deleteAll();
+                        Log.d("TAG", "fb returned " + list.size());
+                        for (Post post : list) {
+                            AppLocalDb.db.postDao().insertAll(post);
+                            if (lud < post.getUpdateDate()){
+                                lud = post.getUpdateDate();
+                            }
+                        }
+                        // update last local update date
+                        MyApplication.getContext()
+                                .getSharedPreferences("TAG", Context.MODE_PRIVATE)
+                                .edit()
+                                .putLong("PostsLastUpdateDate",lud)
+                                .commit();
+
+                        //return all data to caller
+                        List<Post> stList = AppLocalDb.db.postDao().getUserAll(userId);
+
+                        Comparator<Post> compareByUpdateTime =
+                                (Post o1, Post o2) -> o1.getUpdateDate().compareTo( o2.getUpdateDate() );
+
+                        Collections.sort(stList, compareByUpdateTime);
+                        Collections.reverse(stList);
+
+                        userPostsList.postValue(stList);
 
                         postListLoadingState.postValue(PostListLoadingState.loaded);
                     }
