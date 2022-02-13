@@ -27,6 +27,7 @@ import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.R;
+import com.example.findmehomeapp.ui.TimeAgo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -163,6 +164,7 @@ public class ProfileFragment extends Fragment {
         CircleImageView userImage;
         TextView userName;
         ImageView editPost;
+        TextView postTime;
 //        TextView idTv;
 //        CheckBox cb;
 
@@ -173,6 +175,7 @@ public class ProfileFragment extends Fragment {
             userImage = itemView.findViewById(R.id.post_user_img);
             userName = itemView.findViewById(R.id.post_user_name);
             editPost = itemView.findViewById(R.id.post_edit_post);
+            postTime = itemView.findViewById(R.id.post_time);
 //            idTv = itemView.findViewById(R.id.listrow_id_tv);
 //            cb = itemView.findViewById(R.id.listrow_cb);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -208,6 +211,10 @@ public class ProfileFragment extends Fragment {
             Post post = homeViewModel.getFilteredData().getValue().get(position);
             //TODO: set relevants from holder
             holder.petTextTv.setText(post.getText());
+
+            String timeAgo = TimeAgo.getTimeAgo(post.getUpdateDate());
+            holder.postTime.setText(timeAgo);
+
 //            holder.idTv.setText(student.getId());
             if (post.getImage() != null) {
                 Picasso.get().load(post.getImage()).into(holder.petImage);
