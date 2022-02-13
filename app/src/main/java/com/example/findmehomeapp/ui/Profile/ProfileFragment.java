@@ -74,7 +74,7 @@ public class ProfileFragment extends Fragment {
 
         String userId = null;
         //firebaseAuth = FirebaseAuth.getInstance();
-        if(ProfileFragmentArgs.fromBundle(getArguments()).getUserProfileId().equals("null")){
+        if(ProfileFragmentArgs.fromBundle(getArguments()).getUserProfileId() == null){
             userId = Model.instance.getConnectedUserId();
         }
         else {
