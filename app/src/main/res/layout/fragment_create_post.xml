@@ -8,54 +8,34 @@
     tools:context=".ui.CreatePost.CreatePostFragment">
 
 
-    <ImageView
-        android:id="@+id/create_post_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/create_post_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/create_post_img"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="11dp"
-        android:text="What's on your mind?"
+        android:text="Tell us about your pet"
         android:textColor="#000000"
-        android:textSize="20sp"
+        android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/create_post_img"
-        app:layout_constraintTop_toBottomOf="@+id/create_post_username" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <View
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/view3"
-        android:layout_width="347dp"
-        android:layout_height="510dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="50dp"
         android:background="#FFFFFF"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_post_img" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize2Percent" />
 
     <Button
         android:id="@+id/create_post_btn"
@@ -74,23 +54,13 @@
         android:id="@+id/create_post_divider"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="160dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/view3"
         app:layout_constraintTop_toTopOf="@+id/view3"
         tools:ignore="MissingConstraints" />
-
-    <ImageView
-        android:id="@+id/create_post_add_photo_btn"
-        android:layout_width="54dp"
-        android:layout_height="51dp"
-        android:layout_marginEnd="24dp"
-        android:src="@drawable/add_photo"
-        app:layout_constraintBottom_toBottomOf="@+id/create_post_divider"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintTop_toTopOf="@+id/view3" />
 
     <TextView
         android:id="@+id/create_post_type"
@@ -270,6 +240,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relativeLayout3"
         android:layout_width="126dp"
         android:layout_height="35dp"
         android:layout_marginTop="24dp"
@@ -288,14 +259,15 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:layout_marginLeft="5dp"
             android:spinnerMode="dropdown" />
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relativeLayout4"
         android:layout_width="126dp"
         android:layout_height="35dp"
         android:layout_marginTop="24dp"
@@ -323,13 +295,44 @@
         android:id="@+id/create_post_text"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
         android:ems="10"
+        android:hint="Write somthing..."
         android:inputType="textMultiLine"
-        android:text="Write somthing..."
         app:layout_constraintBottom_toBottomOf="@+id/create_post_divider"
-        app:layout_constraintEnd_toStartOf="@+id/create_post_add_photo_btn"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toTopOf="@+id/view3" />
+        app:layout_constraintTop_toTopOf="@+id/view3"
+        app:layout_constraintVertical_bias="0.348" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/create_post_photo"
+        android:layout_width="0dp"
+        android:layout_height="133dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cat_dog_rabbit"
+        app:layout_constraintBottom_toBottomOf="@+id/view3"
+        app:layout_constraintEnd_toStartOf="@+id/create_post_btn"
+        app:layout_constraintStart_toStartOf="@+id/view3"
+        app:layout_constraintTop_toBottomOf="@+id/create_post_location"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize8Percent" />
+
+    <ImageView
+        android:id="@+id/create_post_add_photo_btn"
+        android:layout_width="41dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="-10dp"
+        android:layout_marginBottom="-15dp"
+        android:src="@drawable/add_photo"
+        app:layout_constraintBottom_toBottomOf="@+id/create_post_photo"
+        app:layout_constraintEnd_toEndOf="@+id/create_post_photo" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

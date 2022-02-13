@@ -42,6 +42,7 @@ public class CreatePostFragment extends Fragment {
 
     EditText petTextEt;
     ImageView petImage;
+    ImageView addImage;
     ImageView userImage;
     Bitmap imageBitmap;
 
@@ -72,9 +73,10 @@ public class CreatePostFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         userId = firebaseAuth.getCurrentUser().getUid();
 
-        petImage = view.findViewById(R.id.create_post_add_photo_btn);
+        petImage = view.findViewById(R.id.create_post_photo);
+        addImage = view.findViewById(R.id.create_post_add_photo_btn);
 
-        petImage.setOnClickListener(new View.OnClickListener() {
+        addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showImagePickDialog();

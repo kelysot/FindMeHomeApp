@@ -72,8 +72,7 @@ public class RegisterFragment extends Fragment {
     Bitmap imageBitmap;
     ProgressBar progressBar;
     RegisterViewModel viewModel;
-
-
+    int flag = 0;
 
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_GALLERY = 2;
@@ -242,6 +241,7 @@ public class RegisterFragment extends Fragment {
             passwordEt.setError("Password length must be 6 or more chars.");
         }
         else{
+            flag = 1;
             User user = new User("0", name, phone, email, password, genderS, "true");
 
             if (imageBitmap == null) {
@@ -266,7 +266,7 @@ public class RegisterFragment extends Fragment {
         registerBtn.setEnabled(true);
         addPicture.setEnabled(true);
 
-        if(email.contains("@") && email.contains(".") && password.length() > 6){
+        if(flag == 0 && email.contains("@") && email.contains(".") && password.length() > 6){
             wrongMessageTv.setVisibility(View.VISIBLE);
         }
 
