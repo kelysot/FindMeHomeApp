@@ -219,19 +219,6 @@ public class Model {
         });
     }
 
-    public interface GetAllPostsListener {
-        void onComplete(List<Post> list);
-    }
-
-    public void getAllPosts(GetAllPostsListener listener) {
-        executor.execute(() -> {
-            List<Post> list = AppLocalDb.db.postDao().getAll();
-            mainThread.post(() -> {
-                listener.onComplete(list);
-            });
-        });
-    }
-
     public interface AddUserListener {
         void onComplete(User user);
     }
@@ -268,7 +255,6 @@ public class Model {
         });
     }
 
-
     public interface LogoutListener {
         void onComplete();
     }
@@ -297,6 +283,25 @@ public class Model {
 
     public void savePost(Post post, UpdatePostListener listener) {
         modelFirebase.savePost(post, listener);
+    }
+
+    public interface DeletePostListener {
+        void onComplete();
+    }
+
+    public void deletePost(Post post, DeletePostListener listener) {
+        modelFirebase.deletePost(post, new ModelFirebase.DeletePostListener() {
+            @Override
+            public void onComplete() {
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        AppLocalDb.db.postDao().delete(post);
+                    }
+                });
+                listener.onComplete();
+            }
+        });
     }
 
     public interface GetUserById {

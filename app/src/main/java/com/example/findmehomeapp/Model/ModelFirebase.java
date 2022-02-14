@@ -105,6 +105,18 @@ public class ModelFirebase {
                 .addOnFailureListener(e -> listener.onComplete());
     }
 
+    public interface DeletePostListener {
+        void onComplete();
+    }
+
+    public void deletePost(Post post, DeletePostListener listener) {
+        db.collection(Post.COLLECTION_NAME)
+                .document(post.getId())
+                .delete()
+                .addOnSuccessListener(unused -> listener.onComplete())
+                .addOnFailureListener(e -> listener.onComplete());
+    }
+
     public interface GetAllPostsListener {
         void onComplete(List<Post> list);
     }

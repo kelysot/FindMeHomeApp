@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -58,6 +59,7 @@ public class EditPostFragment extends Fragment {
     Spinner genderSpinner;
     Spinner locationSpinner;
     Button saveBtn;
+    ImageButton deleteBtn;
     ImageView editImage;
 
     String userId;
@@ -189,6 +191,14 @@ public class EditPostFragment extends Fragment {
             }
         });
 
+        deleteBtn = view.findViewById(R.id.edit_post_delete_btn);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deletePost();
+            }
+        });
+
         viewModel.GetPostById(postId, post -> {
             viewModel.setData(post);
             if (post.getText()!= null) {
@@ -223,6 +233,12 @@ public class EditPostFragment extends Fragment {
 
     private void savePost(){
         viewModel.EditPost(()-> {
+            NavHostFragment.findNavController(this).navigateUp();
+        });
+    }
+
+    public void deletePost(){
+        viewModel.DeletePost(() -> {
             NavHostFragment.findNavController(this).navigateUp();
         });
     }
