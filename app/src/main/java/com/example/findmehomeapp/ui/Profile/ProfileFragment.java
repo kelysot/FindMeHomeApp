@@ -27,6 +27,7 @@ import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.R;
+import com.example.findmehomeapp.ui.TimeAgo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,9 +51,6 @@ public class ProfileFragment extends Fragment {
     Button addPostBtn;
     Button editProfileBtn;
     RecyclerView postList;
-    FirebaseFirestore firestore;
-    FirebaseAuth firebaseAuth;
-    String userId;
 
     private ProfileViewModel profileViewModel;
     ProfileFragment.MyAdapter adapter;
@@ -73,7 +71,6 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         String userId = null;
-        //firebaseAuth = FirebaseAuth.getInstance();
         if(ProfileFragmentArgs.fromBundle(getArguments()).getUserProfileId() == null){
             userId = Model.instance.getConnectedUserId();
         }
@@ -85,15 +82,13 @@ public class ProfileFragment extends Fragment {
         //userId = firebaseAuth.getCurrentUser().getUid();
         Log.d("TAG1", "user Id:" + userId );
 
-        Model.instance.getUserById(userId, new Model.GetUserById() {
-            @Override
-            public void onComplete(User user) {
-                Log.d("TAG111", "user Id:" + user.getId() );
-                nameTv.setText(user.getName());
-                phoneTv.setText(user.getPhone());
-                if (user.getAvatarUrl() != null) {
-                    Picasso.get().load(user.getAvatarUrl()).into(avatarImv);
-                }
+        profileViewModel.GetUserById(Model.instance.getConnectedUserId(), user -> {
+            profileViewModel.setUserData(user);
+            Log.d("TAG11", "user Id:" + profileViewModel.userData.getValue() );
+            nameTv.setText(user.getName());
+            phoneTv.setText(user.getPhone());
+            if (user.getAvatarUrl() != null) {
+                Picasso.get().load(user.getAvatarUrl()).into(avatarImv);
             }
         });
 
@@ -164,6 +159,7 @@ public class ProfileFragment extends Fragment {
         CircleImageView userImage;
         TextView userName;
         ImageView editPost;
+        TextView postTime;
 //        TextView idTv;
 //        CheckBox cb;
 
@@ -174,6 +170,7 @@ public class ProfileFragment extends Fragment {
             userImage = itemView.findViewById(R.id.post_user_img);
             userName = itemView.findViewById(R.id.post_user_name);
             editPost = itemView.findViewById(R.id.post_edit_post);
+            postTime = itemView.findViewById(R.id.post_time);
 //            idTv = itemView.findViewById(R.id.listrow_id_tv);
 //            cb = itemView.findViewById(R.id.listrow_cb);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -209,17 +206,18 @@ public class ProfileFragment extends Fragment {
             Post post = profileViewModel.getData().getValue().get(position);
             //TODO: set relevants from holder
             holder.petTextTv.setText(post.getText());
-//            holder.idTv.setText(student.getId());
+
+            String timeAgo = TimeAgo.getTimeAgo(post.getUpdateDate());
+            holder.postTime.setText(timeAgo);
+
             if (post.getImage() != null) {
                 Picasso.get().load(post.getImage()).into(holder.petImage);
             }
-            Model.instance.getUserById(post.getUserId(), new Model.GetUserById() {
-                @Override
-                public void onComplete(User user) {
-                    holder.userName.setText(user.getName());
-                    if (user.getAvatarUrl() != null) {
-                        Picasso.get().load(user.getAvatarUrl()).into(holder.userImage);
-                    }
+
+            profileViewModel.GetUserById(post.getUserId(), user -> {
+                holder.userName.setText(user.getName());
+                if (user.getAvatarUrl() != null) {
+                    Picasso.get().load(user.getAvatarUrl()).into(holder.userImage);
                 }
             });
 
