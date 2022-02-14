@@ -2,9 +2,18 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+    <item
+
+        android:id="@+id/add_post"
+        android:icon="@drawable/add_post"
+        android:title="@string/add_post_menu"
+        app:showAsAction="ifRoom"/>
 <item
     android:id="@+id/logout"
     android:icon="@drawable/logout"
-    android:title="Logout"
-    app:showAsAction="always" />
+    android:title="@string/logout"
+    app:showAsAction="always"/>
+
+
 </menu>

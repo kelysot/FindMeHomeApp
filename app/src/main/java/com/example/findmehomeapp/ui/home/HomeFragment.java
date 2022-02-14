@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
     MyAdapter adapter;
     TextView nameTv;
     CircleImageView avatarImv;
-    Button addPostBtn;
+//    Button addPostBtn;
 
     SwipeRefreshLayout swipeRefresh;
 
@@ -76,11 +76,11 @@ public class HomeFragment extends Fragment {
 
         nameTv = view.findViewById(R.id.home_username_tv);
         avatarImv = view.findViewById(R.id.home_user_img);
-        addPostBtn = view.findViewById(R.id.home_btn_add_post);
-
-        addPostBtn.setOnClickListener((v)->{
-            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_create_post);
-        });
+//        addPostBtn = view.findViewById(R.id.home_btn_add_post);
+//
+//        addPostBtn.setOnClickListener((v)->{
+//            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_create_post);
+//        });
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
         swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList());
@@ -244,7 +244,13 @@ public class HomeFragment extends Fragment {
 
             // firebaseAuth.signOut();
             return true;
-        } else {
+        }
+        else if (item.getItemId() == R.id.add_post) {
+            Log.d("TAG55", "logout...");
+            NavHostFragment.findNavController(HomeFragment.this).navigate(HomeFragmentDirections.actionNavHomeToNavCreatePost());
+            return true;
+        }
+        else {
             return super.onOptionsItemSelected(item);
 
         }
