@@ -170,12 +170,12 @@
         android:id="@+id/register_gender_spinner"
         android:layout_width="136dp"
         android:layout_height="42dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="@+id/view6"
         app:layout_constraintStart_toStartOf="@+id/view6"
-        app:layout_constraintTop_toBottomOf="@+id/register_wrong_message" />
+        app:layout_constraintTop_toBottomOf="@+id/register_et_password" />
 
     <ImageView
         android:id="@+id/register_add_pic_imv"
@@ -185,21 +185,6 @@
         android:src="@drawable/add_photo"
         app:layout_constraintBottom_toTopOf="@+id/register_et_name"
         app:layout_constraintStart_toStartOf="@+id/register_user_imageView" />
-
-    <TextView
-        android:id="@+id/register_wrong_message"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif"
-        android:text="Your email already exists, try another one."
-        android:textColor="#A31717"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/view6"
-        app:layout_constraintStart_toStartOf="@+id/view6"
-        app:layout_constraintTop_toBottomOf="@+id/register_et_password" />
 
     <ProgressBar
         android:id="@+id/register_progressBar"

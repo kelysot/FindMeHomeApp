@@ -254,7 +254,7 @@ public class Model {
                     //   Log.d("TAG01", "login:");
                     if (user.getConnected().equals("false")) {
                         user.setConnected("true");
-                        Model.instance.editUser(user, new Model.EditUserListener() {
+                        Model.instance.editUser(user, new EditUserListener() {
                             @Override
                             public void onComplete() {
                                 refreshUserList();
@@ -262,7 +262,6 @@ public class Model {
                                 listener.onComplete();
                             }
                         });
-
                     }
                 }
             });

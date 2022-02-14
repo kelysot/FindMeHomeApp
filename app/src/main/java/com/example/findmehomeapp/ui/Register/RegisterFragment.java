@@ -51,6 +51,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -61,7 +62,6 @@ public class RegisterFragment extends Fragment {
     EditText emailEt;
     EditText passwordEt;
     TextView goLoginTv;
-    TextView wrongMessageTv;
     Spinner genderSpinner;
     Button registerBtn;
     NavController navController;
@@ -104,8 +104,6 @@ public class RegisterFragment extends Fragment {
         emailEt = view.findViewById(R.id.register_et_email);
         passwordEt = view.findViewById(R.id.register_et_password);
         goLoginTv = view.findViewById(R.id.register_tv_gologin);
-        wrongMessageTv = view.findViewById(R.id.register_wrong_message);
-        wrongMessageTv.setVisibility(View.GONE);
 
         progressBar = view.findViewById(R.id.register_progressBar);
         progressBar.setVisibility(View.GONE);
@@ -220,7 +218,8 @@ public class RegisterFragment extends Fragment {
         registerBtn.setEnabled(false);
         addPicture.setEnabled(false);
 
-        String email = emailEt.getText().toString().trim();
+        String email = emailEt.getText().toString().trim().toLowerCase(Locale.ROOT);
+        Log.d("TAG3", "user Id:" + email );
         String password = passwordEt.getText().toString().trim();
         String name = nameEt.getText().toString();
         String phone = phoneEt.getText().toString();
@@ -265,10 +264,6 @@ public class RegisterFragment extends Fragment {
         progressBar.setVisibility(View.GONE);
         registerBtn.setEnabled(true);
         addPicture.setEnabled(true);
-
-        if(flag == 0 && email.contains("@") && email.contains(".") && password.length() > 6){
-            wrongMessageTv.setVisibility(View.VISIBLE);
-        }
 
     }
 }

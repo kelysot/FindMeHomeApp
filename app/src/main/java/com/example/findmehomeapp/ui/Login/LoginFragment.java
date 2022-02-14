@@ -29,17 +29,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Locale;
+
 public class LoginFragment extends Fragment {
     EditText emailEt;
     EditText passwordEt;
     Button loginBtn;
     TextView registerTv;
-    TextView wrongMessageTv;
-    TextView wrongMessage2Tv;
     NavController navController;
     ProgressBar progressBar;
     LoginViewModel viewModel;
-    int flag = 0;
 
     public LoginFragment() {}
 
@@ -65,13 +64,8 @@ public class LoginFragment extends Fragment {
 
         loginBtn = view.findViewById(R.id.login_btn_login);
         registerTv = view.findViewById(R.id.login_register_page);
-        wrongMessageTv = view.findViewById(R.id.login_wrong_message);
-        wrongMessage2Tv = view.findViewById(R.id.login_wrong_message2);
 
         navController = Navigation.findNavController(view);
-
-        wrongMessageTv.setVisibility(View.GONE);
-        wrongMessage2Tv.setVisibility(View.GONE);
 
         progressBar = view.findViewById(R.id.login_progressBar);
         progressBar.setVisibility(View.GONE);
@@ -94,10 +88,9 @@ public class LoginFragment extends Fragment {
     private void loginTheUser() {
         progressBar.setVisibility(View.VISIBLE);
         loginBtn.setEnabled(false);
-        wrongMessageTv.setVisibility(View.GONE);
-        wrongMessage2Tv.setVisibility(View.GONE);
 
-        String email = emailEt.getText().toString();
+        String email = emailEt.getText().toString().trim().toLowerCase(Locale.ROOT);
+        Log.d("TAG3", "user Id:" + email );;
         String password = passwordEt.getText().toString();
 
         if (email.isEmpty()) {
@@ -110,7 +103,6 @@ public class LoginFragment extends Fragment {
             passwordEt.setError("Password Length Must Be 6 or more Chars");
         }
         else{
-            flag = 1;
             viewModel.Login(email, password, () ->{
                 viewModel.setData(email);
                 navController.navigate(R.id.action_global_nav_home);
@@ -120,11 +112,6 @@ public class LoginFragment extends Fragment {
 
         progressBar.setVisibility(View.GONE);
         loginBtn.setEnabled(true);
-
-        if(flag == 0 && email.contains("@") && email.contains(".") && password.length() > 6){
-            wrongMessageTv.setVisibility(View.VISIBLE);
-            wrongMessage2Tv.setVisibility(View.VISIBLE);
-        }
 
     }
 

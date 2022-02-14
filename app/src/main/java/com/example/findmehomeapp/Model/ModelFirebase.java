@@ -3,10 +3,13 @@ package com.example.findmehomeapp.Model;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.findmehomeapp.MyApplication;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -61,6 +64,11 @@ public class ModelFirebase {
 
                 }
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(MyApplication.getContext(), "Sorry, your email already exists, please try another one." , Toast.LENGTH_LONG).show();
+            }
         });
     }
 
@@ -79,6 +87,11 @@ public class ModelFirebase {
                             listener.onComplete();
                         }
 
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(MyApplication.getContext(), "Sorry, your password or email were incorrect, please try again." , Toast.LENGTH_LONG).show();
                     }
                 });
     }
