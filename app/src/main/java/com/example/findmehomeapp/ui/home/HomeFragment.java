@@ -60,17 +60,14 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
-        //String userId = HomeFragmentArgs.fromBundle(getArguments()).getUserId();
         String userId = Model.instance.getConnectedUserId();
         Log.d("TAG13", "login:" + userId);
 
-        Model.instance.getUserById(userId, new Model.GetUserById() {
-            @Override
-            public void onComplete(User user) {
-                nameTv.setText("Hey, " + user.getName() + " \uD83D\uDC4B");
-                if (user.getAvatarUrl() != null) {
-                    Picasso.get().load(user.getAvatarUrl()).into(avatarImv);
-                }
+        homeViewModel.GetUserById(Model.instance.getConnectedUserId(), user -> {
+            homeViewModel.setUserData(user);
+            nameTv.setText("Hey, " + user.getName() + " \uD83D\uDC4B");
+            if (user.getAvatarUrl() != null) {
+                Picasso.get().load(user.getAvatarUrl()).into(avatarImv);
             }
         });
 
@@ -181,13 +178,11 @@ public class HomeFragment extends Fragment {
             if (post.getImage() != null) {
                 Picasso.get().load(post.getImage()).into(holder.petImage);
             }
-            Model.instance.getUserById(post.getUserId(), new Model.GetUserById() {
-                @Override
-                public void onComplete(User user) {
-                    holder.userName.setText(user.getName());
-                    if (user.getAvatarUrl() != null) {
-                        Picasso.get().load(user.getAvatarUrl()).into(holder.userImage);
-                    }
+
+            homeViewModel.GetUserById(post.getUserId(), user -> {
+                holder.userName.setText(user.getName());
+                if (user.getAvatarUrl() != null) {
+                    Picasso.get().load(user.getAvatarUrl()).into(holder.userImage);
                 }
             });
 
