@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
     MyAdapter adapter;
     TextView nameTv;
     CircleImageView avatarImv;
-    Button addPostBtn;
+//    Button addPostBtn;
 
     SwipeRefreshLayout swipeRefresh;
 
@@ -60,27 +60,24 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
-        //String userId = HomeFragmentArgs.fromBundle(getArguments()).getUserId();
         String userId = Model.instance.getConnectedUserId();
         Log.d("TAG13", "login:" + userId);
 
-        Model.instance.getUserById(userId, new Model.GetUserById() {
-            @Override
-            public void onComplete(User user) {
-                nameTv.setText("Hey, " + user.getName() + " \uD83D\uDC4B");
-                if (user.getAvatarUrl() != null) {
-                    Picasso.get().load(user.getAvatarUrl()).into(avatarImv);
-                }
+        homeViewModel.GetUserById(Model.instance.getConnectedUserId(), user -> {
+            homeViewModel.setUserData(user);
+            nameTv.setText("Hey, " + user.getName() + " \uD83D\uDC4B");
+            if (user.getAvatarUrl() != null) {
+                Picasso.get().load(user.getAvatarUrl()).into(avatarImv);
             }
         });
 
         nameTv = view.findViewById(R.id.home_username_tv);
         avatarImv = view.findViewById(R.id.home_user_img);
-        addPostBtn = view.findViewById(R.id.home_btn_add_post);
-
-        addPostBtn.setOnClickListener((v)->{
-            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_create_post);
-        });
+//        addPostBtn = view.findViewById(R.id.home_btn_add_post);
+//
+//        addPostBtn.setOnClickListener((v)->{
+//            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_create_post);
+//        });
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
         swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList());
@@ -181,13 +178,11 @@ public class HomeFragment extends Fragment {
             if (post.getImage() != null) {
                 Picasso.get().load(post.getImage()).into(holder.petImage);
             }
-            Model.instance.getUserById(post.getUserId(), new Model.GetUserById() {
-                @Override
-                public void onComplete(User user) {
-                    holder.userName.setText(user.getName());
-                    if (user.getAvatarUrl() != null) {
-                        Picasso.get().load(user.getAvatarUrl()).into(holder.userImage);
-                    }
+
+            homeViewModel.GetUserById(post.getUserId(), user -> {
+                holder.userName.setText(user.getName());
+                if (user.getAvatarUrl() != null) {
+                    Picasso.get().load(user.getAvatarUrl()).into(holder.userImage);
                 }
             });
 
@@ -244,7 +239,13 @@ public class HomeFragment extends Fragment {
 
             // firebaseAuth.signOut();
             return true;
-        } else {
+        }
+        else if (item.getItemId() == R.id.add_post) {
+            Log.d("TAG55", "logout...");
+            NavHostFragment.findNavController(HomeFragment.this).navigate(HomeFragmentDirections.actionNavHomeToNavCreatePost());
+            return true;
+        }
+        else {
             return super.onOptionsItemSelected(item);
 
         }
