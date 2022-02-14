@@ -17,15 +17,14 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="50dp"
         android:background="#FFFFFF"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize2Percent"
-        />
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize2Percent" />
 
     <ImageView
         android:id="@+id/login_imv"
@@ -59,38 +58,38 @@
 
     <EditText
         android:id="@+id/login_et_password"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_above="@id/login_et_password"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/edit_text_box"
         android:fontFamily="sans-serif"
         android:hint="Password"
         android:inputType="textPassword"
         android:padding="15dp"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="@+id/view4"
         app:layout_constraintTop_toBottomOf="@+id/login_et_email" />
 
     <EditText
         android:id="@+id/login_et_email"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_centerInParent="true"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/edit_text_box"
         android:fontFamily="sans-serif"
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:padding="15dp"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="@+id/view4"
         app:layout_constraintTop_toBottomOf="@+id/login_tv_subtitle" />
 
     <Button
@@ -104,9 +103,9 @@
         android:text="Login"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_wrong_message2" />
+        app:layout_constraintEnd_toEndOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="@+id/view4"
+        app:layout_constraintTop_toBottomOf="@+id/login_et_password" />
 
     <TextView
         android:id="@+id/login_tag2"
@@ -123,35 +122,6 @@
         app:layout_constraintEnd_toEndOf="@+id/view4"
         app:layout_constraintStart_toStartOf="@+id/view4"
         app:layout_constraintTop_toBottomOf="@+id/login_btn_login" />
-
-    <TextView
-        android:id="@+id/login_wrong_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif"
-        android:text="Sorry, your password or email were incorrect."
-        android:textColor="#A31717"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/view4"
-        app:layout_constraintStart_toStartOf="@+id/view4"
-        app:layout_constraintTop_toBottomOf="@+id/login_et_password" />
-
-    <TextView
-        android:id="@+id/login_wrong_message2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="sans-serif"
-        android:text="Please try again."
-        android:textColor="#A31717"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/view4"
-        app:layout_constraintStart_toStartOf="@+id/view4"
-        app:layout_constraintTop_toBottomOf="@+id/login_wrong_message" />
 
     <TextView
         android:id="@+id/login_register_page"
