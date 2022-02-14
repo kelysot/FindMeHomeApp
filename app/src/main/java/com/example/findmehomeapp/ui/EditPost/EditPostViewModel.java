@@ -19,6 +19,11 @@ public class EditPostViewModel extends ViewModel {
         Model.instance.savePost(post, listener);
     }
 
+    public void DeletePost(Model.DeletePostListener listener) {
+        Post post = data.getValue();
+        Model.instance.deletePost(post, listener);
+    }
+
     public void GetPostById(String postId, Model.GetPostById listener){
         Model.instance.getPostById(postId, listener);
     }
