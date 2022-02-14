@@ -2,13 +2,16 @@ package com.example.findmehomeapp.ui.EditPost;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -31,6 +34,7 @@ import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.ui.CreatePost.CreatePostFragmentDirections;
+import com.example.findmehomeapp.ui.EditProfile.EditProfileViewModel;
 import com.example.findmehomeapp.ui.Post.PostFragmentArgs;
 import com.example.findmehomeapp.ui.Post.PostFragmentDirections;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,9 +43,12 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 
 public class EditPostFragment extends Fragment {
+    private static final int REQUEST_CAMERA = 1;
+    private static final int REQUEST_GALLERY = 2;
+    
     FirebaseAuth firebaseAuth;
 
-    Post updatedPost;
+    EditPostViewModel viewModel;
 
     EditText petTextTv;
     ImageView petImage;
@@ -62,9 +69,11 @@ public class EditPostFragment extends Fragment {
     String location;
     String text;
 
-    private static final int REQUEST_CAMERA = 1;
-    private static final int REQUEST_GALLERY = 2;
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(EditPostViewModel.class);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -158,20 +167,20 @@ public class EditPostFragment extends Fragment {
             public void onClick(View v) {
                 // pet text
                 petTextTv = view.findViewById(R.id.edit_post_text);
-                updatedPost.setText(petTextTv.getText().toString());
+                viewModel.setText(petTextTv.getText().toString());
 
                 // Age
                 ageEt = view.findViewById(R.id.edit_post_age_et);
-                updatedPost.setAge(ageEt.getText().toString());
+                viewModel.setAge(ageEt.getText().toString());
 
-                updatedPost.setGender(gender);
-                updatedPost.setLocation(location);
-                updatedPost.setSize(size);
-                updatedPost.setType(type);
+                viewModel.setGender(gender);
+                viewModel.setLocation(location);
+                viewModel.setSize(size);
+                viewModel.setType(type);
 
                 if(imageBitmap != null){
                     Model.instance.saveImage(imageBitmap, userId + ".jpg", url -> {
-                        updatedPost.setImage(url);
+                        viewModel.setImage(url);
                         savePost();
                     });
                 } else {
@@ -180,36 +189,32 @@ public class EditPostFragment extends Fragment {
             }
         });
 
-        Model.instance.getPostById(postId, new Model.GetPostById() {
-            @Override
-            public void onComplete(Post post) {
-                //TODO: gender location size type
-                updatedPost = post;
-                if (post.getText()!= null) {
-                    petTextTv.setText(post.getText());
-                }
-                if (post.getAge() != null) {
-                    ageEt.setText(post.getAge());
-                }
-                if (post.getImage() != null){
-                    Picasso.get().load(post.getImage()).into(petImage);
-                }
-                if (post.getGender() != null) {
-                    int SpinnerPosition = adapterGender.getPosition(post.getGender());
-                    genderSpinner.setSelection(SpinnerPosition);
-                }
-                if (post.getType() != null) {
-                    int SpinnerPosition = adapterType.getPosition(post.getType());
-                    typeSpinner.setSelection(SpinnerPosition);
-                }
-                if (post.getLocation() != null) {
-                    int SpinnerPosition = adapterLocation.getPosition(post.getLocation());
-                    locationSpinner.setSelection(SpinnerPosition);
-                }
-                if (post.getSize() != null) {
-                    int SpinnerPosition = adapterSize.getPosition(post.getSize());
-                    sizeSpinner.setSelection(SpinnerPosition);
-                }
+        viewModel.GetPostById(postId, post -> {
+            viewModel.setData(post);
+            if (post.getText()!= null) {
+                petTextTv.setText(post.getText());
+            }
+            if (post.getAge() != null) {
+                ageEt.setText(post.getAge());
+            }
+            if (post.getImage() != null){
+                Picasso.get().load(post.getImage()).into(petImage);
+            }
+            if (post.getGender() != null) {
+                int SpinnerPosition = adapterGender.getPosition(post.getGender());
+                genderSpinner.setSelection(SpinnerPosition);
+            }
+            if (post.getType() != null) {
+                int SpinnerPosition = adapterType.getPosition(post.getType());
+                typeSpinner.setSelection(SpinnerPosition);
+            }
+            if (post.getLocation() != null) {
+                int SpinnerPosition = adapterLocation.getPosition(post.getLocation());
+                locationSpinner.setSelection(SpinnerPosition);
+            }
+            if (post.getSize() != null) {
+                int SpinnerPosition = adapterSize.getPosition(post.getSize());
+                sizeSpinner.setSelection(SpinnerPosition);
             }
         });
 
@@ -217,8 +222,7 @@ public class EditPostFragment extends Fragment {
     }
 
     private void savePost(){
-        Model.instance.savePost(updatedPost, () -> {
-            //TODO:navigate up
+        viewModel.EditPost(()-> {
             NavHostFragment.findNavController(this).navigateUp();
         });
     }
@@ -282,7 +286,6 @@ public class EditPostFragment extends Fragment {
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "Canceled", Toast.LENGTH_SHORT).show();
-
             }
         }
     }
