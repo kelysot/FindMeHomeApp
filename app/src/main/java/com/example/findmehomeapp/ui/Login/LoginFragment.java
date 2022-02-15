@@ -1,6 +1,9 @@
 package com.example.findmehomeapp.ui.Login;
 
+import static android.graphics.Color.rgb;
+
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,6 +26,7 @@ import android.widget.Toast;
 import com.example.findmehomeapp.Model.AppLocalDb;
 import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.User;
+import com.example.findmehomeapp.MyApplication;
 import com.example.findmehomeapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -69,6 +73,7 @@ public class LoginFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.login_progressBar);
         progressBar.setVisibility(View.GONE);
+        progressBar.getIndeterminateDrawable().setColorFilter(rgb(191,215,255), PorterDuff.Mode.MULTIPLY);
 
         registerTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,23 +100,41 @@ public class LoginFragment extends Fragment {
 
         if (email.isEmpty()) {
             emailEt.setError("Please enter your email.");
+            progressBar.setVisibility(View.GONE);
+            loginBtn.setEnabled(true);
+            registerTv.setEnabled(true);
         }
         else if(!email.contains("@") || !email.contains(".")){
             emailEt.setError("Please enter a valid email address.");
+            progressBar.setVisibility(View.GONE);
+            loginBtn.setEnabled(true);
+            registerTv.setEnabled(true);
         }
         else if (password.length() < 6) {
             passwordEt.setError("Password Length Must Be 6 or more Chars");
+            progressBar.setVisibility(View.GONE);
+            loginBtn.setEnabled(true);
+            registerTv.setEnabled(true);
         }
         else{
-            viewModel.Login(email, password, () ->{
-                viewModel.setData(email);
-                navController.navigate(R.id.action_global_nav_home);
+            viewModel.Login(email, password, new Model.LoginListener() {
+                @Override
+                public void onComplete() {
+                    viewModel.setData(email);
+                    navController.navigate(R.id.action_global_nav_home);
+                }
+                @Override
+                public void onFailure() {
+                    Toast.makeText(MyApplication.getContext(), "Sorry, your password or email were incorrect, please try again." , Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+                    loginBtn.setEnabled(true);
+                    registerTv.setEnabled(true);
+                }
             });
 
         }
 
-        progressBar.setVisibility(View.GONE);
-        loginBtn.setEnabled(true);
+
 
     }
 

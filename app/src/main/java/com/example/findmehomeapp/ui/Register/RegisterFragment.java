@@ -1,6 +1,7 @@
 package com.example.findmehomeapp.ui.Register;
 
 import static android.app.Activity.RESULT_OK;
+import static android.graphics.Color.rgb;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -36,6 +38,7 @@ import android.widget.Toast;
 
 import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.User;
+import com.example.findmehomeapp.MyApplication;
 import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.ui.Login.LoginViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -107,6 +110,7 @@ public class RegisterFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.register_progressBar);
         progressBar.setVisibility(View.GONE);
+        progressBar.getIndeterminateDrawable().setColorFilter(rgb(191,215,255), PorterDuff.Mode.MULTIPLY);
 
 
         genderSpinner = view.findViewById(R.id.register_gender_spinner);
@@ -217,6 +221,7 @@ public class RegisterFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         registerBtn.setEnabled(false);
         addPicture.setEnabled(false);
+        genderSpinner.setEnabled(false);
 
         String email = emailEt.getText().toString().trim().toLowerCase(Locale.ROOT);
         Log.d("TAG3", "user Id:" + email );
@@ -226,44 +231,82 @@ public class RegisterFragment extends Fragment {
 
         if (name.isEmpty()) {
             nameEt.setError("Please enter your full name.");
+            progressBar.setVisibility(View.GONE);
+            registerBtn.setEnabled(true);
+            addPicture.setEnabled(true);
+            genderSpinner.setEnabled(true);
         }
         else if (phone.isEmpty()) {
             phoneEt.setError("Please enter your phone number.");
+            progressBar.setVisibility(View.GONE);
+            registerBtn.setEnabled(true);
+            addPicture.setEnabled(true);
+            genderSpinner.setEnabled(true);
         }
         else if (email.isEmpty()) {
             emailEt.setError("Please enter your email address.");
+            progressBar.setVisibility(View.GONE);
+            registerBtn.setEnabled(true);
+            addPicture.setEnabled(true);
+            genderSpinner.setEnabled(true);
         }
         else if(!email.contains("@") || !email.contains(".")){
             emailEt.setError("Please enter a valid email address.");
+            progressBar.setVisibility(View.GONE);
+            registerBtn.setEnabled(true);
+            addPicture.setEnabled(true);
+            genderSpinner.setEnabled(true);
         }
         else if (password.length() < 6) {
             passwordEt.setError("Password length must be 6 or more chars.");
+            progressBar.setVisibility(View.GONE);
+            registerBtn.setEnabled(true);
+            addPicture.setEnabled(true);
+            genderSpinner.setEnabled(true);
         }
         else{
             flag = 1;
             User user = new User("0", name, phone, email, password, genderS, "true");
 
             if (imageBitmap == null) {
-                viewModel.Register(user, newUser -> {
-                    viewModel.setData(newUser);
-                    navController.navigate(R.id.action_global_nav_home);
+                viewModel.Register(user, new Model.AddUserListener() {
+                    @Override
+                    public void onComplete(User user) {
+                        viewModel.setData(user);
+                        navController.navigate(R.id.action_global_nav_home);
+                    }
+                    @Override
+                    public void onFailure() {
+                        progressBar.setVisibility(View.GONE);
+                        registerBtn.setEnabled(true);
+                        addPicture.setEnabled(true);
+                        genderSpinner.setEnabled(true);
+                    }
                 });
             }
             else {
                 Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
                     user.setAvatarUrl(url);
-                    viewModel.Register(user, newUser -> {
-                        viewModel.setData(newUser);
-                        navController.navigate(R.id.action_global_nav_home);
+                    viewModel.Register(user, new Model.AddUserListener() {
+                        @Override
+                        public void onComplete(User user) {
+                            viewModel.setData(user);
+                            navController.navigate(R.id.action_global_nav_home);
+                        }
+                        @Override
+                        public void onFailure() {
+                            progressBar.setVisibility(View.GONE);
+                            registerBtn.setEnabled(true);
+                            addPicture.setEnabled(true);
+                            genderSpinner.setEnabled(true);
+                        }
                     });
                 });
             }
 
         }
 
-        progressBar.setVisibility(View.GONE);
-        registerBtn.setEnabled(true);
-        addPicture.setEnabled(true);
+
 
     }
 }

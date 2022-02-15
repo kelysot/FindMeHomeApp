@@ -221,38 +221,58 @@ public class Model {
 
     public interface AddUserListener {
         void onComplete(User user);
+        void onFailure();
     }
 
     public void addUser(User user, AddUserListener listener) {
-        modelFirebase.addUser(user, listener);
+        modelFirebase.addUser(user, new AddUserListener() {
+            @Override
+            public void onComplete(User user) {
+                listener.onComplete(user);
+            }
+            @Override
+            public void onFailure() {
+                listener.onFailure();
+            }
+        });
+
         refreshUserList();
     }
 
     public interface LoginListener {
         void onComplete();
+        void onFailure();
     }
 
     public void login(String email, String password, LoginListener listener) {
-        modelFirebase.login(email, password, () -> {
-            // Log.d("TAG00", "login:" + email);
-            getUserByEmail(email, new Model.GetUserByEmail() {
-                @Override
-                public void onComplete(User user) {
-                    //   Log.d("TAG01", "login:");
-                    if (user.getConnected().equals("false")) {
-                        user.setConnected("true");
-                        Model.instance.editUser(user, new EditUserListener() {
-                            @Override
-                            public void onComplete() {
-                                refreshUserList();
+        modelFirebase.login(email, password, new LoginListener() {
+            @Override
+            public void onComplete() {
+                getUserByEmail(email, new Model.GetUserByEmail() {
+                    @Override
+                    public void onComplete(User user) {
+                        //   Log.d("TAG01", "login:");
+                        if (user.getConnected().equals("false")) {
+                            user.setConnected("true");
+                            Model.instance.editUser(user, new EditUserListener() {
+                                @Override
+                                public void onComplete() {
+                                    refreshUserList();
 
-                                listener.onComplete();
-                            }
-                        });
+                                    listener.onComplete();
+                                }
+                            });
+                        }
                     }
-                }
-            });
-        });
+                });
+            }
+            @Override
+            public void onFailure() {
+                listener.onFailure();
+            }
+        } );
+            // Log.d("TAG00", "login:" + email);
+
     }
 
     public interface LogoutListener {
