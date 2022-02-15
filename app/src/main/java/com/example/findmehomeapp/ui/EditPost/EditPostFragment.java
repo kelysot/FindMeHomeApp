@@ -1,11 +1,14 @@
 package com.example.findmehomeapp.ui.EditPost;
 
+import static android.graphics.Color.rgb;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +39,7 @@ import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.ui.CreatePost.CreatePostFragmentDirections;
+import com.example.findmehomeapp.ui.EditProfile.EditProfileFragment;
 import com.example.findmehomeapp.ui.EditProfile.EditProfileViewModel;
 import com.example.findmehomeapp.ui.Post.PostFragmentArgs;
 import com.example.findmehomeapp.ui.Post.PostFragmentDirections;
@@ -61,6 +66,7 @@ public class EditPostFragment extends Fragment {
     Button saveBtn;
     ImageButton deleteBtn;
     ImageView editImage;
+    ProgressBar progressBar;
 
     String userId;
     Bitmap imageBitmap;
@@ -162,6 +168,10 @@ public class EditPostFragment extends Fragment {
         ageEt = view.findViewById(R.id.edit_post_age_et);
         age = ageEt.getText().toString();
 
+        progressBar = view.findViewById(R.id.edit_post_progressBar);
+        progressBar.setVisibility(View.GONE);
+        progressBar.getIndeterminateDrawable().setColorFilter(rgb(191,215,255), PorterDuff.Mode.MULTIPLY);
+
         // create post btn
         saveBtn = view.findViewById(R.id.edit_post_btn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
@@ -232,12 +242,59 @@ public class EditPostFragment extends Fragment {
     }
 
     private void savePost(){
-        viewModel.EditPost(()-> {
-            NavHostFragment.findNavController(this).navigateUp();
-        });
+        progressBar.setVisibility(View.VISIBLE);
+        saveBtn.setEnabled(false);
+        typeSpinner.setEnabled(false);
+        sizeSpinner.setEnabled(false);
+        locationSpinner.setEnabled(false);
+        genderSpinner.setEnabled(false);
+        deleteBtn.setEnabled(false);
+        editImage.setEnabled(false);
+
+        String age = ageEt.getText().toString();
+
+        if (age.isEmpty()) {
+            ageEt.setError("Please enter your pet age.");
+            progressBar.setVisibility(View.GONE);
+            saveBtn.setEnabled(true);
+            typeSpinner.setEnabled(true);
+            sizeSpinner.setEnabled(true);
+            locationSpinner.setEnabled(true);
+            genderSpinner.setEnabled(true);
+            deleteBtn.setEnabled(true);
+            editImage.setEnabled(true);
+        }
+        else {
+            viewModel.EditPost(new Model.UpdatePostListener() {
+                @Override
+                public void onComplete() {
+                    NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
+                }
+                @Override
+                public void onFailure() {
+                    progressBar.setVisibility(View.GONE);
+                    saveBtn.setEnabled(true);
+                    typeSpinner.setEnabled(true);
+                    sizeSpinner.setEnabled(true);
+                    locationSpinner.setEnabled(true);
+                    genderSpinner.setEnabled(true);
+                    deleteBtn.setEnabled(true);
+                    editImage.setEnabled(true);
+                }
+            });
+        }
     }
 
     public void deletePost(){
+        progressBar.setVisibility(View.VISIBLE);
+        saveBtn.setEnabled(false);
+        typeSpinner.setEnabled(false);
+        sizeSpinner.setEnabled(false);
+        locationSpinner.setEnabled(false);
+        genderSpinner.setEnabled(false);
+        deleteBtn.setEnabled(false);
+        editImage.setEnabled(false);
+
         viewModel.DeletePost(() -> {
             NavHostFragment.findNavController(this).navigateUp();
         });

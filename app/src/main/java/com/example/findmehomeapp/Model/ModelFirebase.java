@@ -104,7 +104,7 @@ public class ModelFirebase {
                 .document(post.getId())
                 .set(json)
                 .addOnSuccessListener(unused -> listener.onComplete())
-                .addOnFailureListener(e -> listener.onComplete());
+                .addOnFailureListener(e -> listener.onFailure());
     }
 
     public interface DeletePostListener {

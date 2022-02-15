@@ -299,10 +299,21 @@ public class Model {
 
     public interface UpdatePostListener {
         void onComplete();
+        void onFailure();
     }
 
     public void savePost(Post post, UpdatePostListener listener) {
-        modelFirebase.savePost(post, listener);
+        modelFirebase.savePost(post, new UpdatePostListener() {
+            @Override
+            public void onComplete() {
+                listener.onComplete();
+            }
+
+            @Override
+            public void onFailure() {
+                listener.onFailure();
+            }
+        });
     }
 
     public interface DeletePostListener {
