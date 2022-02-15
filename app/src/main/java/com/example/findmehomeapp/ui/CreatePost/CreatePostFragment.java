@@ -2,6 +2,7 @@ package com.example.findmehomeapp.ui.CreatePost;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -31,6 +33,7 @@ import android.widget.Toast;
 import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.R;
+import com.example.findmehomeapp.ui.EditPost.EditPostViewModel;
 import com.example.findmehomeapp.ui.home.HomeFragmentDirections;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -40,20 +43,12 @@ public class CreatePostFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
 
+    CreatePostViewModel viewModel;
+
     EditText petTextEt;
     ImageView petImage;
     ImageView addImage;
-    ImageView userImage;
     Bitmap imageBitmap;
-
-    String userId;
-    String petText;
-    String type;
-    String age;
-    String size;
-    String gender;
-    String location;
-    String imageUrl;
 
     EditText ageEt;
     Spinner typeSpinner;
@@ -66,12 +61,20 @@ public class CreatePostFragment extends Fragment {
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_GALLERY = 2;
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(CreatePostViewModel.class);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_post, container, false);
+
         firebaseAuth = FirebaseAuth.getInstance();
-        userId = firebaseAuth.getCurrentUser().getUid();
+        Post post = new Post(firebaseAuth.getCurrentUser().getUid(), null, null, null, null, null, null, null);
+        viewModel.setData(post);
 
         petImage = view.findViewById(R.id.create_post_photo);
         addImage = view.findViewById(R.id.create_post_add_photo_btn);
@@ -91,7 +94,7 @@ public class CreatePostFragment extends Fragment {
         typeSpinner.setAdapter(adapterType);
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                type = parent.getItemAtPosition(position).toString();
+                viewModel.setType(parent.getItemAtPosition(position).toString());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -106,7 +109,7 @@ public class CreatePostFragment extends Fragment {
         sizeSpinner.setAdapter(adapterSize);
         sizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                size = parent.getItemAtPosition(position).toString();
+                viewModel.setSize(parent.getItemAtPosition(position).toString());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -121,7 +124,7 @@ public class CreatePostFragment extends Fragment {
         genderSpinner.setAdapter(adapterGender);
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                gender = parent.getItemAtPosition(position).toString();
+                viewModel.setGender(parent.getItemAtPosition(position).toString());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -136,7 +139,7 @@ public class CreatePostFragment extends Fragment {
         locationSpinner.setAdapter(adapterLocation);
         locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                location = parent.getItemAtPosition(position).toString();
+                viewModel.setLocation(parent.getItemAtPosition(position).toString());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -150,15 +153,15 @@ public class CreatePostFragment extends Fragment {
             public void onClick(View v) {
                 // pet text
                 petTextEt = view.findViewById(R.id.create_post_text);
-                petText = petTextEt.getText().toString();
+                viewModel.setText(petTextEt.getText().toString());
 
                 // Age
                 ageEt = view.findViewById(R.id.create_post_age_et);
-                age = ageEt.getText().toString();
+                viewModel.setAge(ageEt.getText().toString());
 
                 if(imageBitmap != null){
-                    Model.instance.saveImage(imageBitmap, userId + ".jpg", url -> {
-                        imageUrl = url;
+                    Model.instance.saveImage(imageBitmap, viewModel.getUserId() + ".jpg", url -> {
+                        viewModel.setImage(url);
                         savePost();
                     });
                 } else {
@@ -171,10 +174,9 @@ public class CreatePostFragment extends Fragment {
     }
 
     private void savePost(){
-        Post post = new Post(userId, petText, imageUrl, type, age, size, gender, location);
-
-        Model.instance.addPost(post, () -> {
+        viewModel.savePost(() -> {
             NavHostFragment.findNavController(this).navigateUp();
+
         });
     }
 
