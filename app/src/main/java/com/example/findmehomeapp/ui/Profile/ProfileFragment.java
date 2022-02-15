@@ -158,7 +158,6 @@ public class ProfileFragment extends Fragment {
         ImageView petImage;
         CircleImageView userImage;
         TextView userName;
-        ImageView editPost;
         TextView postTime;
 //        TextView idTv;
 //        CheckBox cb;
@@ -169,7 +168,6 @@ public class ProfileFragment extends Fragment {
             petImage = itemView.findViewById(R.id.post_pet_img);
             userImage = itemView.findViewById(R.id.post_user_img);
             userName = itemView.findViewById(R.id.post_user_name);
-            editPost = itemView.findViewById(R.id.post_edit_post);
             postTime = itemView.findViewById(R.id.post_time);
 //            idTv = itemView.findViewById(R.id.listrow_id_tv);
 //            cb = itemView.findViewById(R.id.listrow_cb);
@@ -221,17 +219,6 @@ public class ProfileFragment extends Fragment {
                 }
             });
 
-            if(!Model.instance.getConnectedUserId().equals(post.getUserId())){
-                holder.editPost.setVisibility(View.GONE);
-                holder.editPost.setEnabled(false);
-            }
-
-            holder.editPost.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Navigation.findNavController(v).navigate(ProfileFragmentDirections.actionNavProfileToNavEditPost(post.getId()));
-                }
-            });
         }
 
         @Override
