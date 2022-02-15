@@ -68,6 +68,7 @@ public class ModelFirebase {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(MyApplication.getContext(), "Sorry, your email already exists, please try another one." , Toast.LENGTH_LONG).show();
+                listener.onFailure();
             }
         });
     }
@@ -88,10 +89,11 @@ public class ModelFirebase {
                         }
 
                     }
-                }).addOnFailureListener(new OnFailureListener() {
+                })
+                .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(MyApplication.getContext(), "Sorry, your password or email were incorrect, please try again." , Toast.LENGTH_LONG).show();
+                        listener.onFailure();
                     }
                 });
     }
