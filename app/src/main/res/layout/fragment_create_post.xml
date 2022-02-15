@@ -7,7 +7,6 @@
     android:background="#E2FDFF"
     tools:context=".ui.CreatePost.CreatePostFragment">
 
-
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
@@ -334,5 +333,14 @@
         app:layout_constraintBottom_toBottomOf="@+id/create_post_photo"
         app:layout_constraintEnd_toEndOf="@+id/create_post_photo" />
 
+    <ProgressBar
+        android:id="@+id/create_post_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="86dp"
+        android:layout_height="78dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,11 +1,14 @@
 package com.example.findmehomeapp.ui.CreatePost;
 
+import static android.graphics.Color.rgb;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.media.Image;
 import android.os.Bundle;
 
@@ -27,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -55,6 +59,7 @@ public class CreatePostFragment extends Fragment {
     Spinner sizeSpinner;
     Spinner genderSpinner;
     Spinner locationSpinner;
+    ProgressBar progressBar;
 
     Button creteBtn;
 
@@ -146,6 +151,10 @@ public class CreatePostFragment extends Fragment {
             }
         });
 
+        progressBar = view.findViewById(R.id.create_post_progressBar);
+        progressBar.setVisibility(View.GONE);
+        progressBar.getIndeterminateDrawable().setColorFilter(rgb(191,215,255), PorterDuff.Mode.MULTIPLY);
+
         // create post btn
         creteBtn = view.findViewById(R.id.create_post_btn);
         creteBtn.setOnClickListener(new View.OnClickListener() {
@@ -174,10 +183,31 @@ public class CreatePostFragment extends Fragment {
     }
 
     private void savePost(){
-        viewModel.savePost(() -> {
-            NavHostFragment.findNavController(this).navigateUp();
+        progressBar.setVisibility(View.VISIBLE);
+        creteBtn.setEnabled(false);
+        addImage.setEnabled(false);
+        typeSpinner.setEnabled(false);
+        sizeSpinner.setEnabled(false);
+        locationSpinner.setEnabled(false);
+        genderSpinner.setEnabled(false);
 
-        });
+        String age = ageEt.getText().toString();
+
+        if (age.isEmpty()) {
+            ageEt.setError("Please enter your pet age.");
+            progressBar.setVisibility(View.GONE);
+            creteBtn.setEnabled(true);
+            typeSpinner.setEnabled(true);
+            sizeSpinner.setEnabled(true);
+            locationSpinner.setEnabled(true);
+            genderSpinner.setEnabled(true);
+
+        }
+        else {
+            viewModel.savePost(() -> {
+                NavHostFragment.findNavController(this).navigateUp();
+            });
+        }
     }
 
     private void showImagePickDialog() {
