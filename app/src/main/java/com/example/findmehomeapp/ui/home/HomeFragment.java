@@ -218,6 +218,11 @@ public class HomeFragment extends Fragment {
                                     NavHostFragment.findNavController(HomeFragment.this).navigate(HomeFragmentDirections.actionNavHomeToNavLogin());
                                 });
                             }
+
+                            @Override
+                            public void onFailure() {
+
+                            }
                         });
                     }
                 }

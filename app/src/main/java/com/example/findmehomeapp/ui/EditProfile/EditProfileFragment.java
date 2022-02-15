@@ -1,11 +1,14 @@
 package com.example.findmehomeapp.ui.EditProfile;
 
+import static android.graphics.Color.rgb;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -86,6 +89,7 @@ public class EditProfileFragment extends Fragment {
         phoneEt = view.findViewById(R.id.edit_profile_phone_number);
         progressBar = view.findViewById(R.id.edit_profile_progressBar);
         progressBar.setVisibility(View.GONE);
+        progressBar.getIndeterminateDrawable().setColorFilter(rgb(191,215,255), PorterDuff.Mode.MULTIPLY);
 
         genderSpinner = view.findViewById(R.id.edit_profile_gender_spinner);
         ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this.getContext(),
@@ -244,31 +248,60 @@ public class EditProfileFragment extends Fragment {
                 if(flag == 1){
                     user.setAvatarUrl(null);
                     Model.instance.deleteImage( viewModel.data.getValue().getEmail() + ".jpg", ()->{
-                        viewModel.EditUser(user, () -> {
-                            NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
+                        viewModel.EditUser(user, new Model.EditUserListener() {
+                            @Override
+                            public void onComplete() {
+                                NavHostFragment.findNavController(EditProfileFragment.this).navigate(R.id.action_global_nav_profile);
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                progressBar.setVisibility(View.GONE);
+                                saveBtn.setEnabled(true);
+                                addPicture.setEnabled(true);
+                                genderSpinner.setEnabled(true);
+                            }
                         });
                     });
                 }
                 else{
-                    viewModel.EditUser(user, () -> {
-                        NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
+                    viewModel.EditUser(user, new Model.EditUserListener() {
+                        @Override
+                        public void onComplete() {
+                            NavHostFragment.findNavController(EditProfileFragment.this).navigate(R.id.action_global_nav_profile);
+                        }
+
+                        @Override
+                        public void onFailure() {
+                            progressBar.setVisibility(View.GONE);
+                            saveBtn.setEnabled(true);
+                            addPicture.setEnabled(true);
+                            genderSpinner.setEnabled(true);
+                        }
                     });
                 }
             } else {
                 Model.instance.saveImage(imageBitmap,  viewModel.data.getValue().getEmail() + ".jpg", url -> {
                     user.setAvatarUrl(url);
-                    viewModel.EditUser(user, () -> {
-                        NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
+                    viewModel.EditUser(user, new Model.EditUserListener() {
+                        @Override
+                        public void onComplete() {
+                            NavHostFragment.findNavController(EditProfileFragment.this).navigate(R.id.action_global_nav_profile);
+                        }
+
+                        @Override
+                        public void onFailure() {
+                            progressBar.setVisibility(View.GONE);
+                            saveBtn.setEnabled(true);
+                            addPicture.setEnabled(true);
+                            genderSpinner.setEnabled(true);
+                        }
                     });
                 });
             }
-
         }
 
-        progressBar.setVisibility(View.GONE);
-        saveBtn.setEnabled(true);
-        addPicture.setEnabled(true);
-        genderSpinner.setEnabled(true);
+
 
     }
 
