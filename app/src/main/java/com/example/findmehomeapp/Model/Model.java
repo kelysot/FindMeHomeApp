@@ -261,6 +261,11 @@ public class Model {
 
                                     listener.onComplete();
                                 }
+
+                                @Override
+                                public void onFailure() {
+
+                                }
                             });
                         }
                     }
@@ -280,13 +285,8 @@ public class Model {
     }
 
     public void logout(LogoutListener listener) {
+        modelFirebase.logout(listener);
 
-
-        modelFirebase.logout(() -> {
-            listener.onComplete();
-        });
-
-        ;
     }
 
     public interface AddPostListener {
@@ -377,10 +377,21 @@ public class Model {
 
     public interface EditUserListener {
         void onComplete();
+        void onFailure();
     }
 
     public void editUser(User newUser, EditUserListener listener) {
-        modelFirebase.editUser(newUser, listener);
+        modelFirebase.editUser(newUser, new EditUserListener() {
+            @Override
+            public void onComplete() {
+                listener.onComplete();
+            }
+
+            @Override
+            public void onFailure() {
+                listener.onFailure();
+            }
+        });
     }
 
 //    public interface GetPostsByUserId {
