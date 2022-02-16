@@ -296,7 +296,7 @@ public class EditPostFragment extends Fragment {
         editImage.setEnabled(false);
 
         viewModel.DeletePost(() -> {
-            NavHostFragment.findNavController(this).navigateUp();
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
         });
     }
 
