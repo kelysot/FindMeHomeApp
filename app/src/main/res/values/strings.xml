@@ -47,4 +47,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="logout">Logout</string>
     <string name="add_post_menu">Add Post</string>
+    <string name="delete_post_edit_post">Delete Post</string>
 </resources>

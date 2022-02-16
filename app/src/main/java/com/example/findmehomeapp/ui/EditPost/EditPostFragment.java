@@ -21,6 +21,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,6 +46,8 @@ import com.example.findmehomeapp.ui.EditProfile.EditProfileFragment;
 import com.example.findmehomeapp.ui.EditProfile.EditProfileViewModel;
 import com.example.findmehomeapp.ui.Post.PostFragmentArgs;
 import com.example.findmehomeapp.ui.Post.PostFragmentDirections;
+import com.example.findmehomeapp.ui.home.HomeFragment;
+import com.example.findmehomeapp.ui.home.HomeFragmentDirections;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
@@ -64,7 +69,6 @@ public class EditPostFragment extends Fragment {
     Spinner genderSpinner;
     Spinner locationSpinner;
     Button saveBtn;
-    ImageButton deleteBtn;
     ImageView editImage;
     ProgressBar progressBar;
 
@@ -201,14 +205,6 @@ public class EditPostFragment extends Fragment {
             }
         });
 
-        deleteBtn = view.findViewById(R.id.edit_post_delete_btn);
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deletePost();
-            }
-        });
-
         viewModel.GetPostById(postId, post -> {
             viewModel.setData(post);
             if (post.getText()!= null) {
@@ -237,6 +233,7 @@ public class EditPostFragment extends Fragment {
                 sizeSpinner.setSelection(SpinnerPosition);
             }
         });
+        setHasOptionsMenu(true);
 
         return view;
     }
@@ -248,20 +245,20 @@ public class EditPostFragment extends Fragment {
         sizeSpinner.setEnabled(false);
         locationSpinner.setEnabled(false);
         genderSpinner.setEnabled(false);
-        deleteBtn.setEnabled(false);
         editImage.setEnabled(false);
+        setHasOptionsMenu(true);
 
         String age = ageEt.getText().toString();
 
         if (age.isEmpty()) {
             ageEt.setError("Please enter your pet age.");
             progressBar.setVisibility(View.GONE);
+            setHasOptionsMenu(false);
             saveBtn.setEnabled(true);
             typeSpinner.setEnabled(true);
             sizeSpinner.setEnabled(true);
             locationSpinner.setEnabled(true);
             genderSpinner.setEnabled(true);
-            deleteBtn.setEnabled(true);
             editImage.setEnabled(true);
         }
         else {
@@ -273,12 +270,12 @@ public class EditPostFragment extends Fragment {
                 @Override
                 public void onFailure() {
                     progressBar.setVisibility(View.GONE);
+                    setHasOptionsMenu(false);
                     saveBtn.setEnabled(true);
                     typeSpinner.setEnabled(true);
                     sizeSpinner.setEnabled(true);
                     locationSpinner.setEnabled(true);
                     genderSpinner.setEnabled(true);
-                    deleteBtn.setEnabled(true);
                     editImage.setEnabled(true);
                 }
             });
@@ -287,16 +284,16 @@ public class EditPostFragment extends Fragment {
 
     public void deletePost(){
         progressBar.setVisibility(View.VISIBLE);
+        setHasOptionsMenu(false);
         saveBtn.setEnabled(false);
         typeSpinner.setEnabled(false);
         sizeSpinner.setEnabled(false);
         locationSpinner.setEnabled(false);
         genderSpinner.setEnabled(false);
-        deleteBtn.setEnabled(false);
         editImage.setEnabled(false);
 
         viewModel.DeletePost(() -> {
-            NavHostFragment.findNavController(this).navigateUp();
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
         });
     }
 
@@ -360,6 +357,23 @@ public class EditPostFragment extends Fragment {
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "Canceled", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.edit_post_delete_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.delete_post) {
+            deletePost();
+            return true;
+        }
+        else {
+            return super.onOptionsItemSelected(item);
         }
     }
 }
