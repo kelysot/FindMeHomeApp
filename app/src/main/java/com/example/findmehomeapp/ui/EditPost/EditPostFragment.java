@@ -72,14 +72,7 @@ public class EditPostFragment extends Fragment {
     ImageView editImage;
     ProgressBar progressBar;
 
-    String userId;
     Bitmap imageBitmap;
-    String type;
-    String age;
-    String size;
-    String gender;
-    String location;
-    String text;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -90,13 +83,13 @@ public class EditPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         firebaseAuth = FirebaseAuth.getInstance();
-        userId = firebaseAuth.getCurrentUser().getUid();
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_post, container, false);
 
         String postId = PostFragmentArgs.fromBundle(getArguments()).getPostId();
 
+        ageEt = view.findViewById(R.id.edit_post_age_et);
         petTextTv = view.findViewById(R.id.edit_post_text);
         petImage = view.findViewById(R.id.edit_post_img);
         editImage = view.findViewById(R.id.edit_post_change_image);
@@ -116,7 +109,7 @@ public class EditPostFragment extends Fragment {
         typeSpinner.setAdapter(adapterType);
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                type = parent.getItemAtPosition(position).toString();
+                viewModel.setType(parent.getItemAtPosition(position).toString());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -131,7 +124,7 @@ public class EditPostFragment extends Fragment {
         sizeSpinner.setAdapter(adapterSize);
         sizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                size = parent.getItemAtPosition(position).toString();
+                viewModel.setSize(parent.getItemAtPosition(position).toString());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -146,7 +139,7 @@ public class EditPostFragment extends Fragment {
         genderSpinner.setAdapter(adapterGender);
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                gender = parent.getItemAtPosition(position).toString();
+                viewModel.setGender(parent.getItemAtPosition(position).toString());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -161,16 +154,12 @@ public class EditPostFragment extends Fragment {
         locationSpinner.setAdapter(adapterLocation);
         locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                location = parent.getItemAtPosition(position).toString();
+                viewModel.setLocation(parent.getItemAtPosition(position).toString());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-        // Age
-        ageEt = view.findViewById(R.id.edit_post_age_et);
-        age = ageEt.getText().toString();
 
         progressBar = view.findViewById(R.id.edit_post_progressBar);
         progressBar.setVisibility(View.GONE);
@@ -182,19 +171,13 @@ public class EditPostFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // pet text
-                petTextTv = view.findViewById(R.id.edit_post_text);
                 viewModel.setText(petTextTv.getText().toString());
 
                 // Age
-                ageEt = view.findViewById(R.id.edit_post_age_et);
                 viewModel.setAge(ageEt.getText().toString());
 
-                viewModel.setGender(gender);
-                viewModel.setLocation(location);
-                viewModel.setSize(size);
-                viewModel.setType(type);
-
                 if(imageBitmap != null){
+                    String userId = firebaseAuth.getCurrentUser().getUid();
                     Model.instance.saveImage(imageBitmap, userId + ".jpg", url -> {
                         viewModel.setImage(url);
                         savePost();
