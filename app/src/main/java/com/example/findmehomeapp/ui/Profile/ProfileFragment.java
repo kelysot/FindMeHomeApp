@@ -203,7 +203,12 @@ public class ProfileFragment extends Fragment {
         public void onBindViewHolder(@NonNull ProfileFragment.MyViewHolder holder, int position) {
             Post post = profileViewModel.getData().getValue().get(position);
             //TODO: set relevants from holder
-            holder.petTextTv.setText(post.getText());
+            if(post.getText().equals("")){
+                holder.petTextTv.setVisibility(View.GONE);
+            }
+            else {
+                holder.petTextTv.setText(post.getText());
+            }
 
             String timeAgo = TimeAgo.getTimeAgo(post.getUpdateDate());
             holder.postTime.setText(timeAgo);

@@ -168,7 +168,12 @@ public class HomeFragment extends Fragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             Post post = homeViewModel.getData().getValue().get(position);
             //TODO: set relevants from holder
-            holder.petTextTv.setText(post.getText());
+            if(post.getText().equals("")){
+                holder.petTextTv.setVisibility(View.GONE);
+            }
+            else {
+                holder.petTextTv.setText(post.getText());
+            }
 
             String timeAgo = TimeAgo.getTimeAgo(post.getUpdateDate());
             holder.postTime.setText(timeAgo);
