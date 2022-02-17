@@ -32,7 +32,6 @@
             android:layout_height="51dp"
             android:fontFamily="@font/akaya_telivigala_regular"
             android:text="change anything?"
-
             android:textColor="#000000"
             android:textSize="34sp"
             android:textStyle="bold"
