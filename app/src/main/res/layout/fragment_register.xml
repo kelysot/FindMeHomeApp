@@ -49,7 +49,7 @@
 
     <ImageView
         android:id="@+id/register_imv"
-        android:layout_width="182dp"
+        android:layout_width="190dp"
         android:layout_height="94dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -57,7 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view6"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/my_logo" />
 
 
     <TextView
