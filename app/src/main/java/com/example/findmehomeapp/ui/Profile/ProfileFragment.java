@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -17,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -48,8 +52,6 @@ public class ProfileFragment extends Fragment {
     TextView nameTv;
     TextView phoneTv;
     CircleImageView avatarImv;
-    Button addPostBtn;
-    Button editProfileBtn;
     RecyclerView postList;
 
     private ProfileViewModel profileViewModel;
@@ -128,23 +130,6 @@ public class ProfileFragment extends Fragment {
                 swipeRefresh.setRefreshing(false);
             }
         });
-
-        addPostBtn = view.findViewById(R.id.profile_btn_add_post);
-        editProfileBtn = view.findViewById(R.id.profile_btn_edit_profile);
-
-        if(Model.instance.getConnectedUserId().equals(userId)){
-            addPostBtn.setOnClickListener((v)->{
-                Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_create_post);
-            });
-
-            editProfileBtn.setOnClickListener((v)->{
-                Navigation.findNavController(v).navigate(R.id.action_nav_profile_to_nav_edit_profile);
-            });
-        }
-        else {
-            editProfileBtn.setVisibility(View.GONE);
-            addPostBtn.setVisibility(View.GONE);
-        }
 
         return view;
     }
@@ -234,4 +219,26 @@ public class ProfileFragment extends Fragment {
             return profileViewModel.getData().getValue().size();
         }
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.edit_profile_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.edit_profile_menu) {
+            NavHostFragment.findNavController(this).navigate(R.id.action_nav_profile_to_nav_edit_profile);
+            return true;
+        }
+        else if(item.getItemId() == R.id.profile_add_post_menu){
+            NavHostFragment.findNavController(this).navigate(R.id.action_nav_profile_to_nav_create_post);
+            return true;
+        }
+        else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

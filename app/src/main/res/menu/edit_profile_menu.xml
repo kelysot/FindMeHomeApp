@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/profile_add_post_menu"
+        android:icon="@drawable/add_post"
+        android:title="@string/add_post_menu"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/edit_profile_menu"
+        android:icon="@drawable/edit_profile"
+        android:title="@string/edit_profile_menu"
+        app:showAsAction="always"/>
+
+</menu>
