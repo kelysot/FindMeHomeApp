@@ -24,8 +24,8 @@ import java.util.concurrent.Executors;
 public class Model {
     public static final Model instance = new Model();
 
-    Executor executor = Executors.newFixedThreadPool(1);
-    Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
+    public Executor executor = Executors.newFixedThreadPool(1);
+    public Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
     FirebaseAuth firebaseAuth;
 
     public enum PostListLoadingState {
