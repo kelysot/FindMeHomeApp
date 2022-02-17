@@ -254,20 +254,20 @@ public class Model {
                         //   Log.d("TAG01", "login:");
                         if (user.getConnected().equals("false")) {
                             user.setConnected("true");
-                            Model.instance.editUser(user, new EditUserListener() {
-                                @Override
-                                public void onComplete() {
-                                    refreshUserList();
-
-                                    listener.onComplete();
-                                }
-
-                                @Override
-                                public void onFailure() {
-
-                                }
-                            });
                         }
+                        Model.instance.editUser(user, new EditUserListener() {
+                            @Override
+                            public void onComplete() {
+                                refreshUserList();
+
+                                listener.onComplete();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                listener.onFailure();
+                            }
+                        });
                     }
                 });
             }
