@@ -1,8 +1,11 @@
 package com.example.findmehomeapp.ui.Post;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -18,10 +21,13 @@ import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
+import com.example.findmehomeapp.ui.EditPost.EditPostViewModel;
 import com.example.findmehomeapp.ui.TimeAgo;
 import com.squareup.picasso.Picasso;
 
 public class PostFragment extends Fragment {
+
+    PostViewModel viewModel;
 
     ImageView profileImage;
     ImageButton editBtn;
@@ -40,6 +46,12 @@ public class PostFragment extends Fragment {
     TextView likesNumberTv;
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(PostViewModel.class);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -48,65 +60,63 @@ public class PostFragment extends Fragment {
         String postId = PostFragmentArgs.fromBundle(getArguments()).getPostId();
         Log.d("TAG33", "fb returned " + postId);
 
-        Model.instance.getPostById(postId, new Model.GetPostById() {
-            @Override
-            public void onComplete(Post post) {
+        viewModel.GetPostById(postId, post -> {
+            viewModel.setData(post);
 
-                String timeAgo = TimeAgo.getTimeAgo(post.getUpdateDate());
+            String timeAgo = TimeAgo.getTimeAgo(viewModel.getData().getUpdateDate());
 
-                postTimeTv.setText(timeAgo);
-                if(!post.getText().equals("")){
-                    petTextTv.setText(post.getText());
-                }
-                else {
-                    petTextTv.setVisibility(View.GONE);
-                }
-                if (post.getAge() != null) {
-                    petAge.setText("Age: " + post.getAge());
-                    petAge.setVisibility(View.VISIBLE);
-                }
-                if(post.getGender() != null){
-                    petGender.setText("Gender: "+post.getGender());
-                    petGender.setVisibility(View.VISIBLE);
-                }
-                if (post.getLocation() != null) {
-                    petLocation.setText("Location: " + post.getLocation());
-                    petLocation.setVisibility(View.VISIBLE);
-                }
-                if (post.getSize() != null) {
-                    petSize.setText("Size: " + post.getSize());
-                    petSize.setVisibility(View.VISIBLE);
-                }
-                if (post.getType() != null) {
-                    petType.setText("Type: " + post.getType());
-                    petType.setVisibility(View.VISIBLE);
-                }
-                if (post.getImage() != null){
-                    Picasso.get().load(post.getImage()).into(petImage);
-                }
-                Model.instance.getUserById(post.getUserId(), new Model.GetUserById() {
-                    @Override
-                    public void onComplete(User user) {
-                        Log.d("TAG111", "user Id:" + user.getId() );
-                        if (user.getAvatarUrl() != null) {
-                            Picasso.get().load(user.getAvatarUrl()).into(profileImage);
-                        }
-                        if (user.getName() != null) {
-                            usernameTv.setText(user.getName());
-                            ownerPhone.setText(user.getName() + "'s phone:");
-                        }
-                        ownerPhoneNum.setText(user.getPhone());
+            postTimeTv.setText(timeAgo);
+            if(!viewModel.getData().getText().equals("")){
+                petTextTv.setText(viewModel.getData().getText());
+            }
+            else {
+                petTextTv.setVisibility(View.GONE);
+            }
+            if (viewModel.getData().getAge() != null) {
+                petAge.setText("Age: " + viewModel.getData().getAge());
+                petAge.setVisibility(View.VISIBLE);
+            }
+            if(viewModel.getData().getGender() != null){
+                petGender.setText("Gender: "+viewModel.getData().getGender());
+                petGender.setVisibility(View.VISIBLE);
+            }
+            if (viewModel.getData().getLocation() != null) {
+                petLocation.setText("Location: " + viewModel.getData().getLocation());
+                petLocation.setVisibility(View.VISIBLE);
+            }
+            if (viewModel.getData().getSize() != null) {
+                petSize.setText("Size: " + viewModel.getData().getSize());
+                petSize.setVisibility(View.VISIBLE);
+            }
+            if (viewModel.getData().getType() != null) {
+                petType.setText("Type: " + viewModel.getData().getType());
+                petType.setVisibility(View.VISIBLE);
+            }
+            if (viewModel.getData().getImage() != null){
+                Picasso.get().load(viewModel.getData().getImage()).into(petImage);
+            }
+
+            Model.instance.getUserById(viewModel.getData().getUserId(), new Model.GetUserById() {
+                @Override
+                public void onComplete(User user) {
+                    Log.d("TAG111", "user Id:" + user.getId() );
+                    if (user.getAvatarUrl() != null) {
+                        Picasso.get().load(user.getAvatarUrl()).into(profileImage);
                     }
-                });
-
-                if(!Model.instance.getConnectedUserId().equals(post.getUserId())){
-                    editBtn.setVisibility(View.GONE);
+                    if (user.getName() != null) {
+                        usernameTv.setText(user.getName());
+                        ownerPhone.setText(user.getName() + "'s phone:");
+                    }
+                    ownerPhoneNum.setText(user.getPhone());
                 }
+            });
+
+            if(!Model.instance.getConnectedUserId().equals(viewModel.getData().getUserId())){
+                editBtn.setVisibility(View.GONE);
             }
         });
 
         usernameTv = view.findViewById(R.id.post_username_tv);
-        //TODO: age gender location size type
         postTimeTv = view.findViewById(R.id.post_post_time_tv);
         petTextTv = view.findViewById(R.id.post_pet_text_tv);
         profileImage = view.findViewById(R.id.post_user_img);
