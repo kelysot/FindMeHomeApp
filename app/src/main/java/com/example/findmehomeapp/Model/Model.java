@@ -378,6 +378,14 @@ public class Model {
         modelFirebase.saveImage(imageBitmap, imageName, listener);
     }
 
+    public interface SavePostImageListener {
+        void onComplete(String url);
+    }
+
+    public  void savePostImage(Bitmap imageBitmap, String imageName, SavePostImageListener listener) {
+        modelFirebase.savePostImage(imageBitmap, imageName, listener);
+    }
+
     public interface DeleteImageListener {
         void onComplete();
     }

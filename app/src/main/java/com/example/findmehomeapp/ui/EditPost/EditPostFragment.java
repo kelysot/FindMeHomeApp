@@ -184,7 +184,7 @@ public class EditPostFragment extends Fragment {
 
                 if(imageBitmap != null){
                     String userId = firebaseAuth.getCurrentUser().getUid();
-                    Model.instance.saveImage(imageBitmap, userId + ".jpg", url -> {
+                    Model.instance.savePostImage(imageBitmap, userId + ".jpg", url -> {
                         viewModel.setImage(url);
                         savePost();
                     });

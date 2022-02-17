@@ -165,7 +165,7 @@ public class CreatePostFragment extends Fragment {
                 viewModel.setAge(ageEt.getText().toString());
 
                 if(imageBitmap != null){
-                    Model.instance.saveImage(imageBitmap, viewModel.getUserId() + ".jpg", url -> {
+                    Model.instance.savePostImage(imageBitmap, viewModel.getUserId() + ".jpg", url -> {
                         viewModel.setImage(url);
                         savePost();
                     });
