@@ -239,7 +239,7 @@ public class EditProfileFragment extends Fragment {
            // saveBtn.setEnabled(true);
             viewModel.setGender(genderS);
             User user = new User(Model.instance.getConnectedUserId(), fullName, phone, viewModel.data.getValue().getEmail(),
-                    viewModel.data.getValue().getPassword(), viewModel.data.getValue().getGender(), "true");
+                    viewModel.data.getValue().getGender(), "true");
             user.setAvatarUrl(viewModel.data.getValue().getAvatarUrl());
 
             Log.d("TAG5e", "data returned " + user.getEmail());

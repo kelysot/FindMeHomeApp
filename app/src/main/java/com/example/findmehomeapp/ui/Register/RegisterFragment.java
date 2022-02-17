@@ -266,10 +266,10 @@ public class RegisterFragment extends Fragment {
         }
         else{
             flag = 1;
-            User user = new User("0", name, phone, email, password, genderS, "true");
+            User user = new User("0", name, phone, email, genderS, "true");
 
             if (imageBitmap == null) {
-                viewModel.Register(user, new Model.AddUserListener() {
+                viewModel.Register(user, password, new Model.AddUserListener() {
                     @Override
                     public void onComplete(User user) {
                         viewModel.setData(user);
@@ -287,7 +287,7 @@ public class RegisterFragment extends Fragment {
             else {
                 Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
                     user.setAvatarUrl(url);
-                    viewModel.Register(user, new Model.AddUserListener() {
+                    viewModel.Register(user, password, new Model.AddUserListener() {
                         @Override
                         public void onComplete(User user) {
                             viewModel.setData(user);

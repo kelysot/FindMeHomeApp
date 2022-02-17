@@ -14,8 +14,8 @@ public class RegisterViewModel extends ViewModel {
         data = new MutableLiveData<>();
     }
 
-    public void Register(User user, Model.AddUserListener listener){
-        Model.instance.addUser(user, listener);
+    public void Register(User user, String password,  Model.AddUserListener listener){
+        Model.instance.addUser(user, password, listener);
     }
 
     public void setData(User user){
