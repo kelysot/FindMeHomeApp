@@ -12,6 +12,10 @@
         <entry key="..\:/Users/shire/OneDrive/shirel/לימודים/שנה ד/אפליקציות למערכות הפעלה/finalProject/FindMeHomeApp/app/src/main/res/layout/fragment_register.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/shire/OneDrive/shirel/לימודים/שנה ד/אפליקציות למערכות הפעלה/finalProject/FindMeHomeApp/app/src/main/res/layout/post_list_row.xml" value="0.23072916666666668" />
         <entry key="app/src/main/res/drawable/ic_menu_edit_profile.xml" value="0.2911458333333333" />
+        <entry key="app/src/main/res/drawable/spinner_border.xml" value="0.2495" />
+        <entry key="app/src/main/res/font-v26/title.xml" value="0.30520833333333336" />
+        <entry key="app/src/main/res/font/dancing_script.xml" value="0.30520833333333336" />
+        <entry key="app/src/main/res/font/title.xml" value="0.30520833333333336" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1933876811594203" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.1933876811594203" />
         <entry key="app/src/main/res/layout/comment.xml" value="0.22327898550724637" />
@@ -32,6 +36,7 @@
         <entry key="app/src/main/res/layout/post_list_row.xml" value="0.335" />
         <entry key="app/src/main/res/layout/small_post.xml" value="0.22327898550724637" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.25" />
+        <entry key="app/src/main/res/menu/edit_post_delete_menu.xml" value="0.275" />
         <entry key="app/src/main/res/menu/home_logout_menu.xml" value="0.275" />
         <entry key="app/src/main/res/menu/main.xml" value="0.27291666666666664" />
       </map>

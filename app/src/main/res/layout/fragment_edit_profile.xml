@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.EditProfile.EditProfileFragment"
-    android:background="#E2FDFF">
+    android:background="@drawable/wall"
+    tools:context=".ui.EditProfile.EditProfileFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/view6"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="310dp"
+        android:layout_height="631dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="50dp"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#4AFFFFFF"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize2Percent"
-        />
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize2Percent" />
 
     <ImageView
         android:id="@+id/edit_profile_imv"
@@ -41,15 +43,15 @@
 
     <TextView
         android:id="@+id/edit_profile_tv_subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="188dp"
+        android:layout_height="48dp"
         android:layout_above="@id/edit_profile_user_imageView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:fontFamily="sans-serif"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/akaya_telivigala_regular"
         android:text="EDIT PROFILE"
         android:textColor="#1826A7"
-        android:textSize="25sp"
+        android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,82 +61,135 @@
         android:id="@+id/edit_profile_user_imageView"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:scaleType="centerCrop"
+        android:src="@drawable/user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile_tv_subtitle"
-        android:src="@drawable/user"/>
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_tv_subtitle" />
 
-    <EditText
-        android:id="@+id/edit_profile_et_name"
-        android:layout_width="0dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="80dp"
-        android:background="@drawable/edit_text_box"
-        android:fontFamily="sans-serif"
-        android:hint="Full Name"
-        android:inputType="textPersonName"
-        android:padding="15dp"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile_user_imageView" />
+    <!--    <EditText-->
+    <!--        android:id="@+id/edit_profile_et_name"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="47dp"-->
+    <!--        android:layout_marginStart="80dp"-->
+    <!--        android:layout_marginTop="16dp"-->
+    <!--        android:layout_marginEnd="80dp"-->
+    <!--        android:background="@drawable/edit_text_box"-->
+    <!--        android:fontFamily="sans-serif"-->
+    <!--        android:hint="Full Name"-->
+    <!--        android:inputType="textPersonName"-->
+    <!--        android:padding="15dp"-->
+    <!--        android:textSize="15sp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/edit_profile_user_imageView" />-->
 
-    <EditText
-        android:id="@+id/edit_profile_phone_number"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="80dp"
-        android:background="@drawable/edit_text_box"
-        android:fontFamily="sans-serif"
-        android:hint="Phone"
-        android:inputType="number|phone"
-        android:padding="15dp"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile_et_name" />
+    <!--    <EditText-->
+    <!--        android:id="@+id/edit_profile_phone_number"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_marginStart="80dp"-->
+    <!--        android:layout_marginTop="8dp"-->
+    <!--        android:layout_marginEnd="80dp"-->
+    <!--        android:background="@drawable/edit_text_box"-->
+    <!--        android:fontFamily="sans-serif"-->
+    <!--        android:hint="Phone"-->
+    <!--        android:inputType="number|phone"-->
+    <!--        android:padding="15dp"-->
+    <!--        android:textSize="15sp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/edit_profile_et_name" />-->
 
 
-    <Button
-        android:id="@+id/edit_profile_btn_register"
-        android:layout_width="165dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/blue_btn"
-        android:fontFamily="sans-serif"
-        android:text="SAVE"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/view6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/edit_profile_box"
+            android:layout_width="250dp"
+            android:layout_height="174dp"
+            android:layout_margin="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="@+id/view6"
+            app:layout_constraintHorizontal_bias="0.477"
+            app:layout_constraintStart_toStartOf="@+id/view6"
+            app:layout_constraintTop_toBottomOf="@+id/edit_profile_user_imageView">
 
-    <Spinner
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="Full Name"
+                android:paddingTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_profile_et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#D2F4F3F3"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    app:textInputLayoutFocusedRectEnabled="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="Phone Number"
+                android:paddingTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_profile_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#D2F4F3F3"
+                    android:inputType="phone"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <Button
+            android:id="@+id/edit_profile_btn_register"
+            android:layout_width="93dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/blue_btn"
+            android:fontFamily="sans-serif"
+            android:text="SAVE"
+            android:textColor="@android:color/white"
+            android:textColorHighlight="#FFFFFF"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/view6"
+            app:layout_constraintEnd_toEndOf="@+id/view6"
+            app:layout_constraintTop_toBottomOf="@+id/edit_profile_gender_spinner"
+            app:layout_constraintVertical_bias="0.238" />
+
+        <Spinner
         android:id="@+id/edit_profile_gender_spinner"
         android:layout_width="136dp"
         android:layout_height="42dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:drawable/btn_dropdown"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/spinner_border"
         android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toTopOf="@+id/edit_profile_btn_register"
         app:layout_constraintEnd_toEndOf="@+id/view6"
-        app:layout_constraintStart_toStartOf="@+id/view6" />
+        app:layout_constraintStart_toStartOf="@+id/view6"
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_box" />
 
     <ImageView
         android:id="@+id/edit_profile_add_pic_imv"
         android:layout_width="41dp"
         android:layout_height="46dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginStart="50dp"
         android:src="@drawable/add_photo"
-        app:layout_constraintBottom_toTopOf="@+id/edit_profile_et_name"
+        app:layout_constraintBottom_toTopOf="@+id/edit_profile_box"
         app:layout_constraintStart_toStartOf="@+id/edit_profile_user_imageView" />
 
     <ProgressBar
@@ -148,3 +203,4 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
