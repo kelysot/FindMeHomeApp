@@ -227,29 +227,24 @@ public class HomeFragment extends Fragment {
                 public void onComplete(User user) {
                     if (user.getConnected().equals("true")) {
                         user.setConnected("false");
-                        Model.instance.editUser(user, new Model.EditUserListener() {
-                            @Override
-                            public void onComplete() {
-                                Model.instance.logout(()->{
-                                    NavHostFragment.findNavController(HomeFragment.this).navigate(HomeFragmentDirections.actionNavHomeToNavLogin());
-                                });
-                            }
-
-                            @Override
-                            public void onFailure() {
-
-                            }
-                        });
                     }
+                    Model.instance.editUser(user, new Model.EditUserListener() {
+                        @Override
+                        public void onComplete() {
+                            Model.instance.logout(()->{
+                                NavHostFragment.findNavController(HomeFragment.this).navigate(HomeFragmentDirections.actionNavHomeToNavLogin());
+                            });
+                        }
+                        @Override
+                        public void onFailure() {
+                        }
+                    });
                 }
             });
 
-
-            // firebaseAuth.signOut();
             return true;
         }
         else if (item.getItemId() == R.id.add_post) {
-            Log.d("TAG55", "logout...");
             NavHostFragment.findNavController(HomeFragment.this).navigate(HomeFragmentDirections.actionNavHomeToNavCreatePost());
             return true;
         }
