@@ -60,46 +60,10 @@
         app:layout_constraintStart_toStartOf="@+id/view4"
         app:layout_constraintTop_toBottomOf="@+id/login_imv" />
 
-<!--    <EditText-->
-<!--        android:id="@+id/login_et_password"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_above="@id/login_et_password"-->
-<!--        android:layout_marginStart="30dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:layout_marginEnd="30dp"-->
-<!--        android:background="@drawable/edit_text_box"-->
-<!--        android:fontFamily="sans-serif"-->
-<!--        android:hint="Password"-->
-<!--        android:inputType="textPassword"-->
-<!--        android:padding="15dp"-->
-<!--        android:textSize="15sp"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/view4"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/view4"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/login_et_email" />-->
-
-    <!--    <EditText-->
-<!--        android:id="@+id/login_et_email"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_centerInParent="true"-->
-<!--        android:layout_marginStart="30dp"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:layout_marginEnd="30dp"-->
-<!--        android:background="@drawable/edit_text_box"-->
-<!--        android:fontFamily="sans-serif"-->
-<!--        android:hint="Email"-->
-<!--        android:inputType="textEmailAddress"-->
-<!--        android:padding="15dp"-->
-<!--        android:textSize="15sp"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/view4"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/view4"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/login_tv_subtitle" />-->
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/login_box"
         android:layout_width="250dp"
-        android:layout_height="174dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="@+id/view4"
@@ -175,23 +139,23 @@
         app:layout_constraintStart_toStartOf="@+id/view4"
         app:layout_constraintTop_toBottomOf="@+id/login_btn_login" />
 
-    <TextView
-        android:id="@+id/login_register_page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="55dp"
-        android:fontFamily="sans-serif"
-        android:text="LET\'S START!"
-        android:textColor="#1826A7"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/view4"
-        app:layout_constraintEnd_toEndOf="@+id/view4"
-        app:layout_constraintStart_toStartOf="@+id/view4"
-        app:layout_constraintTop_toBottomOf="@+id/login_tag2" />
+        <TextView
+            android:id="@+id/login_register_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="55dp"
+            android:fontFamily="sans-serif"
+            android:text="LET\'S START! 🤩"
+            android:textColor="#1826A7"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/view4"
+            app:layout_constraintEnd_toEndOf="@+id/view4"
+            app:layout_constraintStart_toStartOf="@+id/view4"
+            app:layout_constraintTop_toBottomOf="@+id/login_tag2" />
 
     <ProgressBar
         android:id="@+id/login_progressBar"
