@@ -106,7 +106,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/edit_profile_box"
             android:layout_width="250dp"
-            android:layout_height="174dp"
+            android:layout_height="wrap_content"
             android:layout_margin="30dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="0dp"
