@@ -48,4 +48,5 @@
     <string name="logout">Logout</string>
     <string name="add_post_menu">Add Post</string>
     <string name="delete_post_edit_post">Delete Post</string>
+    <string name="edit_profile_menu">Edit Profile</string>
 </resources>

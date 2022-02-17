@@ -37,6 +37,7 @@
         <entry key="app/src/main/res/layout/small_post.xml" value="0.22327898550724637" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.25" />
         <entry key="app/src/main/res/menu/edit_post_delete_menu.xml" value="0.275" />
+        <entry key="app/src/main/res/menu/edit_profile_menu.xml" value="0.275" />
         <entry key="app/src/main/res/menu/home_logout_menu.xml" value="0.275" />
         <entry key="app/src/main/res/menu/main.xml" value="0.27291666666666664" />
       </map>

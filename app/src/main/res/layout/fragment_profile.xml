@@ -4,41 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Profile.ProfileFragment"
-    android:background="#E2FDFF">
-
-    <Button
-        android:id="@+id/profile_btn_add_post"
-        android:layout_width="143dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/blue_btn"
-        android:fontFamily="sans-serif"
-        android:text="Add Post"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/profile_btn_edit_profile"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
-
-    <Button
-        android:id="@+id/profile_btn_edit_profile"
-        android:layout_width="143dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="50dp"
-        android:background="@drawable/blue_btn"
-        android:fontFamily="sans-serif"
-        android:text="Edit Profile"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+    android:background="@drawable/my_wall"
+    tools:context=".ui.Profile.ProfileFragment">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
         android:layout_width="133dp"
-        android:layout_height="120dp"
+        android:layout_height="100dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="32dp"
         android:scaleType="centerCrop"
@@ -75,27 +47,25 @@
         android:id="@+id/postslist_swiperefresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_btn_add_post"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/profile_image">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/profile_post_rv"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_btn_add_post" />
+            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
