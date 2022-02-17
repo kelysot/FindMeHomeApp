@@ -164,14 +164,7 @@ public class CreatePostFragment extends Fragment {
                 ageEt = view.findViewById(R.id.create_post_age_et);
                 viewModel.setAge(ageEt.getText().toString());
 
-                if(imageBitmap != null){
-                    Model.instance.savePostImage(imageBitmap, viewModel.getUserId() + ".jpg", url -> {
-                        viewModel.setImage(url);
-                        savePost();
-                    });
-                } else {
-                    savePost();
-                }
+                savePost();
             }
         });
 
@@ -200,6 +193,13 @@ public class CreatePostFragment extends Fragment {
 
         }
         else {
+            if(imageBitmap != null){
+                Model.instance.savePostImage(imageBitmap, viewModel.getUserId() + ".jpg", url -> {
+                    viewModel.setImage(url);
+                    viewModel.savePost(() -> {
+                        NavHostFragment.findNavController(this).navigateUp();
+                    });                });
+            }
             viewModel.savePost(() -> {
                 NavHostFragment.findNavController(this).navigateUp();
             });
