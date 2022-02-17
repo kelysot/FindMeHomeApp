@@ -1,5 +1,6 @@
 package com.example.findmehomeapp.ui.EditPost;
 
+import static android.graphics.Color.alpha;
 import static android.graphics.Color.rgb;
 
 import android.app.Activity;
@@ -71,6 +72,11 @@ public class EditPostFragment extends Fragment {
     Button saveBtn;
     ImageView editImage;
     ProgressBar progressBar;
+    String type;
+    String size;
+    String gender;
+    String location;
+
 
     Bitmap imageBitmap;
 
@@ -109,7 +115,7 @@ public class EditPostFragment extends Fragment {
         typeSpinner.setAdapter(adapterType);
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                viewModel.setType(parent.getItemAtPosition(position).toString());
+                 type = parent.getItemAtPosition(position).toString();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -124,7 +130,7 @@ public class EditPostFragment extends Fragment {
         sizeSpinner.setAdapter(adapterSize);
         sizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                viewModel.setSize(parent.getItemAtPosition(position).toString());
+                size = parent.getItemAtPosition(position).toString();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -139,7 +145,7 @@ public class EditPostFragment extends Fragment {
         genderSpinner.setAdapter(adapterGender);
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                viewModel.setGender(parent.getItemAtPosition(position).toString());
+                gender = parent.getItemAtPosition(position).toString();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -154,7 +160,7 @@ public class EditPostFragment extends Fragment {
         locationSpinner.setAdapter(adapterLocation);
         locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                viewModel.setLocation(parent.getItemAtPosition(position).toString());
+                location = parent.getItemAtPosition(position).toString();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -245,6 +251,11 @@ public class EditPostFragment extends Fragment {
             editImage.setEnabled(true);
         }
         else {
+            viewModel.setType(type);
+            viewModel.setGender(gender);
+            viewModel.setLocation(location);
+            viewModel.setSize(size);
+
             viewModel.EditPost(new Model.UpdatePostListener() {
                 @Override
                 public void onComplete() {
