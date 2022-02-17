@@ -33,6 +33,8 @@ public class PostFragment extends Fragment {
     TextView petSize;
     TextView petType;
     TextView petGender;
+    TextView ownerPhone;
+    TextView ownerPhoneNum;
     ImageView petImage;
     ImageView likeImg;
     TextView likesNumberTv;
@@ -44,6 +46,7 @@ public class PostFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_post, container, false);
 
         String postId = PostFragmentArgs.fromBundle(getArguments()).getPostId();
+        Log.d("TAG33", "fb returned " + postId);
 
         Model.instance.getPostById(postId, new Model.GetPostById() {
             @Override
@@ -52,7 +55,12 @@ public class PostFragment extends Fragment {
                 String timeAgo = TimeAgo.getTimeAgo(post.getUpdateDate());
 
                 postTimeTv.setText(timeAgo);
-                petTextTv.setText(post.getText());
+                if(!post.getText().equals("")){
+                    petTextTv.setText(post.getText());
+                }
+                else {
+                    petTextTv.setVisibility(View.GONE);
+                }
                 if (post.getAge() != null) {
                     petAge.setText("Age: " + post.getAge());
                     petAge.setVisibility(View.VISIBLE);
@@ -85,7 +93,9 @@ public class PostFragment extends Fragment {
                         }
                         if (user.getName() != null) {
                             usernameTv.setText(user.getName());
+                            ownerPhone.setText(user.getName() + "'s phone:");
                         }
+                        ownerPhoneNum.setText(user.getPhone());
                     }
                 });
 
@@ -107,8 +117,11 @@ public class PostFragment extends Fragment {
         petLocation = view.findViewById(R.id.post_location_tv);
         petSize = view.findViewById(R.id.post_size_tv);
         petType = view.findViewById(R.id.post_type_tv);
+        ownerPhone = view.findViewById(R.id.post_owner_details_phone);
+        ownerPhoneNum  = view.findViewById(R.id.post_owner_phone);
 
         editBtn.setOnClickListener((v)->{
+            Log.d("TAG33", "fb returned " + postId);
             Navigation.findNavController(v).navigate(PostFragmentDirections.actionNavPostToNavEditPost(postId));
         });
         return view;
