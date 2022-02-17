@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:orientation="vertical"
-    app:cardBackgroundColor="#FDFCFC"
+    app:cardBackgroundColor="#F2FDFCFC"
     app:cardCornerRadius="8dp"
     app:cardElevation="3dp"
     app:cardPreventCornerOverlap="true"
@@ -34,8 +34,8 @@
                 android:id="@+id/post_user_img"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleType="centerCrop"
                 android:layout_marginLeft="8dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/user" />
 
             <LinearLayout
@@ -79,8 +79,8 @@
             android:layout_height="150dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
             android:layout_marginEnd="30dp"
+            android:layout_marginBottom="16dp"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
