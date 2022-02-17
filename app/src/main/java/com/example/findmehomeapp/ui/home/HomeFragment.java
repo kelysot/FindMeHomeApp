@@ -27,14 +27,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.findmehomeapp.Model.Model;
-import com.example.findmehomeapp.Model.ModelFirebase;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
 //import com.example.findmehomeapp.databinding.FragmentHomeBinding;
 import com.example.findmehomeapp.ui.TimeAgo;
 import com.example.findmehomeapp.ui.Post.PostFragmentDirections;
-import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;

@@ -34,10 +34,6 @@ import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.ui.TimeAgo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.example.findmehomeapp.ui.Post.PostFragmentArgs;
 import com.example.findmehomeapp.ui.home.HomeFragment;
@@ -81,7 +77,6 @@ public class ProfileFragment extends Fragment {
         }
 
 //        String stId = ProfileFragmentArgs.fromBundle(getArguments()).getUserId();
-        //userId = firebaseAuth.getCurrentUser().getUid();
         Log.d("TAG1", "user Id:" + userId );
 
         profileViewModel.GetUserById(Model.instance.getConnectedUserId(), user -> {

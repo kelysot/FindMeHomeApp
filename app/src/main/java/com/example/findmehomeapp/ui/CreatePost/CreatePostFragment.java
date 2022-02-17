@@ -39,13 +39,10 @@ import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.ui.EditPost.EditPostViewModel;
 import com.example.findmehomeapp.ui.home.HomeFragmentDirections;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 
 public class CreatePostFragment extends Fragment {
-
-    FirebaseAuth firebaseAuth;
 
     CreatePostViewModel viewModel;
 
@@ -77,8 +74,7 @@ public class CreatePostFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_post, container, false);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        Post post = new Post(firebaseAuth.getCurrentUser().getUid(), null, null, null, null, null, null, null);
+        Post post = new Post(Model.instance.getConnectedUserId(), null, null, null, null, null, null, null);
         viewModel.setData(post);
 
         petImage = view.findViewById(R.id.create_post_photo);
