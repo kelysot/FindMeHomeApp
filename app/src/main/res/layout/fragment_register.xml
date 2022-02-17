@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wall"
+    android:background="@drawable/my_wall"
     android:orientation="vertical"
     app:circularflow_defaultRadius="20sp"
     tools:context=".ui.Register.RegisterFragment">

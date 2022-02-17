@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/wall"
+    android:background="@drawable/my_wall"
     tools:context=".ui.EditProfile.EditProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
