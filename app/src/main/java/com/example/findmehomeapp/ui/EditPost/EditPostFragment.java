@@ -182,15 +182,7 @@ public class EditPostFragment extends Fragment {
                 // Age
                 viewModel.setAge(ageEt.getText().toString());
 
-                if(imageBitmap != null){
-                    String userId = firebaseAuth.getCurrentUser().getUid();
-                    Model.instance.savePostImage(imageBitmap, userId + ".jpg", url -> {
-                        viewModel.setImage(url);
-                        savePost();
-                    });
-                } else {
-                    savePost();
-                }
+                savePost();
             }
         });
 
@@ -256,23 +248,50 @@ public class EditPostFragment extends Fragment {
             viewModel.setLocation(location);
             viewModel.setSize(size);
 
-            viewModel.EditPost(new Model.UpdatePostListener() {
-                @Override
-                public void onComplete() {
-                    NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
-                }
-                @Override
-                public void onFailure() {
-                    progressBar.setVisibility(View.GONE);
-                    setHasOptionsMenu(false);
-                    saveBtn.setEnabled(true);
-                    typeSpinner.setEnabled(true);
-                    sizeSpinner.setEnabled(true);
-                    locationSpinner.setEnabled(true);
-                    genderSpinner.setEnabled(true);
-                    editImage.setEnabled(true);
-                }
-            });
+            if(imageBitmap != null) {
+                String userId = Model.instance.getConnectedUserId();
+                Model.instance.savePostImage(imageBitmap, userId + ".jpg", url -> {
+                    viewModel.setImage(url);
+                    viewModel.EditPost(new Model.UpdatePostListener() {
+                        @Override
+                        public void onComplete() {
+                            NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
+                        }
+                        @Override
+                        public void onFailure() {
+                            progressBar.setVisibility(View.GONE);
+                            setHasOptionsMenu(false);
+                            saveBtn.setEnabled(true);
+                            typeSpinner.setEnabled(true);
+                            sizeSpinner.setEnabled(true);
+                            locationSpinner.setEnabled(true);
+                            genderSpinner.setEnabled(true);
+                            editImage.setEnabled(true);
+                        }
+                    });
+                });
+            }
+            else {
+                viewModel.EditPost(new Model.UpdatePostListener() {
+                    @Override
+                    public void onComplete() {
+                        NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
+                    }
+                    @Override
+                    public void onFailure() {
+                        progressBar.setVisibility(View.GONE);
+                        setHasOptionsMenu(false);
+                        saveBtn.setEnabled(true);
+                        typeSpinner.setEnabled(true);
+                        sizeSpinner.setEnabled(true);
+                        locationSpinner.setEnabled(true);
+                        genderSpinner.setEnabled(true);
+                        editImage.setEnabled(true);
+                    }
+                });
+            }
+
+
         }
     }
 
