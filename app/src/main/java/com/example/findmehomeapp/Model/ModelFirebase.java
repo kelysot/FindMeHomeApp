@@ -43,9 +43,9 @@ public class ModelFirebase {
         db.setFirestoreSettings(settings);
     }
 
-    public void addUser(User user, Model.AddUserListener listener) {
+    public void addUser(User user, String password, Model.AddUserListener listener) {
 
-        firebaseAuth.createUserWithEmailAndPassword(user.email, user.password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        firebaseAuth.createUserWithEmailAndPassword(user.email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 

@@ -19,7 +19,6 @@ public class User {
     String name = "";
     String phone = "";
     String email = "";
-    String password = "";
     String gender = "";
     Long updateDate = new Long(0);
     String avatarUrl = "";
@@ -27,12 +26,11 @@ public class User {
 
     public User(){} //for room
 
-    public User(String id, String name, String phone, String email, String password, String gender, String connected) {
+    public User(String id, String name, String phone, String email, String gender, String connected) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.password = password;
         this.gender = gender;
         this.avatarUrl = null;
         this.connected = connected;
@@ -64,7 +62,6 @@ public class User {
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", gender='" + gender + '\'' +
                 ", updateDate=" + updateDate +
                 ", avatarUrl='" + avatarUrl + '\'' +
@@ -103,14 +100,6 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getGender() {
         return gender;
     }
@@ -144,14 +133,13 @@ public class User {
         String name = (String) json.get("name");
         String phone = (String) json.get("phone");
         String email = (String) json.get("email");
-        String password = (String) json.get("password");
         String gender = (String) json.get("gender");
         String avatarUrl = (String) json.get("avatarUrl");
         String connected = (String) json.get("connected");
 
 //        Timestamp ts = (Timestamp)json.get("updateDate");
 //        Long updateDate = ts.getSeconds();
-        User user = new User(id, name,phone,email,password,gender,connected);
+        User user = new User(id, name,phone,email,gender,connected);
         user.setAvatarUrl(avatarUrl);
 
 //        user.setUpdateDate(updateDate);
@@ -164,7 +152,6 @@ public class User {
         json.put("name",name);
         json.put("phone",phone);
         json.put("email",email);
-        json.put("password",password);
         json.put("gender",gender);
         json.put("avatarUrl",avatarUrl);
         json.put("connected",connected);

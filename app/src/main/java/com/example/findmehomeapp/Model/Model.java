@@ -78,7 +78,7 @@ public class Model {
                     public void run() {
                         Long lud = new Long(0);
                         // TODO: delete this row
-//                        AppLocalDb.db.postDao().deleteAll();
+                        AppLocalDb.db.postDao().deleteAll();
                         Log.d("TAG", "fb returned " + list.size());
                         for (Post post : list) {
                             AppLocalDb.db.postDao().insertAll(post);
@@ -128,7 +128,7 @@ public class Model {
                     public void run() {
                         Long lud = new Long(0);
                         // TODO: delete this row
-//                        AppLocalDb.db.postDao().deleteAll();
+                        AppLocalDb.db.postDao().deleteAll();
                         Log.d("TAG", "fb returned " + list.size());
                         for (Post post : list) {
                             AppLocalDb.db.postDao().insertAll(post);
@@ -224,8 +224,8 @@ public class Model {
         void onFailure();
     }
 
-    public void addUser(User user, AddUserListener listener) {
-        modelFirebase.addUser(user, new AddUserListener() {
+    public void addUser(User user, String password, AddUserListener listener) {
+        modelFirebase.addUser(user, password, new AddUserListener() {
             @Override
             public void onComplete(User user) {
                 listener.onComplete(user);
