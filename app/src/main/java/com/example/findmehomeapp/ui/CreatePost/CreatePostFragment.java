@@ -199,10 +199,11 @@ public class CreatePostFragment extends Fragment {
                     viewModel.savePost(() -> {
                         NavHostFragment.findNavController(this).navigateUp();
                     });                });
+            } else {
+                viewModel.savePost(() -> {
+                    NavHostFragment.findNavController(this).navigateUp();
+                });
             }
-            viewModel.savePost(() -> {
-                NavHostFragment.findNavController(this).navigateUp();
-            });
         }
     }
 
