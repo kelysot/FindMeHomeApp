@@ -9,8 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +16,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -30,9 +27,7 @@ import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
-//import com.example.findmehomeapp.databinding.FragmentHomeBinding;
 import com.example.findmehomeapp.ui.TimeAgo;
-import com.example.findmehomeapp.ui.Post.PostFragmentDirections;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -43,7 +38,6 @@ public class HomeFragment extends Fragment {
     MyAdapter adapter;
     TextView nameTv;
     CircleImageView avatarImv;
-//    Button addPostBtn;
 
     SwipeRefreshLayout swipeRefresh;
 
@@ -69,9 +63,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
-        String userId = Model.instance.getConnectedUserId();
-        Log.d("TAG13", "login:" + userId);
-
         homeViewModel.GetUserById(Model.instance.getConnectedUserId(), user -> {
             homeViewModel.setUserData(user);
             nameTv.setText("Hey, " + user.getName() + " \uD83D\uDC4B");
@@ -82,11 +73,6 @@ public class HomeFragment extends Fragment {
 
         nameTv = view.findViewById(R.id.home_username_tv);
         avatarImv = view.findViewById(R.id.home_user_img);
-//        addPostBtn = view.findViewById(R.id.home_btn_add_post);
-//
-//        addPostBtn.setOnClickListener((v)->{
-//            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_create_post);
-//        });
 
         swipeRefresh = view.findViewById(R.id.postslist_swiperefresh);
         swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList());
@@ -130,7 +116,6 @@ public class HomeFragment extends Fragment {
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
-        //TODO: add heart
         TextView petTextTv;
         ImageView petImage;
         CircleImageView userImage;
@@ -176,7 +161,6 @@ public class HomeFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             Post post = homeViewModel.getData().getValue().get(position);
-            //TODO: set relevants from holder
             if(post.getText().equals("")){
                 holder.petTextTv.setVisibility(View.GONE);
             }
@@ -219,7 +203,6 @@ public class HomeFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.logout) {
-            Log.d("TAG55", "logout...");
             Model.instance.getUserById(Model.instance.getConnectedUserId(), new Model.GetUserById() {
                 @Override
                 public void onComplete(User user) {

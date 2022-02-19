@@ -51,12 +51,6 @@
         tools:layout="@layout/fragment_edit_profile" />
 
     <fragment
-        android:id="@+id/nav_filter"
-        android:name="com.example.findmehomeapp.ui.Filter.FilterFragment"
-        android:label="@string/menu_filter"
-        tools:layout="@layout/fragment_filter" />
-
-    <fragment
         android:id="@+id/nav_login"
         android:name="com.example.findmehomeapp.ui.Login.LoginFragment"
         android:label="@string/menu_login"
@@ -110,5 +104,6 @@
             android:defaultValue="@null" />
     </fragment>
     <action android:id="@+id/action_global_nav_home" app:destination="@id/nav_home" />
-    <action android:id="@+id/action_global_nav_profile" app:destination="@id/nav_profile" /><action android:id="@+id/action_global_nav_filter" app:destination="@id/nav_filter"/><action android:id="@+id/action_global_nav_login" app:destination="@id/nav_login"/>
+    <action android:id="@+id/action_global_nav_profile" app:destination="@id/nav_profile" />
+    <action android:id="@+id/action_global_nav_login" app:destination="@id/nav_login"/>
 </navigation>

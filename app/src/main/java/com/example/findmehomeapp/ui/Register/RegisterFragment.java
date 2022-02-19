@@ -1,28 +1,24 @@
 package com.example.findmehomeapp.ui.Register;
 
-import static android.app.Activity.RESULT_OK;
 import static android.graphics.Color.rgb;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,22 +34,9 @@ import android.widget.Toast;
 
 import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.User;
-import com.example.findmehomeapp.MyApplication;
 import com.example.findmehomeapp.R;
-import com.example.findmehomeapp.ui.Login.LoginViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -67,8 +50,6 @@ public class RegisterFragment extends Fragment {
     TextView goLoginTv;
     Spinner genderSpinner;
     Button registerBtn;
-    NavController navController;
-    String userid;
     String genderS;
     CircleImageView picture;
     ImageView addPicture;
@@ -92,7 +73,6 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
@@ -136,7 +116,6 @@ public class RegisterFragment extends Fragment {
         });
 
         registerBtn = view.findViewById(R.id.register_btn_register);
-        navController = Navigation.findNavController(view);
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +127,7 @@ public class RegisterFragment extends Fragment {
         goLoginTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.navigate(R.id.action_global_nav_login);
+                Navigation.findNavController(v).navigate(R.id.action_global_nav_login);
             }
         });
     }
@@ -196,7 +175,6 @@ public class RegisterFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 imageBitmap = (Bitmap) extras.get("data");
                 picture.setImageBitmap(imageBitmap);
-                Log.d("TAG33", "imageBitmap name:" + imageBitmap);
 
             }
         }
@@ -222,9 +200,13 @@ public class RegisterFragment extends Fragment {
         registerBtn.setEnabled(false);
         addPicture.setEnabled(false);
         genderSpinner.setEnabled(false);
+        nameEt.setEnabled(false);
+        phoneEt.setEnabled(false);
+        emailEt.setEnabled(false);
+        passwordEt.setEnabled(false);
+        goLoginTv.setEnabled(false);
 
         String email = emailEt.getText().toString().trim().toLowerCase(Locale.ROOT);
-        Log.d("TAG3", "user Id:" + email );
         String password = passwordEt.getText().toString().trim();
         String name = nameEt.getText().toString();
         String phone = phoneEt.getText().toString();
@@ -235,6 +217,12 @@ public class RegisterFragment extends Fragment {
             registerBtn.setEnabled(true);
             addPicture.setEnabled(true);
             genderSpinner.setEnabled(true);
+            nameEt.setEnabled(true);
+            phoneEt.setEnabled(true);
+            emailEt.setEnabled(true);
+            passwordEt.setEnabled(true);
+            goLoginTv.setEnabled(true);
+
         }
         else if (phone.isEmpty()) {
             phoneEt.setError("Please enter your phone number.");
@@ -242,6 +230,11 @@ public class RegisterFragment extends Fragment {
             registerBtn.setEnabled(true);
             addPicture.setEnabled(true);
             genderSpinner.setEnabled(true);
+            nameEt.setEnabled(true);
+            phoneEt.setEnabled(true);
+            emailEt.setEnabled(true);
+            passwordEt.setEnabled(true);
+            goLoginTv.setEnabled(true);
         }
         else if (email.isEmpty()) {
             emailEt.setError("Please enter your email address.");
@@ -249,6 +242,11 @@ public class RegisterFragment extends Fragment {
             registerBtn.setEnabled(true);
             addPicture.setEnabled(true);
             genderSpinner.setEnabled(true);
+            nameEt.setEnabled(true);
+            phoneEt.setEnabled(true);
+            emailEt.setEnabled(true);
+            passwordEt.setEnabled(true);
+            goLoginTv.setEnabled(true);
         }
         else if(!email.contains("@") || !email.contains(".")){
             emailEt.setError("Please enter a valid email address.");
@@ -256,6 +254,11 @@ public class RegisterFragment extends Fragment {
             registerBtn.setEnabled(true);
             addPicture.setEnabled(true);
             genderSpinner.setEnabled(true);
+            nameEt.setEnabled(true);
+            phoneEt.setEnabled(true);
+            emailEt.setEnabled(true);
+            passwordEt.setEnabled(true);
+            goLoginTv.setEnabled(true);
         }
         else if (password.length() < 6) {
             passwordEt.setError("Password length must be 6 or more chars.");
@@ -263,6 +266,11 @@ public class RegisterFragment extends Fragment {
             registerBtn.setEnabled(true);
             addPicture.setEnabled(true);
             genderSpinner.setEnabled(true);
+            nameEt.setEnabled(true);
+            phoneEt.setEnabled(true);
+            emailEt.setEnabled(true);
+            passwordEt.setEnabled(true);
+            goLoginTv.setEnabled(true);
         }
         else{
             flag = 1;
@@ -273,7 +281,7 @@ public class RegisterFragment extends Fragment {
                     @Override
                     public void onComplete(User user) {
                         viewModel.setData(user);
-                        navController.navigate(R.id.action_global_nav_home);
+                        NavHostFragment.findNavController(RegisterFragment.this).navigate(R.id.action_global_nav_home);
                     }
                     @Override
                     public void onFailure() {
@@ -281,6 +289,11 @@ public class RegisterFragment extends Fragment {
                         registerBtn.setEnabled(true);
                         addPicture.setEnabled(true);
                         genderSpinner.setEnabled(true);
+                        nameEt.setEnabled(true);
+                        phoneEt.setEnabled(true);
+                        emailEt.setEnabled(true);
+                        passwordEt.setEnabled(true);
+                        goLoginTv.setEnabled(true);
                     }
                 });
             }
@@ -291,7 +304,7 @@ public class RegisterFragment extends Fragment {
                         @Override
                         public void onComplete(User user) {
                             viewModel.setData(user);
-                            navController.navigate(R.id.action_global_nav_home);
+                            NavHostFragment.findNavController(RegisterFragment.this).navigate(R.id.action_global_nav_home);
                         }
                         @Override
                         public void onFailure() {
@@ -299,14 +312,15 @@ public class RegisterFragment extends Fragment {
                             registerBtn.setEnabled(true);
                             addPicture.setEnabled(true);
                             genderSpinner.setEnabled(true);
+                            nameEt.setEnabled(true);
+                            phoneEt.setEnabled(true);
+                            emailEt.setEnabled(true);
+                            passwordEt.setEnabled(true);
+                            goLoginTv.setEnabled(true);
                         }
                     });
                 });
             }
-
         }
-
-
-
     }
 }

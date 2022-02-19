@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,7 +99,6 @@ public class EditProfileFragment extends Fragment {
         genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 genderS = parent.getItemAtPosition(position).toString();
-                Log.d("TAG5", "data returned " + genderS);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -205,8 +203,6 @@ public class EditProfileFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 imageBitmap = (Bitmap) extras.get("data");
                 picture.setImageBitmap(imageBitmap);
-                Log.d("TAG33", "imageBitmap name:" + imageBitmap);
-
             }
         }
         if (requestCode == REQUEST_GALLERY) {
@@ -270,8 +266,6 @@ public class EditProfileFragment extends Fragment {
             User user = new User(Model.instance.getConnectedUserId(), fullName, phone, viewModel.data.getValue().getEmail(),
                     viewModel.data.getValue().getGender(), "true");
             user.setAvatarUrl(viewModel.data.getValue().getAvatarUrl());
-
-            Log.d("TAG5e", "data returned " + user.getEmail());
 
             if (imageBitmap == null) {
                 if(flag == 1 && flagPic == 0){

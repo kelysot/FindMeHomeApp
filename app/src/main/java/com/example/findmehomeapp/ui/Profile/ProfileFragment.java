@@ -48,7 +48,6 @@ public class ProfileFragment extends Fragment {
     TextView nameTv;
     TextView phoneTv;
     CircleImageView avatarImv;
-    RecyclerView postList;
 
     private ProfileViewModel profileViewModel;
     ProfileFragment.MyAdapter adapter;
@@ -68,20 +67,8 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        String userId = null;
-        if(ProfileFragmentArgs.fromBundle(getArguments()).getUserProfileId() == null){
-            userId = Model.instance.getConnectedUserId();
-        }
-        else {
-            userId = ProfileFragmentArgs.fromBundle(getArguments()).getUserProfileId();
-        }
-
-//        String stId = ProfileFragmentArgs.fromBundle(getArguments()).getUserId();
-        Log.d("TAG1", "user Id:" + userId );
-
         profileViewModel.GetUserById(Model.instance.getConnectedUserId(), user -> {
             profileViewModel.setUserData(user);
-            Log.d("TAG11", "user Id:" + profileViewModel.userData.getValue() );
             nameTv.setText(user.getName());
             phoneTv.setText(user.getPhone());
             if (user.getAvatarUrl() != null) {
@@ -139,8 +126,6 @@ public class ProfileFragment extends Fragment {
         CircleImageView userImage;
         TextView userName;
         TextView postTime;
-//        TextView idTv;
-//        CheckBox cb;
 
         public MyViewHolder(@NonNull View itemView, ProfileFragment.OnItemClickListener listener) {
             super(itemView);
@@ -149,8 +134,7 @@ public class ProfileFragment extends Fragment {
             userImage = itemView.findViewById(R.id.post_user_img);
             userName = itemView.findViewById(R.id.post_user_name);
             postTime = itemView.findViewById(R.id.post_time);
-//            idTv = itemView.findViewById(R.id.listrow_id_tv);
-//            cb = itemView.findViewById(R.id.listrow_cb);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -182,7 +166,7 @@ public class ProfileFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ProfileFragment.MyViewHolder holder, int position) {
             Post post = profileViewModel.getData().getValue().get(position);
-            //TODO: set relevants from holder
+
             if(post.getText().equals("")){
                 holder.petTextTv.setVisibility(View.GONE);
             }
