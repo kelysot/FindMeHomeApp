@@ -301,6 +301,7 @@
             android:ems="10"
             android:hint="Write here about your pet..."
             android:inputType="textMultiLine"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/create_post_divider"
             app:layout_constraintEnd_toEndOf="@+id/view3"
             app:layout_constraintStart_toStartOf="@+id/view3"

@@ -265,10 +265,10 @@ public class EditPostFragment extends Fragment {
             viewModel.setGender(gender);
             viewModel.setLocation(location);
             viewModel.setSize(size);
-            String userId = Model.instance.getConnectedUserId();
+            String postId = viewModel.data.getValue().getId();
 
             if (imageBitmap != null) {
-                Model.instance.savePostImage(imageBitmap, userId + ".jpg", url -> {
+                Model.instance.savePostImage(imageBitmap, postId + ".jpg", url -> {
                     viewModel.setImage(url);
                     viewModel.EditPost(new Model.UpdatePostListener() {
                         @Override

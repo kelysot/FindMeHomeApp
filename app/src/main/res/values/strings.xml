@@ -39,8 +39,8 @@
     </string-array>
 
     <string-array name="gender">
-        <item>Woman</item>
-        <item>Man</item>
+        <item>Female</item>
+        <item>Male</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -220,7 +220,7 @@ public class CreatePostFragment extends Fragment {
             ageEt.setEnabled(true);
 
         } else {
-            Model.instance.savePostImage(imageBitmap, viewModel.getUserId() + ".jpg", url -> {
+            Model.instance.savePostImage(imageBitmap, viewModel.getPostId() + ".jpg", url -> {
                 viewModel.setImage(url);
                 viewModel.savePost(() -> {
                     NavHostFragment.findNavController(this).navigateUp();

@@ -2,7 +2,6 @@ package com.example.findmehomeapp.ui.home;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -163,6 +162,7 @@ public class HomeFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             Post post = homeViewModel.getData().getValue().get(position);
+
             if (post.getText().equals("")) {
                 holder.petTextTv.setVisibility(View.GONE);
             } else {

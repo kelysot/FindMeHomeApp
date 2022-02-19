@@ -105,14 +105,15 @@
             android:id="@+id/post_age_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
             android:text="TextView"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
             android:visibility="visible"
-            app:layout_constraintStart_toEndOf="@+id/post_gender_tv"
-            app:layout_constraintTop_toTopOf="@+id/post_gender_tv" />
+            app:layout_constraintStart_toStartOf="@+id/view5"
+            app:layout_constraintTop_toBottomOf="@+id/post_pet_detalies_tv" />
 
         <TextView
             android:id="@+id/post_gender_tv"
@@ -124,20 +125,21 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:visibility="visible"
-            app:layout_constraintStart_toStartOf="@+id/post_type_tv"
-            app:layout_constraintTop_toBottomOf="@+id/post_type_tv" />
+            app:layout_constraintStart_toStartOf="@+id/post_age_tv"
+            app:layout_constraintTop_toBottomOf="@+id/post_age_tv" />
 
         <TextView
             android:id="@+id/post_size_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
             android:text="TextView"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
             android:visibility="visible"
-            app:layout_constraintStart_toStartOf="@+id/post_age_tv"
-            app:layout_constraintTop_toTopOf="@+id/post_type_tv" />
+            app:layout_constraintStart_toEndOf="@+id/post_age_tv"
+            app:layout_constraintTop_toTopOf="@+id/post_age_tv" />
 
         <TextView
             android:id="@+id/post_location_tv"
@@ -156,15 +158,14 @@
             android:id="@+id/post_type_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="TextView"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
             android:visibility="visible"
-            app:layout_constraintStart_toStartOf="@+id/view5"
-            app:layout_constraintTop_toBottomOf="@+id/post_pet_detalies_tv" />
+            app:layout_constraintStart_toStartOf="@+id/post_size_tv"
+            app:layout_constraintTop_toBottomOf="@+id/post_size_tv" />
 
         <TextView
             android:id="@+id/post_owner_phone"

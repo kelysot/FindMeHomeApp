@@ -201,6 +201,7 @@
             android:layout_width="41dp"
             android:layout_height="46dp"
             android:layout_marginStart="50dp"
+            android:layout_marginBottom="-10dp"
             android:src="@drawable/add_photo"
             app:layout_constraintBottom_toTopOf="@+id/register_box"
             app:layout_constraintStart_toStartOf="@+id/register_user_imageView" />

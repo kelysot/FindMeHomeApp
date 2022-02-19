@@ -34,6 +34,10 @@ public class CreatePostViewModel extends ViewModel {
         return data.getValue().getUserId();
     }
 
+    public String getPostId() {
+        return data.getValue().getId();
+    }
+
     public void setText(String text) {
         data.getValue().setText(text);
     }

@@ -233,10 +233,10 @@ public class EditProfileFragment extends Fragment {
         viewModel.GetUserById(user -> {
             viewModel.setGender(user.getGender());
             switch (viewModel.data.getValue().getGender()) {
-                case "Woman":
+                case "Female":
                     genderPos.set(0);
                     break;
-                case "Man":
+                case "Male":
                     genderPos.set(1);
                     break;
             }
