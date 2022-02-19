@@ -54,6 +54,7 @@ public class EditProfileFragment extends Fragment {
     ImageView addPicture;
     Bitmap imageBitmap;
     int flag = 0;
+    int flagPic = 0;
 
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_GALLERY = 2;
@@ -126,33 +127,59 @@ public class EditProfileFragment extends Fragment {
 
     private void showImagePickDialog() {
 
-        String[] items = {"Camera", "Gallery", "Delete Photo"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        viewModel.GetUserById(user -> {
+            if (user.getAvatarUrl() != null || flagPic == 1) {
+                String[] items = {"Camera", "Gallery", "Delete Photo"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setTitle("Choose an Option");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
+                builder.setTitle("Choose an Option");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
 
-                if (i == 0) {
-                    openCam();
-                }
+                        if (i == 0) {
+                            openCam();
+                        }
 
-                if (i == 1) {
-                    openGallery();
-                }
-                if (i == 2){
-                    deleteImage();
-                }
+                        if (i == 1) {
+                            openGallery();
+                        }
+                        if (i == 2){
+                            deleteImage();
+                        }
+                    }
+                });
+
+                builder.create().show();
+            }
+            else {
+                flagPic = 1;
+                String[] items = {"Camera", "Gallery"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                builder.setTitle("Choose an Option");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+
+                        if (i == 0) {
+                            openCam();
+                        }
+
+                        if (i == 1) {
+                            openGallery();
+                        }
+                    }
+                });
+
+                builder.create().show();
             }
         });
 
-        builder.create().show();
     }
 
     private void deleteImage() {
         imageBitmap = null;
-        //  if()
         picture.setImageBitmap(null);
         picture.setBackgroundResource(R.drawable.user);
         flag = 1;
@@ -225,6 +252,8 @@ public class EditProfileFragment extends Fragment {
         saveBtn.setEnabled(false);
         addPicture.setEnabled(false);
         genderSpinner.setEnabled(false);
+        nameEt.setEnabled(false);
+        phoneEt.setEnabled(false);
 
         String fullName = nameEt.getText().toString();
         String phone = phoneEt.getText().toString();
@@ -236,7 +265,7 @@ public class EditProfileFragment extends Fragment {
             phoneEt.setError("Please enter your phone number.");
         }
         else{
-           // saveBtn.setEnabled(true);
+            // saveBtn.setEnabled(true);
             viewModel.setGender(genderS);
             User user = new User(Model.instance.getConnectedUserId(), fullName, phone, viewModel.data.getValue().getEmail(),
                     viewModel.data.getValue().getGender(), "true");
@@ -245,7 +274,7 @@ public class EditProfileFragment extends Fragment {
             Log.d("TAG5e", "data returned " + user.getEmail());
 
             if (imageBitmap == null) {
-                if(flag == 1){
+                if(flag == 1 && flagPic == 0){
                     user.setAvatarUrl(null);
                     Model.instance.deleteImage( viewModel.data.getValue().getEmail() + ".jpg", ()->{
                         viewModel.EditUser(user, new Model.EditUserListener() {
@@ -260,6 +289,8 @@ public class EditProfileFragment extends Fragment {
                                 saveBtn.setEnabled(true);
                                 addPicture.setEnabled(true);
                                 genderSpinner.setEnabled(true);
+                                nameEt.setEnabled(true);
+                                phoneEt.setEnabled(true);
                             }
                         });
                     });
@@ -277,6 +308,8 @@ public class EditProfileFragment extends Fragment {
                             saveBtn.setEnabled(true);
                             addPicture.setEnabled(true);
                             genderSpinner.setEnabled(true);
+                            nameEt.setEnabled(true);
+                            phoneEt.setEnabled(true);
                         }
                     });
                 }
@@ -295,6 +328,8 @@ public class EditProfileFragment extends Fragment {
                             saveBtn.setEnabled(true);
                             addPicture.setEnabled(true);
                             genderSpinner.setEnabled(true);
+                            nameEt.setEnabled(true);
+                            phoneEt.setEnabled(true);
                         }
                     });
                 });
