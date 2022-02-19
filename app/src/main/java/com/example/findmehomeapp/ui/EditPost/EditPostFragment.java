@@ -76,7 +76,7 @@ public class EditPostFragment extends Fragment {
     int flag = 0;
     int flagPic = 0;
 
-
+    int requestCode;
     Bitmap imageBitmap;
 
     @Override
@@ -268,7 +268,9 @@ public class EditPostFragment extends Fragment {
 
             if (imageBitmap != null) {
                 Model.instance.savePostImage(imageBitmap, postId + ".jpg", url -> {
-                    saveImageToFile(imageBitmap, getLocalImageFileName(url));
+                    if (requestCode == REQUEST_CAMERA) {
+                        saveImageToFile(imageBitmap, getLocalImageFileName(url));
+                    }
                     viewModel.setImage(url);
                     viewModel.EditPost(new Model.UpdatePostListener() {
                         @Override
@@ -468,6 +470,7 @@ public class EditPostFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        this.requestCode = requestCode;
         if (requestCode == REQUEST_CAMERA) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle extras = data.getExtras();

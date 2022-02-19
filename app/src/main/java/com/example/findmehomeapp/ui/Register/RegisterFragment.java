@@ -61,6 +61,7 @@ public class RegisterFragment extends Fragment {
     String genderS;
     CircleImageView picture;
     ImageView addPicture;
+    int requestCode;
     Bitmap imageBitmap;
     ProgressBar progressBar;
     RegisterViewModel viewModel;
@@ -214,6 +215,7 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        this.requestCode = requestCode;
         if (requestCode == REQUEST_CAMERA) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle extras = data.getExtras();
@@ -362,7 +364,9 @@ public class RegisterFragment extends Fragment {
             } else {
                 Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
                     user.setAvatarUrl(url);
-                    saveImageToFile(imageBitmap, getLocalImageFileName(url));
+                    if (requestCode == REQUEST_CAMERA) {
+                        saveImageToFile(imageBitmap, getLocalImageFileName(url));
+                    }
                     viewModel.Register(user, password, new Model.AddUserListener() {
                         @Override
                         public void onComplete(User user) {

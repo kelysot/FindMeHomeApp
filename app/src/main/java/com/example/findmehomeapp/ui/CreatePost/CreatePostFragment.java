@@ -53,6 +53,7 @@ public class CreatePostFragment extends Fragment {
     EditText petTextEt;
     ImageView petImage;
     ImageView addImage;
+    int requestCode;
     Bitmap imageBitmap;
 
     EditText ageEt;
@@ -220,7 +221,9 @@ public class CreatePostFragment extends Fragment {
         } else {
             if (imageBitmap != null){
                 Model.instance.savePostImage(imageBitmap, viewModel.getPostId() + ".jpg", url -> {
-                    saveImageToFile(imageBitmap, getLocalImageFileName(url));
+                    if (requestCode == REQUEST_CAMERA) {
+                        saveImageToFile(imageBitmap, getLocalImageFileName(url));
+                    }
                     viewModel.setImage(url);
                     viewModel.savePost(() -> {
                         NavHostFragment.findNavController(this).navigateUp();
@@ -305,6 +308,7 @@ public class CreatePostFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        this.requestCode = requestCode;
         if (requestCode == REQUEST_CAMERA) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle extras = data.getExtras();
