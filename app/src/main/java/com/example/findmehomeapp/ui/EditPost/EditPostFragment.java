@@ -408,7 +408,7 @@ public class EditPostFragment extends Fragment {
     private void deleteImage() {
         imageBitmap = null;
         petImage.setImageBitmap(null);
-        petImage.setBackgroundResource(R.drawable.user);
+        petImage.setBackgroundResource(R.drawable.cat_dog_rabbit);
         flag = 1;
     }
 
