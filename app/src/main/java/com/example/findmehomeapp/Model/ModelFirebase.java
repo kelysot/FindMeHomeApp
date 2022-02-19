@@ -164,7 +164,7 @@ public class ModelFirebase {
     public void addPost(Post post, Model.AddPostListener listener) {
         Map<String, Object> json = post.toJson();
         db.collection(Post.COLLECTION_NAME)
-                .document()
+                .document(post.getId())
                 .set(json)
                 .addOnSuccessListener(unused -> listener.onComplete())
                 .addOnFailureListener(e -> listener.onComplete());
@@ -209,7 +209,6 @@ public class ModelFirebase {
     }
 
     public void getUserByEmail(String email, Model.GetUserByEmail listener) {
-        //Map<String, Object> json = recipe.toJson();
         db.collection(User.COLLECTION_NAME)
                 .whereEqualTo("email",email)
                 .get()

@@ -26,13 +26,6 @@ public class CreatePostViewModel extends ViewModel {
         data.getValue().setGender(gender);
     }
 
-    public void setUserId(String userId) {
-        data.getValue().setUserId(userId);
-    }
-
-    public String getUserId() {
-        return data.getValue().getUserId();
-    }
 
     public String getPostId() {
         return data.getValue().getId();

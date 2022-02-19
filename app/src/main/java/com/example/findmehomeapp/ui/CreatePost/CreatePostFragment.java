@@ -37,6 +37,7 @@ import com.example.findmehomeapp.MyApplication;
 import com.example.findmehomeapp.R;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class CreatePostFragment extends Fragment {
 
@@ -164,6 +165,8 @@ public class CreatePostFragment extends Fragment {
                 ageEt = view.findViewById(R.id.create_post_age_et);
                 viewModel.setAge(ageEt.getText().toString());
 
+                String id = UUID.randomUUID().toString();
+                viewModel.data.getValue().setId(id);
                 savePost();
             }
         });
@@ -218,15 +221,13 @@ public class CreatePostFragment extends Fragment {
             addImage.setEnabled(true);
             petTextEt.setEnabled(true);
             ageEt.setEnabled(true);
-
         } else {
-            Model.instance.savePostImage(imageBitmap, viewModel.getPostId() + ".jpg", url -> {
+            Model.instance.savePostImage(imageBitmap, viewModel.getPostId() + viewModel + ".jpg", url -> {
                 viewModel.setImage(url);
                 viewModel.savePost(() -> {
                     NavHostFragment.findNavController(this).navigateUp();
                 });
             });
-
         }
     }
 
@@ -239,11 +240,9 @@ public class CreatePostFragment extends Fragment {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
-
                 if (i == 0) {
                     openCam();
                 }
-
                 if (i == 1) {
                     openGallery();
                 }
