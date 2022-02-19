@@ -28,6 +28,15 @@ public class HomeViewModel extends ViewModel {
         Model.instance.getUserById(userId, listener);
     }
 
+    public void EditUser(User user, Model.EditUserListener listener) {
+        userData.setValue(user);
+        Model.instance.editUser(user, listener);
+    }
+
+    public String getConnectedUserId(){
+        return Model.instance.getConnectedUserId();
+    }
+
     public LiveData<List<Post>> getData() {
         return data;
     }

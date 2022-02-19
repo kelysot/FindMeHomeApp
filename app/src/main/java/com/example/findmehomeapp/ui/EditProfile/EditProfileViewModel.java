@@ -24,6 +24,10 @@ public class EditProfileViewModel extends ViewModel {
         Model.instance.getUserById(Model.instance.getConnectedUserId(), listener);
     }
 
+    public String getConnectedUserId(){
+        return Model.instance.getConnectedUserId();
+    }
+
     public void setData(User user) {
         data.setValue(user);
     }

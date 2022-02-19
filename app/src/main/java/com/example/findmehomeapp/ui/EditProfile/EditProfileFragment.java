@@ -331,7 +331,7 @@ public class EditProfileFragment extends Fragment {
         } else {
             // saveBtn.setEnabled(true);
             viewModel.setGender(genderS);
-            User user = new User(Model.instance.getConnectedUserId(), fullName, phone, viewModel.data.getValue().getEmail(),
+            User user = new User(viewModel.getConnectedUserId() , fullName, phone, viewModel.data.getValue().getEmail(),
                     viewModel.data.getValue().getGender(), "true");
             user.setAvatarUrl(viewModel.data.getValue().getAvatarUrl());
 
