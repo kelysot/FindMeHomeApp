@@ -10,15 +10,15 @@ public class RegisterViewModel extends ViewModel {
 
     MutableLiveData<User> data;
 
-    public RegisterViewModel(){
+    public RegisterViewModel() {
         data = new MutableLiveData<>();
     }
 
-    public void Register(User user, String password,  Model.AddUserListener listener){
+    public void Register(User user, String password, Model.AddUserListener listener) {
         Model.instance.addUser(user, password, listener);
     }
 
-    public void setData(User user){
+    public void setData(User user) {
         data.setValue(user);
     }
 }

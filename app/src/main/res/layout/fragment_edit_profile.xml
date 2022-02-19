@@ -1,107 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/my_wall"
+    android:orientation="vertical"
     tools:context=".ui.EditProfile.EditProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/view6"
-        android:layout_width="310dp"
-        android:layout_height="631dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="50dp"
-        android:background="#4AFFFFFF"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize2Percent" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/view6"
+            android:layout_width="310dp"
+            android:layout_height="631dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="50dp"
+            android:background="#4AFFFFFF"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize2Percent" />
 
-    <ImageView
-        android:id="@+id/edit_profile_imv"
-        android:layout_width="192dp"
-        android:layout_height="120dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view6"
-        app:srcCompat="@drawable/my_logo" />
+        <ImageView
+            android:id="@+id/edit_profile_imv"
+            android:layout_width="192dp"
+            android:layout_height="120dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/view6"
+            app:srcCompat="@drawable/my_logo" />
 
 
-    <TextView
-        android:id="@+id/edit_profile_tv_subtitle"
-        android:layout_width="188dp"
-        android:layout_height="48dp"
-        android:layout_above="@id/edit_profile_user_imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/akaya_telivigala_regular"
-        android:text="EDIT PROFILE"
-        android:textColor="#1826A7"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile_imv" />
+        <TextView
+            android:id="@+id/edit_profile_tv_subtitle"
+            android:layout_width="188dp"
+            android:layout_height="48dp"
+            android:layout_above="@id/edit_profile_user_imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/akaya_telivigala_regular"
+            android:text="EDIT PROFILE"
+            android:textColor="#1826A7"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_profile_imv" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/edit_profile_user_imageView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/user"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile_tv_subtitle" />
-
-    <!--    <EditText-->
-    <!--        android:id="@+id/edit_profile_et_name"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="47dp"-->
-    <!--        android:layout_marginStart="80dp"-->
-    <!--        android:layout_marginTop="16dp"-->
-    <!--        android:layout_marginEnd="80dp"-->
-    <!--        android:background="@drawable/edit_text_box"-->
-    <!--        android:fontFamily="sans-serif"-->
-    <!--        android:hint="Full Name"-->
-    <!--        android:inputType="textPersonName"-->
-    <!--        android:padding="15dp"-->
-    <!--        android:textSize="15sp"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/edit_profile_user_imageView" />-->
-
-    <!--    <EditText-->
-    <!--        android:id="@+id/edit_profile_phone_number"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_marginStart="80dp"-->
-    <!--        android:layout_marginTop="8dp"-->
-    <!--        android:layout_marginEnd="80dp"-->
-    <!--        android:background="@drawable/edit_text_box"-->
-    <!--        android:fontFamily="sans-serif"-->
-    <!--        android:hint="Phone"-->
-    <!--        android:inputType="number|phone"-->
-    <!--        android:padding="15dp"-->
-    <!--        android:textSize="15sp"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/edit_profile_et_name" />-->
-
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/edit_profile_user_imageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/user"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_profile_tv_subtitle" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/edit_profile_box"
@@ -172,35 +136,35 @@
             app:layout_constraintVertical_bias="0.238" />
 
         <Spinner
-        android:id="@+id/edit_profile_gender_spinner"
-        android:layout_width="136dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/spinner_border"
-        android:spinnerMode="dropdown"
-        app:layout_constraintEnd_toEndOf="@+id/view6"
-        app:layout_constraintStart_toStartOf="@+id/view6"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile_box" />
+            android:id="@+id/edit_profile_gender_spinner"
+            android:layout_width="136dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/spinner_border"
+            android:spinnerMode="dropdown"
+            app:layout_constraintEnd_toEndOf="@+id/view6"
+            app:layout_constraintStart_toStartOf="@+id/view6"
+            app:layout_constraintTop_toBottomOf="@+id/edit_profile_box" />
 
-    <ImageView
-        android:id="@+id/edit_profile_add_pic_imv"
-        android:layout_width="41dp"
-        android:layout_height="46dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="50dp"
-        android:src="@drawable/add_photo"
-        app:layout_constraintBottom_toTopOf="@+id/edit_profile_box"
-        app:layout_constraintStart_toStartOf="@+id/edit_profile_user_imageView" />
+        <ImageView
+            android:id="@+id/edit_profile_add_pic_imv"
+            android:layout_width="41dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/add_photo"
+            app:layout_constraintBottom_toTopOf="@+id/edit_profile_box"
+            app:layout_constraintStart_toStartOf="@+id/edit_profile_user_imageView" />
 
-    <ProgressBar
-        android:id="@+id/edit_profile_progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="86dp"
-        android:layout_height="78dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ProgressBar
+            android:id="@+id/edit_profile_progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="86dp"
+            android:layout_height="78dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

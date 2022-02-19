@@ -60,7 +60,8 @@ public class EditProfileFragment extends Fragment {
     ProgressBar progressBar;
 
 
-    public EditProfileFragment() {}
+    public EditProfileFragment() {
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -89,7 +90,7 @@ public class EditProfileFragment extends Fragment {
         phoneEt = view.findViewById(R.id.edit_profile_phone_number);
         progressBar = view.findViewById(R.id.edit_profile_progressBar);
         progressBar.setVisibility(View.GONE);
-        progressBar.getIndeterminateDrawable().setColorFilter(rgb(191,215,255), PorterDuff.Mode.MULTIPLY);
+        progressBar.getIndeterminateDrawable().setColorFilter(rgb(191, 215, 255), PorterDuff.Mode.MULTIPLY);
 
         genderSpinner = view.findViewById(R.id.edit_profile_gender_spinner);
         ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this.getContext(),
@@ -100,6 +101,7 @@ public class EditProfileFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 genderS = parent.getItemAtPosition(position).toString();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -142,15 +144,14 @@ public class EditProfileFragment extends Fragment {
                         if (i == 1) {
                             openGallery();
                         }
-                        if (i == 2){
+                        if (i == 2) {
                             deleteImage();
                         }
                     }
                 });
 
                 builder.create().show();
-            }
-            else {
+            } else {
                 flagPic = 1;
                 String[] items = {"Camera", "Gallery"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -243,7 +244,7 @@ public class EditProfileFragment extends Fragment {
         });
     }
 
-    public void save(){
+    public void save() {
         progressBar.setVisibility(View.VISIBLE);
         saveBtn.setEnabled(false);
         addPicture.setEnabled(false);
@@ -256,11 +257,37 @@ public class EditProfileFragment extends Fragment {
 
         if (fullName.isEmpty()) {
             nameEt.setError("Please enter your full name.");
-        }
-        else if (phone.isEmpty()) {
+            progressBar.setVisibility(View.GONE);
+            saveBtn.setEnabled(true);
+            addPicture.setEnabled(true);
+            genderSpinner.setEnabled(true);
+            nameEt.setEnabled(true);
+            phoneEt.setEnabled(true);
+        } else if (phone.isEmpty()) {
             phoneEt.setError("Please enter your phone number.");
-        }
-        else{
+            progressBar.setVisibility(View.GONE);
+            saveBtn.setEnabled(true);
+            addPicture.setEnabled(true);
+            genderSpinner.setEnabled(true);
+            nameEt.setEnabled(true);
+            phoneEt.setEnabled(true);
+        } else if (!phone.startsWith("0")) {
+            phoneEt.setError("Your phone number should start with the number 0.");
+            progressBar.setVisibility(View.GONE);
+            saveBtn.setEnabled(true);
+            addPicture.setEnabled(true);
+            genderSpinner.setEnabled(true);
+            nameEt.setEnabled(true);
+            phoneEt.setEnabled(true);
+        } else if (phone.length() < 9 || phone.length() > 10) {
+            phoneEt.setError("Your phone number length should be 10 or 9 numbers, examples: 05X-XXXXXXX or 0A-XXXXXXX.");
+            progressBar.setVisibility(View.GONE);
+            saveBtn.setEnabled(true);
+            addPicture.setEnabled(true);
+            genderSpinner.setEnabled(true);
+            nameEt.setEnabled(true);
+            phoneEt.setEnabled(true);
+        } else {
             // saveBtn.setEnabled(true);
             viewModel.setGender(genderS);
             User user = new User(Model.instance.getConnectedUserId(), fullName, phone, viewModel.data.getValue().getEmail(),
@@ -268,9 +295,9 @@ public class EditProfileFragment extends Fragment {
             user.setAvatarUrl(viewModel.data.getValue().getAvatarUrl());
 
             if (imageBitmap == null) {
-                if(flag == 1 && flagPic == 0){
+                if (flag == 1 && flagPic == 0) {
                     user.setAvatarUrl(null);
-                    Model.instance.deleteImage( viewModel.data.getValue().getEmail() + ".jpg", ()->{
+                    Model.instance.deleteImage(viewModel.data.getValue().getEmail() + ".jpg", () -> {
                         viewModel.EditUser(user, new Model.EditUserListener() {
                             @Override
                             public void onComplete() {
@@ -288,8 +315,7 @@ public class EditProfileFragment extends Fragment {
                             }
                         });
                     });
-                }
-                else{
+                } else {
                     viewModel.EditUser(user, new Model.EditUserListener() {
                         @Override
                         public void onComplete() {
@@ -308,7 +334,7 @@ public class EditProfileFragment extends Fragment {
                     });
                 }
             } else {
-                Model.instance.saveImage(imageBitmap,  viewModel.data.getValue().getEmail() + ".jpg", url -> {
+                Model.instance.saveImage(imageBitmap, viewModel.data.getValue().getEmail() + ".jpg", url -> {
                     user.setAvatarUrl(url);
                     viewModel.EditUser(user, new Model.EditUserListener() {
                         @Override
@@ -329,10 +355,5 @@ public class EditProfileFragment extends Fragment {
                 });
             }
         }
-
-
-
     }
-
-
 }

@@ -17,9 +17,6 @@ public interface PostDao {
     @Query("select * from Post WHERE userId LIKE :id")
     List<Post> getUserAll(String id);
 
-    @Query("DELETE FROM Post")
-    void deleteAll();
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Post... posts);
 

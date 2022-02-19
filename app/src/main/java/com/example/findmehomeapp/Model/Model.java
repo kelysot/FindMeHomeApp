@@ -25,13 +25,12 @@ public class Model {
     public static final Model instance = new Model();
 
     public Executor executor = Executors.newFixedThreadPool(1);
-    public Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
-    FirebaseAuth firebaseAuth;
 
     public enum PostListLoadingState {
         loading,
         loaded
     }
+
     MutableLiveData<PostListLoadingState> postListLoadingState = new MutableLiveData<PostListLoadingState>();
     public LiveData<PostListLoadingState> getPostListLoadingState() {
         return postListLoadingState;
@@ -41,12 +40,10 @@ public class Model {
 
     private Model() {
         postListLoadingState.setValue(PostListLoadingState.loaded);
-        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     MutableLiveData<List<Post>> postsList = new MutableLiveData<List<Post>>();
     MutableLiveData<List<Post>> userPostsList = new MutableLiveData<List<Post>>();
-    MutableLiveData<List<User>> usersList = new MutableLiveData<List<User>>();
 
     public LiveData<List<Post>> getAllPosts() {
         if (postsList.getValue() == null) {
@@ -79,7 +76,6 @@ public class Model {
                         Long lud = new Long(0);
                         // TODO: delete this row
 //                        AppLocalDb.db.postDao().deleteAll();
-                        Log.d("TAG", "fb returned " + list.size());
                         for (Post post : list) {
                             AppLocalDb.db.postDao().insertAll(post);
                             if (lud < post.getUpdateDate()){
@@ -116,7 +112,7 @@ public class Model {
 
         // get last local update date
         Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("PostsLastUpdateDate",0);
-        String userId = firebaseAuth.getCurrentUser().getUid();
+        String userId = getConnectedUserId();
 
         // firebase get all updates since lastLocalUpdateDate
         modelFirebase.getAllPosts(lastUpdateDate, new ModelFirebase.GetAllPostsListener() {
@@ -129,7 +125,6 @@ public class Model {
                         Long lud = new Long(0);
                         // TODO: delete this row
 //                        AppLocalDb.db.postDao().deleteAll();
-                        Log.d("TAG", "fb returned " + list.size());
                         for (Post post : list) {
                             AppLocalDb.db.postDao().insertAll(post);
                             if (lud < post.getUpdateDate()){
@@ -162,14 +157,6 @@ public class Model {
     }
 
     public void refreshUserList() {
-        Log.d("TAG", "fb returnedq111111111 ");
-
-        // userListLoadingState.setValue(UserListLoadingState.loading);
-
-        //get last local update date
-        // Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("UserLastUpdateDate", 0);
-
-        //firebase get all updates since lastLocalUpdateDate
         modelFirebase.getAllUsers(new ModelFirebase.GetAllUsersListener() {
             @Override
             public void onComplete(List<User> users) {
@@ -196,23 +183,12 @@ public class Model {
                                 }
 
                             }
-
-//                            if (user.getConnected().equals("true")) {
-//                            }
-//                            if (lud < user.getUpdateDate()) {
-//                                lud = user.getUpdateDate();
-//                            }
                         }
                         //update last local update date
                         MyApplication.getContext()
                                 .getSharedPreferences("TAG", Context.MODE_PRIVATE)
                                 .edit()
-                                // .putLong("UserLastUpdateDate", lud)
                                 .commit();
-                        //return all data to caller
-//                        List<User> reList = AppLocalDb.db.userDao().getAll();
-//                        usersList.postValue(reList);
-//                        userListLoadingState.postValue(UserListLoadingState.loaded);
                     }
                 });
             }
@@ -276,8 +252,6 @@ public class Model {
                 listener.onFailure();
             }
         } );
-            // Log.d("TAG00", "login:" + email);
-
     }
 
     public interface LogoutListener {
@@ -413,11 +387,4 @@ public class Model {
         });
     }
 
-//    public interface GetPostsByUserId {
-//        void onComplete(List<Post> post);
-//    }
-//    public Post getPostByUserId(String userId){
-//        modelFirebase.getPostsByUserId(postId, listener);
-//        return null;
-//    }
 }

@@ -8,7 +8,7 @@ public class TimeAgo {
         if (time < 1000000000000L) {
             time *= 1000;
         }
-//
+
         String convTime = null;
         String prefix = "";
         String suffix = "Ago";

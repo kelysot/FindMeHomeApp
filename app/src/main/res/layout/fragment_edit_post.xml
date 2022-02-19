@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -56,46 +55,46 @@
             app:layout_constraintTop_toBottomOf="@+id/textView3"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize2Percent" />
 
-    <Button
-        android:id="@+id/edit_post_btn"
-        android:layout_width="0dp"
-        android:layout_height="46dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/blue_btn"
-        android:fontFamily="sans-serif"
-        android:text="SAVE"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/view3"
-        app:layout_constraintEnd_toEndOf="@+id/view3" />
+        <Button
+            android:id="@+id/edit_post_btn"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/blue_btn"
+            android:fontFamily="sans-serif"
+            android:text="SAVE"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/view3"
+            app:layout_constraintEnd_toEndOf="@+id/view3" />
 
-    <EditText
-        android:id="@+id/edit_post_text"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_post_divider"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toTopOf="@+id/view3"
-        tools:ignore="MissingConstraints" />
+        <EditText
+            android:id="@+id/edit_post_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/edit_post_divider"
+            app:layout_constraintEnd_toEndOf="@+id/view3"
+            app:layout_constraintHorizontal_bias="0.506"
+            app:layout_constraintStart_toStartOf="@+id/view3"
+            app:layout_constraintTop_toTopOf="@+id/view3"
+            tools:ignore="MissingConstraints" />
 
-    <View
-        android:id="@+id/edit_post_divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="130dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toTopOf="@+id/view3"
-        tools:ignore="MissingConstraints" />
+        <View
+            android:id="@+id/edit_post_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="130dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="@+id/view3"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/view3"
+            app:layout_constraintTop_toTopOf="@+id/view3"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/edit_post_type"
@@ -103,8 +102,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/edit_post_age"
             android:layout_marginStart="50dp"
-            android:fontFamily="sans-serif"
             android:layout_marginTop="24dp"
+            android:fontFamily="sans-serif"
             android:text="TYPE:"
             android:textColor="#000000"
             android:textSize="24sp"
@@ -118,8 +117,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/edit_post_size"
             android:layout_marginStart="50dp"
-            android:fontFamily="sans-serif"
             android:layout_marginTop="24dp"
+            android:fontFamily="sans-serif"
             android:text="AGE:"
             android:textColor="#000000"
             android:textSize="24sp"
@@ -142,34 +141,34 @@
             app:layout_constraintStart_toStartOf="@+id/view3"
             app:layout_constraintTop_toBottomOf="@+id/edit_post_type" />
 
-    <TextView
-        android:id="@+id/edit_post_gender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="sans-serif"
-        android:text="GENDER:"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toBottomOf="@+id/edit_post_size" />
+        <TextView
+            android:id="@+id/edit_post_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="sans-serif"
+            android:text="GENDER:"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/view3"
+            app:layout_constraintTop_toBottomOf="@+id/edit_post_size" />
 
-    <TextView
-        android:id="@+id/edit_post_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="sans-serif"
-        android:text="LOCATION:"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toBottomOf="@+id/edit_post_gender" />
+        <TextView
+            android:id="@+id/edit_post_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="sans-serif"
+            android:text="LOCATION:"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/view3"
+            app:layout_constraintTop_toBottomOf="@+id/edit_post_gender" />
 
 
         <RelativeLayout
@@ -322,31 +321,31 @@
 
         </RelativeLayout>
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/edit_post_img"
-        android:layout_width="0dp"
-        android:layout_height="133dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="20dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/cat_dog_rabbit"
-        app:layout_constraintBottom_toBottomOf="@+id/view3"
-        app:layout_constraintEnd_toStartOf="@+id/edit_post_btn"
-        app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toBottomOf="@+id/edit_post_location"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize8Percent" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/edit_post_img"
+            android:layout_width="0dp"
+            android:layout_height="133dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/cat_dog_rabbit"
+            app:layout_constraintBottom_toBottomOf="@+id/view3"
+            app:layout_constraintEnd_toStartOf="@+id/edit_post_btn"
+            app:layout_constraintStart_toStartOf="@+id/view3"
+            app:layout_constraintTop_toBottomOf="@+id/edit_post_location"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize8Percent" />
 
-    <ImageView
-        android:id="@+id/edit_post_change_image"
-        android:layout_width="41dp"
-        android:layout_height="46dp"
-        android:layout_marginEnd="-10dp"
-        android:layout_marginBottom="-15dp"
-        android:src="@drawable/add_photo"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_post_img"
-        app:layout_constraintEnd_toEndOf="@+id/edit_post_img" />
+        <ImageView
+            android:id="@+id/edit_post_change_image"
+            android:layout_width="41dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="-10dp"
+            android:layout_marginBottom="-15dp"
+            android:src="@drawable/add_photo"
+            app:layout_constraintBottom_toBottomOf="@+id/edit_post_img"
+            app:layout_constraintEnd_toEndOf="@+id/edit_post_img" />
 
         <ProgressBar
             android:id="@+id/edit_post_progressBar"

@@ -50,8 +50,8 @@ public class HomeFragment extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                    this.setEnabled(false);
-                    requireActivity().finish();
+                this.setEnabled(false);
+                requireActivity().finish();
             }
         };
 
@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home,container,false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         homeViewModel.GetUserById(Model.instance.getConnectedUserId(), user -> {
             homeViewModel.setUserData(user);
@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshPostsList());
         Model.instance.refreshPostsList();
 
-        RecyclerView list = view.findViewById(R.id.home_post_rv) ;
+        RecyclerView list = view.findViewById(R.id.home_post_rv);
         list.setHasFixedSize(true);
 
         list.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
         swipeRefresh.setRefreshing(Model.instance.getPostListLoadingState().getValue() == Model.PostListLoadingState.loading);
 
         Model.instance.getPostListLoadingState().observe(getViewLifecycleOwner(), postListLoadingState -> {
-            if(postListLoadingState == Model.PostListLoadingState.loading) {
+            if (postListLoadingState == Model.PostListLoadingState.loading) {
                 swipeRefresh.setRefreshing(true);
             } else {
                 swipeRefresh.setRefreshing(false);
@@ -115,7 +115,7 @@ public class HomeFragment extends Fragment {
         swipeRefresh.setRefreshing(false);
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
+    class MyViewHolder extends RecyclerView.ViewHolder {
         TextView petTextTv;
         ImageView petImage;
         CircleImageView userImage;
@@ -140,31 +140,32 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    interface OnItemClickListener{
+    interface OnItemClickListener {
         void onItemClick(View v, int position);
     }
-    class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
+
+    class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         OnItemClickListener listener;
-        public void setOnItemClickListener(OnItemClickListener listener){
+
+        public void setOnItemClickListener(OnItemClickListener listener) {
             this.listener = listener;
         }
 
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = getLayoutInflater().inflate(R.layout.post_list_row,parent,false);
-            MyViewHolder holder = new MyViewHolder(view,listener);
+            View view = getLayoutInflater().inflate(R.layout.post_list_row, parent, false);
+            MyViewHolder holder = new MyViewHolder(view, listener);
             return holder;
         }
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             Post post = homeViewModel.getData().getValue().get(position);
-            if(post.getText().equals("")){
+            if (post.getText().equals("")) {
                 holder.petTextTv.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 holder.petTextTv.setText(post.getText());
             }
 
@@ -186,7 +187,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            if(homeViewModel.getData().getValue() == null) {
+            if (homeViewModel.getData().getValue() == null) {
                 return 0;
             }
             return homeViewModel.getData().getValue().size();
@@ -212,10 +213,11 @@ public class HomeFragment extends Fragment {
                     Model.instance.editUser(user, new Model.EditUserListener() {
                         @Override
                         public void onComplete() {
-                            Model.instance.logout(()->{
+                            Model.instance.logout(() -> {
                                 NavHostFragment.findNavController(HomeFragment.this).navigate(HomeFragmentDirections.actionNavHomeToNavLogin());
                             });
                         }
+
                         @Override
                         public void onFailure() {
                         }
@@ -224,12 +226,10 @@ public class HomeFragment extends Fragment {
             });
 
             return true;
-        }
-        else if (item.getItemId() == R.id.add_post) {
+        } else if (item.getItemId() == R.id.add_post) {
             NavHostFragment.findNavController(HomeFragment.this).navigate(HomeFragmentDirections.actionNavHomeToNavCreatePost());
             return true;
-        }
-        else {
+        } else {
             return super.onOptionsItemSelected(item);
 
         }

@@ -10,15 +10,15 @@ public class PostViewModel extends ViewModel {
 
     MutableLiveData<Post> data;
 
-    public PostViewModel(){
+    public PostViewModel() {
         data = new MutableLiveData<>();
     }
 
-    public void setData(Post post){
+    public void setData(Post post) {
         data.setValue(post);
     }
 
-    public void GetPostById(String postId, Model.GetPostById listener){
+    public void GetPostById(String postId, Model.GetPostById listener) {
         Model.instance.getPostById(postId, listener);
     }
 

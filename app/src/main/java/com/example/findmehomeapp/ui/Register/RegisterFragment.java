@@ -62,7 +62,8 @@ public class RegisterFragment extends Fragment {
     private static final int REQUEST_GALLERY = 2;
 
 
-    public RegisterFragment() {}
+    public RegisterFragment() {
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -77,7 +78,7 @@ public class RegisterFragment extends Fragment {
     }
 
     @Override
-        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         picture = view.findViewById(R.id.register_user_imageView);
@@ -90,7 +91,7 @@ public class RegisterFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.register_progressBar);
         progressBar.setVisibility(View.GONE);
-        progressBar.getIndeterminateDrawable().setColorFilter(rgb(191,215,255), PorterDuff.Mode.MULTIPLY);
+        progressBar.getIndeterminateDrawable().setColorFilter(rgb(191, 215, 255), PorterDuff.Mode.MULTIPLY);
 
 
         genderSpinner = view.findViewById(R.id.register_gender_spinner);
@@ -103,6 +104,7 @@ public class RegisterFragment extends Fragment {
                 genderS = parent.getItemAtPosition(position).toString();
                 //Toast.makeText(parent.getContext(), gender, Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -223,8 +225,7 @@ public class RegisterFragment extends Fragment {
             passwordEt.setEnabled(true);
             goLoginTv.setEnabled(true);
 
-        }
-        else if (phone.isEmpty()) {
+        } else if (phone.isEmpty()) {
             phoneEt.setError("Please enter your phone number.");
             progressBar.setVisibility(View.GONE);
             registerBtn.setEnabled(true);
@@ -235,8 +236,29 @@ public class RegisterFragment extends Fragment {
             emailEt.setEnabled(true);
             passwordEt.setEnabled(true);
             goLoginTv.setEnabled(true);
-        }
-        else if (email.isEmpty()) {
+        }else if (!phone.startsWith("0")) {
+            phoneEt.setError("Your phone number should start with the number 0.");
+            progressBar.setVisibility(View.GONE);
+            registerBtn.setEnabled(true);
+            addPicture.setEnabled(true);
+            genderSpinner.setEnabled(true);
+            nameEt.setEnabled(true);
+            phoneEt.setEnabled(true);
+            emailEt.setEnabled(true);
+            passwordEt.setEnabled(true);
+            goLoginTv.setEnabled(true);
+        }else if (phone.length() <9 || phone.length() > 10 ) {
+            phoneEt.setError("Your phone number length should be 10 or 9 numbers, examples: 05X-XXXXXXX or 0A-XXXXXXX.");
+            progressBar.setVisibility(View.GONE);
+            registerBtn.setEnabled(true);
+            addPicture.setEnabled(true);
+            genderSpinner.setEnabled(true);
+            nameEt.setEnabled(true);
+            phoneEt.setEnabled(true);
+            emailEt.setEnabled(true);
+            passwordEt.setEnabled(true);
+            goLoginTv.setEnabled(true);
+        } else if (email.isEmpty()) {
             emailEt.setError("Please enter your email address.");
             progressBar.setVisibility(View.GONE);
             registerBtn.setEnabled(true);
@@ -247,8 +269,7 @@ public class RegisterFragment extends Fragment {
             emailEt.setEnabled(true);
             passwordEt.setEnabled(true);
             goLoginTv.setEnabled(true);
-        }
-        else if(!email.contains("@") || !email.contains(".")){
+        } else if (!email.contains("@") || !email.contains(".") || email.endsWith(".") || email.contains("@.") || email.contains(" ")) {
             emailEt.setError("Please enter a valid email address.");
             progressBar.setVisibility(View.GONE);
             registerBtn.setEnabled(true);
@@ -259,8 +280,7 @@ public class RegisterFragment extends Fragment {
             emailEt.setEnabled(true);
             passwordEt.setEnabled(true);
             goLoginTv.setEnabled(true);
-        }
-        else if (password.length() < 6) {
+        } else if (password.length() < 6) {
             passwordEt.setError("Password length must be 6 or more chars.");
             progressBar.setVisibility(View.GONE);
             registerBtn.setEnabled(true);
@@ -271,8 +291,7 @@ public class RegisterFragment extends Fragment {
             emailEt.setEnabled(true);
             passwordEt.setEnabled(true);
             goLoginTv.setEnabled(true);
-        }
-        else{
+        } else {
             flag = 1;
             User user = new User("0", name, phone, email, genderS, "true");
 
@@ -283,6 +302,7 @@ public class RegisterFragment extends Fragment {
                         viewModel.setData(user);
                         NavHostFragment.findNavController(RegisterFragment.this).navigate(R.id.action_global_nav_home);
                     }
+
                     @Override
                     public void onFailure() {
                         progressBar.setVisibility(View.GONE);
@@ -296,8 +316,7 @@ public class RegisterFragment extends Fragment {
                         goLoginTv.setEnabled(true);
                     }
                 });
-            }
-            else {
+            } else {
                 Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
                     user.setAvatarUrl(url);
                     viewModel.Register(user, password, new Model.AddUserListener() {
@@ -306,6 +325,7 @@ public class RegisterFragment extends Fragment {
                             viewModel.setData(user);
                             NavHostFragment.findNavController(RegisterFragment.this).navigate(R.id.action_global_nav_home);
                         }
+
                         @Override
                         public void onFailure() {
                             progressBar.setVisibility(View.GONE);

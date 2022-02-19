@@ -14,16 +14,16 @@ public class ProfileViewModel extends ViewModel {
     LiveData<List<Post>> data;
     MutableLiveData<User> userData;
 
-    public ProfileViewModel(){
+    public ProfileViewModel() {
         data = Model.instance.getAllUserPosts();
         userData = new MutableLiveData<>();
     }
 
-    public void setUserData(User user){
+    public void setUserData(User user) {
         userData.setValue(user);
     }
 
-    public void GetUserById(String userId, Model.GetUserById listener){
+    public void GetUserById(String userId, Model.GetUserById listener) {
         Model.instance.getUserById(userId, listener);
     }
 

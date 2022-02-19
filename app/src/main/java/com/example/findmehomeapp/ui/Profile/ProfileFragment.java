@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -12,33 +11,21 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.findmehomeapp.Model.Model;
-import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.ui.TimeAgo;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.squareup.picasso.Picasso;
-import com.example.findmehomeapp.ui.Post.PostFragmentArgs;
-import com.example.findmehomeapp.ui.home.HomeFragment;
-import com.example.findmehomeapp.ui.home.HomeFragmentDirections;
-import com.example.findmehomeapp.ui.Profile.ProfileViewModel;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -84,7 +71,7 @@ public class ProfileFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshUserPostsList());
         Model.instance.refreshUserPostsList();
 
-        RecyclerView list = view.findViewById(R.id.profile_post_rv) ;
+        RecyclerView list = view.findViewById(R.id.profile_post_rv);
         list.setHasFixedSize(true);
 
         list.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -106,7 +93,7 @@ public class ProfileFragment extends Fragment {
         swipeRefresh.setRefreshing(Model.instance.getPostListLoadingState().getValue() == Model.PostListLoadingState.loading);
 
         Model.instance.getPostListLoadingState().observe(getViewLifecycleOwner(), postListLoadingState -> {
-            if(postListLoadingState == Model.PostListLoadingState.loading) {
+            if (postListLoadingState == Model.PostListLoadingState.loading) {
                 swipeRefresh.setRefreshing(true);
             } else {
                 swipeRefresh.setRefreshing(false);
@@ -115,12 +102,13 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
+
     private void refresh() {
         adapter.notifyDataSetChanged();
         swipeRefresh.setRefreshing(false);
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
+    class MyViewHolder extends RecyclerView.ViewHolder {
         TextView petTextTv;
         ImageView petImage;
         CircleImageView userImage;
@@ -145,21 +133,23 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    interface OnItemClickListener{
+    interface OnItemClickListener {
         void onItemClick(View v, int position);
     }
-    class MyAdapter extends RecyclerView.Adapter<ProfileFragment.MyViewHolder>{
+
+    class MyAdapter extends RecyclerView.Adapter<ProfileFragment.MyViewHolder> {
 
         ProfileFragment.OnItemClickListener listener;
-        public void setOnItemClickListener(ProfileFragment.OnItemClickListener listener){
+
+        public void setOnItemClickListener(ProfileFragment.OnItemClickListener listener) {
             this.listener = listener;
         }
 
         @NonNull
         @Override
         public ProfileFragment.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = getLayoutInflater().inflate(R.layout.post_list_row,parent,false);
-            ProfileFragment.MyViewHolder holder = new ProfileFragment.MyViewHolder(view,listener);
+            View view = getLayoutInflater().inflate(R.layout.post_list_row, parent, false);
+            ProfileFragment.MyViewHolder holder = new ProfileFragment.MyViewHolder(view, listener);
             return holder;
         }
 
@@ -167,10 +157,9 @@ public class ProfileFragment extends Fragment {
         public void onBindViewHolder(@NonNull ProfileFragment.MyViewHolder holder, int position) {
             Post post = profileViewModel.getData().getValue().get(position);
 
-            if(post.getText().equals("")){
+            if (post.getText().equals("")) {
                 holder.petTextTv.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 holder.petTextTv.setText(post.getText());
             }
 
@@ -192,7 +181,7 @@ public class ProfileFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            if(profileViewModel.getData().getValue() == null) {
+            if (profileViewModel.getData().getValue() == null) {
                 return 0;
             }
             return profileViewModel.getData().getValue().size();
@@ -210,12 +199,10 @@ public class ProfileFragment extends Fragment {
         if (item.getItemId() == R.id.edit_profile_menu) {
             NavHostFragment.findNavController(this).navigate(R.id.action_nav_profile_to_nav_edit_profile);
             return true;
-        }
-        else if(item.getItemId() == R.id.profile_add_post_menu){
+        } else if (item.getItemId() == R.id.profile_add_post_menu) {
             NavHostFragment.findNavController(this).navigate(R.id.action_nav_profile_to_nav_create_post);
             return true;
-        }
-        else {
+        } else {
             return super.onOptionsItemSelected(item);
         }
     }

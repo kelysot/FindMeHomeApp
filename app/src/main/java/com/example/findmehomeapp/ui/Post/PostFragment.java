@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +38,6 @@ public class PostFragment extends Fragment {
     TextView ownerPhone;
     TextView ownerPhoneNum;
     ImageView petImage;
-    ImageView likeImg;
-    TextView likesNumberTv;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -55,7 +52,6 @@ public class PostFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_post, container, false);
 
         String postId = PostFragmentArgs.fromBundle(getArguments()).getPostId();
-        Log.d("TAG33", "fb returned " + postId);
 
         viewModel.GetPostById(postId, post -> {
             viewModel.setData(post);
@@ -63,18 +59,17 @@ public class PostFragment extends Fragment {
             String timeAgo = TimeAgo.getTimeAgo(viewModel.getData().getUpdateDate());
 
             postTimeTv.setText(timeAgo);
-            if(!viewModel.getData().getText().equals("")){
+            if (!viewModel.getData().getText().equals("")) {
                 petTextTv.setText(viewModel.getData().getText());
-            }
-            else {
+            } else {
                 petTextTv.setVisibility(View.GONE);
             }
             if (viewModel.getData().getAge() != null) {
                 petAge.setText("Age: " + viewModel.getData().getAge());
                 petAge.setVisibility(View.VISIBLE);
             }
-            if(viewModel.getData().getGender() != null){
-                petGender.setText("Gender: "+viewModel.getData().getGender());
+            if (viewModel.getData().getGender() != null) {
+                petGender.setText("Gender: " + viewModel.getData().getGender());
                 petGender.setVisibility(View.VISIBLE);
             }
             if (viewModel.getData().getLocation() != null) {
@@ -89,14 +84,13 @@ public class PostFragment extends Fragment {
                 petType.setText("Type: " + viewModel.getData().getType());
                 petType.setVisibility(View.VISIBLE);
             }
-            if (viewModel.getData().getImage() != null){
+            if (viewModel.getData().getImage() != null) {
                 Picasso.get().load(viewModel.getData().getImage()).into(petImage);
             }
 
             Model.instance.getUserById(viewModel.getData().getUserId(), new Model.GetUserById() {
                 @Override
                 public void onComplete(User user) {
-                    Log.d("TAG111", "user Id:" + user.getId() );
                     if (user.getAvatarUrl() != null) {
                         Picasso.get().load(user.getAvatarUrl()).into(profileImage);
                     }
@@ -108,7 +102,7 @@ public class PostFragment extends Fragment {
                 }
             });
 
-            if(!Model.instance.getConnectedUserId().equals(viewModel.getData().getUserId())){
+            if (!Model.instance.getConnectedUserId().equals(viewModel.getData().getUserId())) {
                 editBtn.setVisibility(View.GONE);
             }
         });
@@ -125,10 +119,9 @@ public class PostFragment extends Fragment {
         petSize = view.findViewById(R.id.post_size_tv);
         petType = view.findViewById(R.id.post_type_tv);
         ownerPhone = view.findViewById(R.id.post_owner_details_phone);
-        ownerPhoneNum  = view.findViewById(R.id.post_owner_phone);
+        ownerPhoneNum = view.findViewById(R.id.post_owner_phone);
 
-        editBtn.setOnClickListener((v)->{
-            Log.d("TAG33", "fb returned " + postId);
+        editBtn.setOnClickListener((v) -> {
             Navigation.findNavController(v).navigate(PostFragmentDirections.actionNavPostToNavEditPost(postId));
         });
         return view;

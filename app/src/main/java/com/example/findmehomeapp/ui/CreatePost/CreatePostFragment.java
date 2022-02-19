@@ -93,6 +93,7 @@ public class CreatePostFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 viewModel.setType(parent.getItemAtPosition(position).toString());
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -108,6 +109,7 @@ public class CreatePostFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 viewModel.setSize(parent.getItemAtPosition(position).toString());
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -123,6 +125,7 @@ public class CreatePostFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 viewModel.setGender(parent.getItemAtPosition(position).toString());
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -138,6 +141,7 @@ public class CreatePostFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 viewModel.setLocation(parent.getItemAtPosition(position).toString());
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -145,7 +149,7 @@ public class CreatePostFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.create_post_progressBar);
         progressBar.setVisibility(View.GONE);
-        progressBar.getIndeterminateDrawable().setColorFilter(rgb(191,215,255), PorterDuff.Mode.MULTIPLY);
+        progressBar.getIndeterminateDrawable().setColorFilter(rgb(191, 215, 255), PorterDuff.Mode.MULTIPLY);
 
         // create post btn
         creteBtn = view.findViewById(R.id.create_post_btn);
@@ -167,7 +171,7 @@ public class CreatePostFragment extends Fragment {
         return view;
     }
 
-    private void savePost(){
+    private void savePost() {
         progressBar.setVisibility(View.VISIBLE);
         creteBtn.setEnabled(false);
         addImage.setEnabled(false);
@@ -192,8 +196,7 @@ public class CreatePostFragment extends Fragment {
             petTextEt.setEnabled(true);
             ageEt.setEnabled(true);
 
-        }
-        else if (age.length() > 9 || age.length() < 5){
+        } else if (age.length() > 9 || age.length() < 5) {
             ageEt.setError("Please enter your pet age in this form: 2 months or 3 years.");
             progressBar.setVisibility(View.GONE);
             creteBtn.setEnabled(true);
@@ -204,9 +207,8 @@ public class CreatePostFragment extends Fragment {
             addImage.setEnabled(true);
             petTextEt.setEnabled(true);
             ageEt.setEnabled(true);
-        }
-        else if(imageBitmap == null){
-            Toast.makeText(MyApplication.getContext(), "Please enter your pet image" , Toast.LENGTH_LONG).show();
+        } else if (imageBitmap == null) {
+            Toast.makeText(MyApplication.getContext(), "Please enter your pet image", Toast.LENGTH_LONG).show();
             progressBar.setVisibility(View.GONE);
             creteBtn.setEnabled(true);
             typeSpinner.setEnabled(true);
@@ -217,8 +219,7 @@ public class CreatePostFragment extends Fragment {
             petTextEt.setEnabled(true);
             ageEt.setEnabled(true);
 
-        }
-        else {
+        } else {
             Model.instance.savePostImage(imageBitmap, viewModel.getUserId() + ".jpg", url -> {
                 viewModel.setImage(url);
                 viewModel.savePost(() -> {

@@ -9,7 +9,7 @@
         android:id="@+id/nav_home"
         android:name="com.example.findmehomeapp.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_nav_home_to_nav_post"
             app:destination="@id/nav_post" />
@@ -28,7 +28,7 @@
         android:id="@+id/nav_create_post"
         android:name="com.example.findmehomeapp.ui.CreatePost.CreatePostFragment"
         android:label="@string/menu_create_post"
-        tools:layout="@layout/fragment_create_post" >
+        tools:layout="@layout/fragment_create_post">
         <action
             android:id="@+id/action_nav_create_post_to_nav_profile"
             app:destination="@id/nav_profile" />
@@ -38,7 +38,7 @@
         android:id="@+id/nav_edit_post"
         android:name="com.example.findmehomeapp.ui.EditPost.EditPostFragment"
         android:label="@string/menu_edit_post"
-        tools:layout="@layout/fragment_edit_post" >
+        tools:layout="@layout/fragment_edit_post">
         <argument
             android:name="postId"
             app:argType="string" />
@@ -54,7 +54,7 @@
         android:id="@+id/nav_login"
         android:name="com.example.findmehomeapp.ui.Login.LoginFragment"
         android:label="@string/menu_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_nav_login_to_nav_register"
             app:destination="@id/nav_register" />
@@ -64,7 +64,7 @@
         android:id="@+id/nav_post"
         android:name="com.example.findmehomeapp.ui.Post.PostFragment"
         android:label="@string/menu_post"
-        tools:layout="@layout/fragment_post" >
+        tools:layout="@layout/fragment_post">
         <argument
             android:name="postId"
             app:argType="string" />
@@ -77,7 +77,7 @@
         android:id="@+id/nav_register"
         android:name="com.example.findmehomeapp.ui.Register.RegisterFragment"
         android:label="@string/menu_register"
-        tools:layout="@layout/fragment_register" >
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_nav_register_to_nav_profile"
             app:destination="@id/nav_profile" />
@@ -87,7 +87,7 @@
         android:id="@+id/nav_profile"
         android:name="com.example.findmehomeapp.ui.Profile.ProfileFragment"
         android:label="@string/menu_profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_nav_profile_to_nav_edit_profile"
             app:destination="@id/nav_edit_profile" />
@@ -99,11 +99,17 @@
             app:destination="@id/nav_post" />
         <argument
             android:name="userProfileId"
+            android:defaultValue="@null"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
     </fragment>
-    <action android:id="@+id/action_global_nav_home" app:destination="@id/nav_home" />
-    <action android:id="@+id/action_global_nav_profile" app:destination="@id/nav_profile" />
-    <action android:id="@+id/action_global_nav_login" app:destination="@id/nav_login"/>
+    <action
+        android:id="@+id/action_global_nav_home"
+        app:destination="@id/nav_home" />
+    <action
+        android:id="@+id/action_global_nav_profile"
+        app:destination="@id/nav_profile" />
+    <action
+        android:id="@+id/action_global_nav_login"
+        app:destination="@id/nav_login" />
 </navigation>

@@ -1,6 +1,5 @@
 package com.example.findmehomeapp.ui.EditPost;
 
-import static android.graphics.Color.alpha;
 import static android.graphics.Color.rgb;
 
 import android.app.Activity;
@@ -16,11 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,25 +28,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.findmehomeapp.Model.Model;
-import com.example.findmehomeapp.Model.Post;
-import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.MyApplication;
 import com.example.findmehomeapp.R;
-import com.example.findmehomeapp.ui.CreatePost.CreatePostFragmentDirections;
-import com.example.findmehomeapp.ui.EditProfile.EditProfileFragment;
-import com.example.findmehomeapp.ui.EditProfile.EditProfileViewModel;
 import com.example.findmehomeapp.ui.Post.PostFragmentArgs;
-import com.example.findmehomeapp.ui.Post.PostFragmentDirections;
-import com.example.findmehomeapp.ui.home.HomeFragment;
-import com.example.findmehomeapp.ui.home.HomeFragmentDirections;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
@@ -250,8 +237,7 @@ public class EditPostFragment extends Fragment {
             petTextTv.setEnabled(true);
             ageEt.setEnabled(true);
 
-        }
-        else if (age.length() > 9 || age.length() < 5){
+        } else if (age.length() > 9 || age.length() < 5) {
             ageEt.setError("Please enter your pet age in this form: 2 months or 3 years.");
             progressBar.setVisibility(View.GONE);
             saveBtn.setEnabled(true);
@@ -262,8 +248,7 @@ public class EditPostFragment extends Fragment {
             editImage.setEnabled(true);
             petTextTv.setEnabled(true);
             ageEt.setEnabled(true);
-        }
-        else if (imageBitmap == null && viewModel.data.getValue().getImage() == null) {
+        } else if (imageBitmap == null && viewModel.data.getValue().getImage() == null) {
             Toast.makeText(MyApplication.getContext(), "Please enter your pet image", Toast.LENGTH_LONG).show();
             progressBar.setVisibility(View.GONE);
             saveBtn.setEnabled(true);
@@ -282,7 +267,7 @@ public class EditPostFragment extends Fragment {
             viewModel.setSize(size);
             String userId = Model.instance.getConnectedUserId();
 
-            if(imageBitmap != null) {
+            if (imageBitmap != null) {
                 Model.instance.savePostImage(imageBitmap, userId + ".jpg", url -> {
                     viewModel.setImage(url);
                     viewModel.EditPost(new Model.UpdatePostListener() {
@@ -290,10 +275,10 @@ public class EditPostFragment extends Fragment {
                         public void onComplete() {
                             NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
                         }
+
                         @Override
                         public void onFailure() {
                             progressBar.setVisibility(View.GONE);
-                            setHasOptionsMenu(false);
                             saveBtn.setEnabled(true);
                             typeSpinner.setEnabled(true);
                             sizeSpinner.setEnabled(true);
@@ -303,26 +288,24 @@ public class EditPostFragment extends Fragment {
                         }
                     });
                 });
-            }
-            else {
+            } else {
                 viewModel.EditPost(new Model.UpdatePostListener() {
-                        @Override
-                        public void onComplete() {
-                            NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
-                        }
+                    @Override
+                    public void onComplete() {
+                        NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
+                    }
 
-                        @Override
-                        public void onFailure() {
-                            progressBar.setVisibility(View.GONE);
-                            setHasOptionsMenu(false);
-                            saveBtn.setEnabled(true);
-                            typeSpinner.setEnabled(true);
-                            sizeSpinner.setEnabled(true);
-                            locationSpinner.setEnabled(true);
-                            genderSpinner.setEnabled(true);
-                            editImage.setEnabled(true);
-                        }
-                    });
+                    @Override
+                    public void onFailure() {
+                        progressBar.setVisibility(View.GONE);
+                        saveBtn.setEnabled(true);
+                        typeSpinner.setEnabled(true);
+                        sizeSpinner.setEnabled(true);
+                        locationSpinner.setEnabled(true);
+                        genderSpinner.setEnabled(true);
+                        editImage.setEnabled(true);
+                    }
+                });
             }
 
         }
@@ -330,7 +313,6 @@ public class EditPostFragment extends Fragment {
 
     public void deletePost() {
         progressBar.setVisibility(View.VISIBLE);
-        setHasOptionsMenu(false);
         saveBtn.setEnabled(false);
         typeSpinner.setEnabled(false);
         sizeSpinner.setEnabled(false);
@@ -388,8 +370,6 @@ public class EditPostFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 imageBitmap = (Bitmap) extras.get("data");
                 petImage.setImageBitmap(imageBitmap);
-                Log.d("TAG33", "imageBitmap name:" + imageBitmap);
-
             }
         }
         if (requestCode == REQUEST_GALLERY) {
