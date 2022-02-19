@@ -41,6 +41,7 @@ import android.widget.Toast;
 import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.Model.User;
+import com.example.findmehomeapp.MyApplication;
 import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.ui.CreatePost.CreatePostFragmentDirections;
 import com.example.findmehomeapp.ui.EditProfile.EditProfileFragment;
@@ -57,7 +58,7 @@ import java.io.IOException;
 public class EditPostFragment extends Fragment {
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_GALLERY = 2;
-    
+
     FirebaseAuth firebaseAuth;
 
     EditPostViewModel viewModel;
@@ -85,6 +86,7 @@ public class EditPostFragment extends Fragment {
         super.onAttach(context);
         viewModel = new ViewModelProvider(this).get(EditPostViewModel.class);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -115,8 +117,9 @@ public class EditPostFragment extends Fragment {
         typeSpinner.setAdapter(adapterType);
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                 type = parent.getItemAtPosition(position).toString();
+                type = parent.getItemAtPosition(position).toString();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -132,6 +135,7 @@ public class EditPostFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 size = parent.getItemAtPosition(position).toString();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -147,6 +151,7 @@ public class EditPostFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 gender = parent.getItemAtPosition(position).toString();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -162,6 +167,7 @@ public class EditPostFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 location = parent.getItemAtPosition(position).toString();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -169,7 +175,7 @@ public class EditPostFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.edit_post_progressBar);
         progressBar.setVisibility(View.GONE);
-        progressBar.getIndeterminateDrawable().setColorFilter(rgb(191,215,255), PorterDuff.Mode.MULTIPLY);
+        progressBar.getIndeterminateDrawable().setColorFilter(rgb(191, 215, 255), PorterDuff.Mode.MULTIPLY);
 
         // create post btn
         saveBtn = view.findViewById(R.id.edit_post_btn);
@@ -188,13 +194,13 @@ public class EditPostFragment extends Fragment {
 
         viewModel.GetPostById(postId, post -> {
             viewModel.setData(post);
-            if (post.getText()!= null) {
+            if (post.getText() != null) {
                 petTextTv.setText(post.getText());
             }
             if (post.getAge() != null) {
                 ageEt.setText(post.getAge());
             }
-            if (post.getImage() != null){
+            if (post.getImage() != null) {
                 Picasso.get().load(post.getImage()).into(petImage);
             }
             if (post.getGender() != null) {
@@ -219,7 +225,7 @@ public class EditPostFragment extends Fragment {
         return view;
     }
 
-    private void savePost(){
+    private void savePost() {
         progressBar.setVisibility(View.VISIBLE);
         saveBtn.setEnabled(false);
         typeSpinner.setEnabled(false);
@@ -241,42 +247,32 @@ public class EditPostFragment extends Fragment {
             locationSpinner.setEnabled(true);
             genderSpinner.setEnabled(true);
             editImage.setEnabled(true);
-        }
-        else {
+        } else if (imageBitmap == null) {
+            Toast.makeText(MyApplication.getContext(), "Please enter your pet image", Toast.LENGTH_LONG).show();
+            progressBar.setVisibility(View.GONE);
+            setHasOptionsMenu(false);
+            saveBtn.setEnabled(true);
+            typeSpinner.setEnabled(true);
+            sizeSpinner.setEnabled(true);
+            locationSpinner.setEnabled(true);
+            genderSpinner.setEnabled(true);
+            editImage.setEnabled(true);
+
+        } else {
             viewModel.setType(type);
             viewModel.setGender(gender);
             viewModel.setLocation(location);
             viewModel.setSize(size);
 
-            if(imageBitmap != null) {
-                String userId = Model.instance.getConnectedUserId();
-                Model.instance.savePostImage(imageBitmap, userId + ".jpg", url -> {
-                    viewModel.setImage(url);
-                    viewModel.EditPost(new Model.UpdatePostListener() {
-                        @Override
-                        public void onComplete() {
-                            NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
-                        }
-                        @Override
-                        public void onFailure() {
-                            progressBar.setVisibility(View.GONE);
-                            setHasOptionsMenu(false);
-                            saveBtn.setEnabled(true);
-                            typeSpinner.setEnabled(true);
-                            sizeSpinner.setEnabled(true);
-                            locationSpinner.setEnabled(true);
-                            genderSpinner.setEnabled(true);
-                            editImage.setEnabled(true);
-                        }
-                    });
-                });
-            }
-            else {
+            String userId = Model.instance.getConnectedUserId();
+            Model.instance.savePostImage(imageBitmap, userId + ".jpg", url -> {
+                viewModel.setImage(url);
                 viewModel.EditPost(new Model.UpdatePostListener() {
                     @Override
                     public void onComplete() {
                         NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
                     }
+
                     @Override
                     public void onFailure() {
                         progressBar.setVisibility(View.GONE);
@@ -289,13 +285,12 @@ public class EditPostFragment extends Fragment {
                         editImage.setEnabled(true);
                     }
                 });
-            }
-
+            });
 
         }
     }
 
-    public void deletePost(){
+    public void deletePost() {
         progressBar.setVisibility(View.VISIBLE);
         setHasOptionsMenu(false);
         saveBtn.setEnabled(false);
@@ -384,8 +379,7 @@ public class EditPostFragment extends Fragment {
         if (item.getItemId() == R.id.delete_post) {
             deletePost();
             return true;
-        }
-        else {
+        } else {
             return super.onOptionsItemSelected(item);
         }
     }

@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.Post;
+import com.example.findmehomeapp.MyApplication;
 import com.example.findmehomeapp.R;
 import com.example.findmehomeapp.ui.EditPost.EditPostViewModel;
 import com.example.findmehomeapp.ui.home.HomeFragmentDirections;
@@ -190,20 +191,28 @@ public class CreatePostFragment extends Fragment {
             sizeSpinner.setEnabled(true);
             locationSpinner.setEnabled(true);
             genderSpinner.setEnabled(true);
+            addImage.setEnabled(true);
+
+        }
+        else if(imageBitmap == null){
+            Toast.makeText(MyApplication.getContext(), "Please enter your pet image" , Toast.LENGTH_LONG).show();
+            progressBar.setVisibility(View.GONE);
+            creteBtn.setEnabled(true);
+            typeSpinner.setEnabled(true);
+            sizeSpinner.setEnabled(true);
+            locationSpinner.setEnabled(true);
+            genderSpinner.setEnabled(true);
+            addImage.setEnabled(true);
 
         }
         else {
-            if(imageBitmap != null){
-                Model.instance.savePostImage(imageBitmap, viewModel.getUserId() + ".jpg", url -> {
-                    viewModel.setImage(url);
-                    viewModel.savePost(() -> {
-                        NavHostFragment.findNavController(this).navigateUp();
-                    });                });
-            } else {
+            Model.instance.savePostImage(imageBitmap, viewModel.getUserId() + ".jpg", url -> {
+                viewModel.setImage(url);
                 viewModel.savePost(() -> {
                     NavHostFragment.findNavController(this).navigateUp();
                 });
-            }
+            });
+
         }
     }
 
