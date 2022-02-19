@@ -87,6 +87,9 @@ public class PostFragment extends Fragment {
             if (viewModel.getData().getImage() != null) {
                 Picasso.get().load(viewModel.getData().getImage()).into(petImage);
             }
+            else {
+                petImage.setVisibility(View.GONE);
+            }
 
             Model.instance.getUserById(viewModel.getData().getUserId(), new Model.GetUserById() {
                 @Override

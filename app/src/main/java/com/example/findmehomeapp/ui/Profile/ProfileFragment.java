@@ -169,6 +169,9 @@ public class ProfileFragment extends Fragment {
             if (post.getImage() != null) {
                 Picasso.get().load(post.getImage()).into(holder.petImage);
             }
+            else {
+                holder.petImage.setVisibility(View.GONE);
+            }
 
             profileViewModel.GetUserById(post.getUserId(), user -> {
                 holder.userName.setText(user.getName());

@@ -175,6 +175,9 @@ public class HomeFragment extends Fragment {
             if (post.getImage() != null) {
                 Picasso.get().load(post.getImage()).into(holder.petImage);
             }
+            else {
+                holder.petImage.setVisibility(View.GONE);
+            }
 
             homeViewModel.GetUserById(post.getUserId(), user -> {
                 holder.userName.setText(user.getName());

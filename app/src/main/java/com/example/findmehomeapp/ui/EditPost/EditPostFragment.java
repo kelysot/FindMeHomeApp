@@ -34,8 +34,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.findmehomeapp.Model.Model;
+import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.MyApplication;
 import com.example.findmehomeapp.R;
+import com.example.findmehomeapp.ui.EditProfile.EditProfileFragment;
 import com.example.findmehomeapp.ui.Post.PostFragmentArgs;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
@@ -64,6 +66,8 @@ public class EditPostFragment extends Fragment {
     String size;
     String gender;
     String location;
+    int flag = 0;
+    int flagPic = 0;
 
 
     Bitmap imageBitmap;
@@ -248,18 +252,6 @@ public class EditPostFragment extends Fragment {
             editImage.setEnabled(true);
             petTextTv.setEnabled(true);
             ageEt.setEnabled(true);
-        } else if (imageBitmap == null && viewModel.data.getValue().getImage() == null) {
-            Toast.makeText(MyApplication.getContext(), "Please enter your pet image", Toast.LENGTH_LONG).show();
-            progressBar.setVisibility(View.GONE);
-            saveBtn.setEnabled(true);
-            typeSpinner.setEnabled(true);
-            sizeSpinner.setEnabled(true);
-            locationSpinner.setEnabled(true);
-            genderSpinner.setEnabled(true);
-            editImage.setEnabled(true);
-            petTextTv.setEnabled(true);
-            ageEt.setEnabled(true);
-
         } else {
             viewModel.setType(type);
             viewModel.setGender(gender);
@@ -289,23 +281,47 @@ public class EditPostFragment extends Fragment {
                     });
                 });
             } else {
-                viewModel.EditPost(new Model.UpdatePostListener() {
-                    @Override
-                    public void onComplete() {
-                        NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
-                    }
+                if (flag == 1 && flagPic == 0) {
+                    viewModel.data.getValue().setImage(null);
+                    Model.instance.deleteImagePost(viewModel.data.getValue().getId() + ".jpg", () -> {
+                        viewModel.EditPost(new Model.UpdatePostListener() {
+                            @Override
+                            public void onComplete() {
+                                NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
+                            }
 
-                    @Override
-                    public void onFailure() {
-                        progressBar.setVisibility(View.GONE);
-                        saveBtn.setEnabled(true);
-                        typeSpinner.setEnabled(true);
-                        sizeSpinner.setEnabled(true);
-                        locationSpinner.setEnabled(true);
-                        genderSpinner.setEnabled(true);
-                        editImage.setEnabled(true);
-                    }
-                });
+                            @Override
+                            public void onFailure() {
+                                progressBar.setVisibility(View.GONE);
+                                saveBtn.setEnabled(true);
+                                typeSpinner.setEnabled(true);
+                                sizeSpinner.setEnabled(true);
+                                locationSpinner.setEnabled(true);
+                                genderSpinner.setEnabled(true);
+                                editImage.setEnabled(true);
+                            }
+                        });
+                    });
+                }else {
+                    viewModel.EditPost(new Model.UpdatePostListener() {
+                        @Override
+                        public void onComplete() {
+                            NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
+                        }
+
+                        @Override
+                        public void onFailure() {
+                            progressBar.setVisibility(View.GONE);
+                            saveBtn.setEnabled(true);
+                            typeSpinner.setEnabled(true);
+                            sizeSpinner.setEnabled(true);
+                            locationSpinner.setEnabled(true);
+                            genderSpinner.setEnabled(true);
+                            editImage.setEnabled(true);
+                        }
+                    });
+                }
+
             }
 
         }
@@ -321,33 +337,79 @@ public class EditPostFragment extends Fragment {
         editImage.setEnabled(false);
         petTextTv.setEnabled(false);
         ageEt.setEnabled(false);
+        if(viewModel.data.getValue().getImage() != null){
+            Model.instance.deleteImagePost(viewModel.data.getValue().getId() + ".jpg", new Model.DeleteImagePostListener() {
+                @Override
+                public void onComplete() {
+                    viewModel.DeletePost(() -> {
+                        NavHostFragment.findNavController(EditPostFragment.this).navigate(R.id.action_global_nav_profile);
+                    });
+                }
+            });
+        }
+        else{
+            viewModel.DeletePost(() -> {
+                NavHostFragment.findNavController(EditPostFragment.this).navigate(R.id.action_global_nav_profile);
+            });
+        }
 
-        viewModel.DeletePost(() -> {
-            NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);
-        });
     }
 
     private void showImagePickDialog() {
 
-        String[] items = {"Camera", "Gallery"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        viewModel.GetPostById(viewModel.data.getValue().getId(), post -> {
+            if(post.getImage() != null || flagPic == 1) {
+                String[] items = {"Camera", "Gallery", "Delete Photo"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setTitle("Choose an Option");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
+                builder.setTitle("Choose an Option");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
 
-                if (i == 0) {
-                    openCam();
-                }
+                        if (i == 0) {
+                            openCam();
+                        }
+                        if (i == 1) {
+                            openGallery();
+                        }
+                        if (i == 2) {
+                            deleteImage();
+                        }
+                    }
+                });
 
-                if (i == 1) {
-                    openGallery();
-                }
+                builder.create().show();
+            } else {
+                flagPic = 1;
+                String[] items = {"Camera", "Gallery"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                builder.setTitle("Choose an Option");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+
+                        if (i == 0) {
+                            openCam();
+                        }
+
+                        if (i == 1) {
+                            openGallery();
+                        }
+                    }
+                });
+
+                builder.create().show();
             }
         });
+    }
 
-        builder.create().show();
+    private void deleteImage() {
+        imageBitmap = null;
+        petImage.setImageBitmap(null);
+        petImage.setBackgroundResource(R.drawable.user);
+        flag = 1;
     }
 
     private void openGallery() {

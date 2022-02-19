@@ -360,6 +360,14 @@ public class Model {
         modelFirebase.savePostImage(imageBitmap, imageName, listener);
     }
 
+    public interface DeleteImagePostListener {
+        void onComplete();
+    }
+
+    public void deleteImagePost(String imageName, DeleteImagePostListener listener) {
+        modelFirebase.deleteImagePost(imageName, listener);
+    }
+
     public interface DeleteImageListener {
         void onComplete();
     }

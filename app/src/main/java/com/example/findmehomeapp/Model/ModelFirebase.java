@@ -306,4 +306,18 @@ public class ModelFirebase {
             }
         });
     }
+
+    public void deleteImagePost(String imageName, Model.DeleteImagePostListener listener) {
+        StorageReference storageRef = storage.getReference();
+        StorageReference imgRef = storageRef.child("posts_images/" + imageName);
+
+        // Delete the file
+        imgRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                listener.onComplete();
+            }
+        });
+    }
 }
