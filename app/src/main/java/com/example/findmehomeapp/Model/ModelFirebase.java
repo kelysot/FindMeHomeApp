@@ -24,6 +24,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class ModelFirebase {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MyApplication.getContext(), "Sorry, your email already exists, please try another one." , Toast.LENGTH_LONG).show();
+                Toast.makeText(MyApplication.getContext(), "Sorry, your email already exists, please try another one.", Toast.LENGTH_LONG).show();
                 listener.onFailure();
             }
         });
@@ -83,7 +84,7 @@ public class ModelFirebase {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            currentUser= firebaseAuth.getCurrentUser();
+                            currentUser = firebaseAuth.getCurrentUser();
                             listener.onComplete();
                         }
 
@@ -124,7 +125,7 @@ public class ModelFirebase {
 
     public void getAllPosts(Long lastUpdateDate, GetAllPostsListener listener) {
         db.collection(Post.COLLECTION_NAME)
-                .whereGreaterThanOrEqualTo("updateDate",new Timestamp(lastUpdateDate,0))
+                .whereGreaterThanOrEqualTo("updateDate", new Timestamp(lastUpdateDate, 0))
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Post> list = new LinkedList<Post>();
@@ -201,21 +202,23 @@ public class ModelFirebase {
                     }
                 });
     }
+
     public FirebaseUser getConnectedUser() {
         return firebaseAuth.getCurrentUser();
     }
+
     public String getConnectedUserId() {
         return currentUser.getUid();
     }
 
     public void getUserByEmail(String email, Model.GetUserByEmail listener) {
         db.collection(User.COLLECTION_NAME)
-                .whereEqualTo("email",email)
+                .whereEqualTo("email", email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful() & task.getResult()!= null && task.getResult().getDocuments().size()!=0) {
+                        if (task.isSuccessful() & task.getResult() != null && task.getResult().getDocuments().size() != 0) {
                             DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
                             String documentId = documentSnapshot.getId();
                             db.collection(User.COLLECTION_NAME)
@@ -223,7 +226,7 @@ public class ModelFirebase {
                                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            User user= null;
+                                            User user = null;
                                             if (task.isSuccessful() & task.getResult() != null) {
                                                 user = User.create(task.getResult().getData());
                                                 listener.onComplete(user);

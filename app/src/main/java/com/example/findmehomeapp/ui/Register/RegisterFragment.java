@@ -269,7 +269,8 @@ public class RegisterFragment extends Fragment {
             emailEt.setEnabled(true);
             passwordEt.setEnabled(true);
             goLoginTv.setEnabled(true);
-        } else if (!email.contains("@") || !email.contains(".") || email.endsWith(".") || email.contains("@.") || email.contains(" ")) {
+        } else if (!email.contains("@") || !email.contains(".") || email.endsWith(".") || email.contains("@.") ||
+                email.contains(" ") || email.startsWith("@") ||email.startsWith(".")) {
             emailEt.setError("Please enter a valid email address.");
             progressBar.setVisibility(View.GONE);
             registerBtn.setEnabled(true);

@@ -110,7 +110,8 @@ public class LoginFragment extends Fragment {
             emailEt.setEnabled(true);
             passwordEt.setEnabled(true);
             registerTv.setEnabled(true);
-        } else if (!email.contains("@") || !email.contains(".") || email.endsWith(".") || email.contains("@.") || email.contains(" ")) {
+        } else if (!email.contains("@") || !email.contains(".") || email.endsWith(".") || email.contains("@.") ||
+                email.contains(" ") || email.startsWith("@") || email.startsWith(".")) {
             emailEt.setError("Please enter a valid email address.");
             progressBar.setVisibility(View.GONE);
             loginBtn.setEnabled(true);
@@ -119,7 +120,7 @@ public class LoginFragment extends Fragment {
             passwordEt.setEnabled(true);
             registerTv.setEnabled(true);
         } else if (password.length() < 6) {
-            passwordEt.setError("Password Length Must Be 6 or more Chars");
+            passwordEt.setError("Password length must be 6 or more chars");
             progressBar.setVisibility(View.GONE);
             loginBtn.setEnabled(true);
             registerTv.setEnabled(true);

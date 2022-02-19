@@ -32,6 +32,7 @@ public class Model {
     }
 
     MutableLiveData<PostListLoadingState> postListLoadingState = new MutableLiveData<PostListLoadingState>();
+
     public LiveData<PostListLoadingState> getPostListLoadingState() {
         return postListLoadingState;
     }
@@ -63,7 +64,7 @@ public class Model {
         postListLoadingState.setValue(PostListLoadingState.loading);
 
         // get last local update date
-        Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("PostsLastUpdateDate",0);
+        Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("PostsLastUpdateDate", 0);
 
         // firebase get all updates since lastLocalUpdateDate
         modelFirebase.getAllPosts(lastUpdateDate, new ModelFirebase.GetAllPostsListener() {
@@ -74,11 +75,9 @@ public class Model {
                     @Override
                     public void run() {
                         Long lud = new Long(0);
-                        // TODO: delete this row
-//                        AppLocalDb.db.postDao().deleteAll();
                         for (Post post : list) {
                             AppLocalDb.db.postDao().insertAll(post);
-                            if (lud < post.getUpdateDate()){
+                            if (lud < post.getUpdateDate()) {
                                 lud = post.getUpdateDate();
                             }
                         }
@@ -86,14 +85,14 @@ public class Model {
                         MyApplication.getContext()
                                 .getSharedPreferences("TAG", Context.MODE_PRIVATE)
                                 .edit()
-                                .putLong("PostsLastUpdateDate",lud)
+                                .putLong("PostsLastUpdateDate", lud)
                                 .commit();
 
                         //return all data to caller
                         List<Post> stList = AppLocalDb.db.postDao().getAll();
 
                         Comparator<Post> compareByUpdateTime =
-                                (Post o1, Post o2) -> o1.getUpdateDate().compareTo( o2.getUpdateDate() );
+                                (Post o1, Post o2) -> o1.getUpdateDate().compareTo(o2.getUpdateDate());
 
                         Collections.sort(stList, compareByUpdateTime);
                         Collections.reverse(stList);
@@ -111,7 +110,7 @@ public class Model {
         postListLoadingState.setValue(PostListLoadingState.loading);
 
         // get last local update date
-        Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("PostsLastUpdateDate",0);
+        Long lastUpdateDate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("PostsLastUpdateDate", 0);
         String userId = getConnectedUserId();
 
         // firebase get all updates since lastLocalUpdateDate
@@ -123,11 +122,9 @@ public class Model {
                     @Override
                     public void run() {
                         Long lud = new Long(0);
-                        // TODO: delete this row
-//                        AppLocalDb.db.postDao().deleteAll();
                         for (Post post : list) {
                             AppLocalDb.db.postDao().insertAll(post);
-                            if (lud < post.getUpdateDate()){
+                            if (lud < post.getUpdateDate()) {
                                 lud = post.getUpdateDate();
                             }
                         }
@@ -135,14 +132,14 @@ public class Model {
                         MyApplication.getContext()
                                 .getSharedPreferences("TAG", Context.MODE_PRIVATE)
                                 .edit()
-                                .putLong("PostsLastUpdateDate",lud)
+                                .putLong("PostsLastUpdateDate", lud)
                                 .commit();
 
                         //return all data to caller
                         List<Post> stList = AppLocalDb.db.postDao().getUserAll(userId);
 
                         Comparator<Post> compareByUpdateTime =
-                                (Post o1, Post o2) -> o1.getUpdateDate().compareTo( o2.getUpdateDate() );
+                                (Post o1, Post o2) -> o1.getUpdateDate().compareTo(o2.getUpdateDate());
 
                         Collections.sort(stList, compareByUpdateTime);
                         Collections.reverse(stList);
@@ -166,19 +163,18 @@ public class Model {
                     public void run() {
                         //      Long lud = new Long(0);
                         for (User user : users) {
-                            if(user.getConnected().equals("true")){
+                            if (user.getConnected().equals("true")) {
                                 List<User> daoUsers = AppLocalDb.db.userDao().getAll();
                                 int daoSize = daoUsers.size();
-                                if(daoSize != 0){
-                                    for(int i = 0; i < daoSize; i ++){
-                                        if (!user.getId().equals(daoUsers.get(i).getId())){
-                                            if(i == (daoSize - 1)){
+                                if (daoSize != 0) {
+                                    for (int i = 0; i < daoSize; i++) {
+                                        if (!user.getId().equals(daoUsers.get(i).getId())) {
+                                            if (i == (daoSize - 1)) {
                                                 AppLocalDb.db.userDao().insertAll(user);
                                             }
                                         }
                                     }
-                                }
-                                else{
+                                } else {
                                     AppLocalDb.db.userDao().insertAll(user);
                                 }
 
@@ -197,6 +193,7 @@ public class Model {
 
     public interface AddUserListener {
         void onComplete(User user);
+
         void onFailure();
     }
 
@@ -206,6 +203,7 @@ public class Model {
             public void onComplete(User user) {
                 listener.onComplete(user);
             }
+
             @Override
             public void onFailure() {
                 listener.onFailure();
@@ -217,6 +215,7 @@ public class Model {
 
     public interface LoginListener {
         void onComplete();
+
         void onFailure();
     }
 
@@ -227,7 +226,6 @@ public class Model {
                 getUserByEmail(email, new Model.GetUserByEmail() {
                     @Override
                     public void onComplete(User user) {
-                        //   Log.d("TAG01", "login:");
                         if (user.getConnected().equals("false")) {
                             user.setConnected("true");
                         }
@@ -247,11 +245,12 @@ public class Model {
                     }
                 });
             }
+
             @Override
             public void onFailure() {
                 listener.onFailure();
             }
-        } );
+        });
     }
 
     public interface LogoutListener {
@@ -273,6 +272,7 @@ public class Model {
 
     public interface UpdatePostListener {
         void onComplete();
+
         void onFailure();
     }
 
@@ -348,7 +348,7 @@ public class Model {
         void onComplete(String url);
     }
 
-    public  void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
+    public void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
         modelFirebase.saveImage(imageBitmap, imageName, listener);
     }
 
@@ -356,7 +356,7 @@ public class Model {
         void onComplete(String url);
     }
 
-    public  void savePostImage(Bitmap imageBitmap, String imageName, SavePostImageListener listener) {
+    public void savePostImage(Bitmap imageBitmap, String imageName, SavePostImageListener listener) {
         modelFirebase.savePostImage(imageBitmap, imageName, listener);
     }
 
@@ -364,12 +364,13 @@ public class Model {
         void onComplete();
     }
 
-    public  void deleteImage(String imageName, DeleteImageListener listener) {
+    public void deleteImage(String imageName, DeleteImageListener listener) {
         modelFirebase.deleteImage(imageName, listener);
     }
 
     public interface EditUserListener {
         void onComplete();
+
         void onFailure();
     }
 
