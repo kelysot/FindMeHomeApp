@@ -207,13 +207,13 @@ public class HomeFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.logout) {
-            Model.instance.getUserById(Model.instance.getConnectedUserId(), new Model.GetUserById() {
+            homeViewModel.GetUserById(homeViewModel.getConnectedUserId(), new Model.GetUserById() {
                 @Override
                 public void onComplete(User user) {
                     if (user.getConnected().equals("true")) {
                         user.setConnected("false");
                     }
-                    Model.instance.editUser(user, new Model.EditUserListener() {
+                    homeViewModel.EditUser(user, new Model.EditUserListener() {
                         @Override
                         public void onComplete() {
                             Model.instance.logout(() -> {
