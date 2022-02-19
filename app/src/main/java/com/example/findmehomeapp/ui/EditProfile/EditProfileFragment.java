@@ -59,6 +59,7 @@ public class EditProfileFragment extends Fragment {
     String genderS;
     CircleImageView picture;
     ImageView addPicture;
+    int requestCode;
     Bitmap imageBitmap;
     int flag = 0;
     int flagPic = 0;
@@ -240,6 +241,7 @@ public class EditProfileFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        this.requestCode = requestCode;
         if (requestCode == REQUEST_CAMERA) {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle extras = data.getExtras();
@@ -377,7 +379,9 @@ public class EditProfileFragment extends Fragment {
             } else {
                 Model.instance.saveImage(imageBitmap, viewModel.data.getValue().getEmail() + ".jpg", url -> {
                     user.setAvatarUrl(url);
-                    saveImageToFile(imageBitmap, getLocalImageFileName(url));
+                    if (requestCode == REQUEST_CAMERA) {
+                        saveImageToFile(imageBitmap, getLocalImageFileName(url));
+                    }
                     viewModel.EditUser(user, new Model.EditUserListener() {
                         @Override
                         public void onComplete() {
