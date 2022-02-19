@@ -11,10 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +23,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.findmehomeapp.Model.AppLocalDb;
 import com.example.findmehomeapp.Model.Model;
-import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.MyApplication;
 import com.example.findmehomeapp.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 
 import java.util.Locale;
 
@@ -39,7 +35,6 @@ public class LoginFragment extends Fragment {
     EditText passwordEt;
     Button loginBtn;
     TextView registerTv;
-    NavController navController;
     ProgressBar progressBar;
     LoginViewModel viewModel;
 
@@ -78,8 +73,6 @@ public class LoginFragment extends Fragment {
         loginBtn = view.findViewById(R.id.login_btn_login);
         registerTv = view.findViewById(R.id.login_register_page);
 
-        navController = Navigation.findNavController(view);
-
         progressBar = view.findViewById(R.id.login_progressBar);
         progressBar.setVisibility(View.GONE);
         progressBar.getIndeterminateDrawable().setColorFilter(rgb(191,215,255), PorterDuff.Mode.MULTIPLY);
@@ -87,7 +80,7 @@ public class LoginFragment extends Fragment {
         registerTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               navController.navigate(R.id.action_nav_login_to_nav_register);
+                Navigation.findNavController(v).navigate(R.id.action_nav_login_to_nav_register);
             }
         });
 
@@ -102,9 +95,11 @@ public class LoginFragment extends Fragment {
     private void loginTheUser() {
         progressBar.setVisibility(View.VISIBLE);
         loginBtn.setEnabled(false);
+        emailEt.setEnabled(false);
+        passwordEt.setEnabled(false);
+        registerTv.setEnabled(false);
 
         String email = emailEt.getText().toString().trim().toLowerCase(Locale.ROOT);
-        Log.d("TAG3", "user Id:" + email );;
         String password = passwordEt.getText().toString();
 
         if (email.isEmpty()) {
@@ -112,11 +107,17 @@ public class LoginFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
             loginBtn.setEnabled(true);
             registerTv.setEnabled(true);
+            emailEt.setEnabled(true);
+            passwordEt.setEnabled(true);
+            registerTv.setEnabled(true);
         }
         else if(!email.contains("@") || !email.contains(".")){
             emailEt.setError("Please enter a valid email address.");
             progressBar.setVisibility(View.GONE);
             loginBtn.setEnabled(true);
+            registerTv.setEnabled(true);
+            emailEt.setEnabled(true);
+            passwordEt.setEnabled(true);
             registerTv.setEnabled(true);
         }
         else if (password.length() < 6) {
@@ -124,19 +125,25 @@ public class LoginFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
             loginBtn.setEnabled(true);
             registerTv.setEnabled(true);
+            emailEt.setEnabled(true);
+            passwordEt.setEnabled(true);
+            registerTv.setEnabled(true);
         }
         else{
             viewModel.Login(email, password, new Model.LoginListener() {
                 @Override
                 public void onComplete() {
                     viewModel.setData(email);
-                    navController.navigate(R.id.action_global_nav_home);
+                    NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_global_nav_home);
                 }
                 @Override
                 public void onFailure() {
                     Toast.makeText(MyApplication.getContext(), "Sorry, your password or email were incorrect, please try again." , Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                     loginBtn.setEnabled(true);
+                    registerTv.setEnabled(true);
+                    emailEt.setEnabled(true);
+                    passwordEt.setEnabled(true);
                     registerTv.setEnabled(true);
                 }
             });
@@ -154,7 +161,7 @@ public class LoginFragment extends Fragment {
         super.onStart();
 
         if (Model.instance.getConnectedUser() !=null) {
-            navController.navigate(R.id.action_global_nav_home);
+            NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_global_nav_home);
         }
     }
 }

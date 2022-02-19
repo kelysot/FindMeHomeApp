@@ -12,16 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.findmehomeapp.Model.Model;
-import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.Model.User;
 import com.example.findmehomeapp.R;
-import com.example.findmehomeapp.ui.EditPost.EditPostViewModel;
 import com.example.findmehomeapp.ui.TimeAgo;
 import com.squareup.picasso.Picasso;
 

@@ -233,59 +233,97 @@ public class EditPostFragment extends Fragment {
         locationSpinner.setEnabled(false);
         genderSpinner.setEnabled(false);
         editImage.setEnabled(false);
-        setHasOptionsMenu(true);
+        petTextTv.setEnabled(false);
+        ageEt.setEnabled(false);
 
         String age = ageEt.getText().toString();
 
         if (age.isEmpty()) {
             ageEt.setError("Please enter your pet age.");
             progressBar.setVisibility(View.GONE);
-            setHasOptionsMenu(false);
             saveBtn.setEnabled(true);
             typeSpinner.setEnabled(true);
             sizeSpinner.setEnabled(true);
             locationSpinner.setEnabled(true);
             genderSpinner.setEnabled(true);
             editImage.setEnabled(true);
-        } else if (imageBitmap == null) {
+            petTextTv.setEnabled(true);
+            ageEt.setEnabled(true);
+
+        }
+        else if (age.length() > 9 || age.length() < 5){
+            ageEt.setError("Please enter your pet age in this form: 2 months or 3 years.");
+            progressBar.setVisibility(View.GONE);
+            saveBtn.setEnabled(true);
+            typeSpinner.setEnabled(true);
+            sizeSpinner.setEnabled(true);
+            locationSpinner.setEnabled(true);
+            genderSpinner.setEnabled(true);
+            editImage.setEnabled(true);
+            petTextTv.setEnabled(true);
+            ageEt.setEnabled(true);
+        }
+        else if (imageBitmap == null && viewModel.data.getValue().getImage() == null) {
             Toast.makeText(MyApplication.getContext(), "Please enter your pet image", Toast.LENGTH_LONG).show();
             progressBar.setVisibility(View.GONE);
-            setHasOptionsMenu(false);
             saveBtn.setEnabled(true);
             typeSpinner.setEnabled(true);
             sizeSpinner.setEnabled(true);
             locationSpinner.setEnabled(true);
             genderSpinner.setEnabled(true);
             editImage.setEnabled(true);
+            petTextTv.setEnabled(true);
+            ageEt.setEnabled(true);
 
         } else {
             viewModel.setType(type);
             viewModel.setGender(gender);
             viewModel.setLocation(location);
             viewModel.setSize(size);
-
             String userId = Model.instance.getConnectedUserId();
-            Model.instance.savePostImage(imageBitmap, userId + ".jpg", url -> {
-                viewModel.setImage(url);
-                viewModel.EditPost(new Model.UpdatePostListener() {
-                    @Override
-                    public void onComplete() {
-                        NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
-                    }
 
-                    @Override
-                    public void onFailure() {
-                        progressBar.setVisibility(View.GONE);
-                        setHasOptionsMenu(false);
-                        saveBtn.setEnabled(true);
-                        typeSpinner.setEnabled(true);
-                        sizeSpinner.setEnabled(true);
-                        locationSpinner.setEnabled(true);
-                        genderSpinner.setEnabled(true);
-                        editImage.setEnabled(true);
-                    }
+            if(imageBitmap != null) {
+                Model.instance.savePostImage(imageBitmap, userId + ".jpg", url -> {
+                    viewModel.setImage(url);
+                    viewModel.EditPost(new Model.UpdatePostListener() {
+                        @Override
+                        public void onComplete() {
+                            NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
+                        }
+                        @Override
+                        public void onFailure() {
+                            progressBar.setVisibility(View.GONE);
+                            setHasOptionsMenu(false);
+                            saveBtn.setEnabled(true);
+                            typeSpinner.setEnabled(true);
+                            sizeSpinner.setEnabled(true);
+                            locationSpinner.setEnabled(true);
+                            genderSpinner.setEnabled(true);
+                            editImage.setEnabled(true);
+                        }
+                    });
                 });
-            });
+            }
+            else {
+                viewModel.EditPost(new Model.UpdatePostListener() {
+                        @Override
+                        public void onComplete() {
+                            NavHostFragment.findNavController(EditPostFragment.this).navigateUp();
+                        }
+
+                        @Override
+                        public void onFailure() {
+                            progressBar.setVisibility(View.GONE);
+                            setHasOptionsMenu(false);
+                            saveBtn.setEnabled(true);
+                            typeSpinner.setEnabled(true);
+                            sizeSpinner.setEnabled(true);
+                            locationSpinner.setEnabled(true);
+                            genderSpinner.setEnabled(true);
+                            editImage.setEnabled(true);
+                        }
+                    });
+            }
 
         }
     }
@@ -299,6 +337,8 @@ public class EditPostFragment extends Fragment {
         locationSpinner.setEnabled(false);
         genderSpinner.setEnabled(false);
         editImage.setEnabled(false);
+        petTextTv.setEnabled(false);
+        ageEt.setEnabled(false);
 
         viewModel.DeletePost(() -> {
             NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_profile);

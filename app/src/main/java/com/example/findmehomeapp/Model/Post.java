@@ -7,12 +7,8 @@ import androidx.room.PrimaryKey;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.ServerTimestamp;
-import com.google.type.Date;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 @Entity

@@ -9,15 +9,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
-import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.provider.MediaStore;
@@ -38,8 +35,6 @@ import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.MyApplication;
 import com.example.findmehomeapp.R;
-import com.example.findmehomeapp.ui.EditPost.EditPostViewModel;
-import com.example.findmehomeapp.ui.home.HomeFragmentDirections;
 
 import java.io.IOException;
 
@@ -180,6 +175,8 @@ public class CreatePostFragment extends Fragment {
         sizeSpinner.setEnabled(false);
         locationSpinner.setEnabled(false);
         genderSpinner.setEnabled(false);
+        petTextEt.setEnabled(false);
+        ageEt.setEnabled(false);
 
         String age = ageEt.getText().toString();
 
@@ -192,7 +189,21 @@ public class CreatePostFragment extends Fragment {
             locationSpinner.setEnabled(true);
             genderSpinner.setEnabled(true);
             addImage.setEnabled(true);
+            petTextEt.setEnabled(true);
+            ageEt.setEnabled(true);
 
+        }
+        else if (age.length() > 9 || age.length() < 5){
+            ageEt.setError("Please enter your pet age in this form: 2 months or 3 years.");
+            progressBar.setVisibility(View.GONE);
+            creteBtn.setEnabled(true);
+            typeSpinner.setEnabled(true);
+            sizeSpinner.setEnabled(true);
+            locationSpinner.setEnabled(true);
+            genderSpinner.setEnabled(true);
+            addImage.setEnabled(true);
+            petTextEt.setEnabled(true);
+            ageEt.setEnabled(true);
         }
         else if(imageBitmap == null){
             Toast.makeText(MyApplication.getContext(), "Please enter your pet image" , Toast.LENGTH_LONG).show();
@@ -203,6 +214,8 @@ public class CreatePostFragment extends Fragment {
             locationSpinner.setEnabled(true);
             genderSpinner.setEnabled(true);
             addImage.setEnabled(true);
+            petTextEt.setEnabled(true);
+            ageEt.setEnabled(true);
 
         }
         else {
@@ -259,7 +272,6 @@ public class CreatePostFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 imageBitmap = (Bitmap) extras.get("data");
                 petImage.setImageBitmap(imageBitmap);
-                Log.d("TAG33", "imageBitmap name:" + imageBitmap);
 
             }
         }
