@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,11 +18,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -36,7 +39,11 @@ import com.example.findmehomeapp.Model.Post;
 import com.example.findmehomeapp.MyApplication;
 import com.example.findmehomeapp.R;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.UUID;
 
 public class CreatePostFragment extends Fragment {
@@ -213,6 +220,7 @@ public class CreatePostFragment extends Fragment {
         } else {
             if (imageBitmap != null){
                 Model.instance.savePostImage(imageBitmap, viewModel.getPostId() + ".jpg", url -> {
+                    saveImageToFile(imageBitmap, getLocalImageFileName(url));
                     viewModel.setImage(url);
                     viewModel.savePost(() -> {
                         NavHostFragment.findNavController(this).navigateUp();
@@ -259,6 +267,40 @@ public class CreatePostFragment extends Fragment {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_CAMERA);
     }
+
+    private void saveImageToFile(Bitmap imageBitmap, String imageFileName){
+        try {
+            File dir = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES);
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+            File imageFile = new File(dir,imageFileName);
+            imageFile.createNewFile();
+            OutputStream out = new FileOutputStream(imageFile);
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.close();
+            addPicureToGallery(imageFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addPicureToGallery(File imageFile){
+        //add the picture to the gallery so we dont need to manage the cache size
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri contentUri = Uri.fromFile(imageFile);
+        mediaScanIntent.setData(contentUri);
+        MyApplication.getContext().sendBroadcast(mediaScanIntent);
+    }
+
+    private String getLocalImageFileName(String url) {
+        String name = URLUtil.guessFileName(url, null, null);
+        return name;
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

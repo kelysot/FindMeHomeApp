@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,10 +19,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,9 +37,14 @@ import android.widget.Toast;
 
 import com.example.findmehomeapp.Model.Model;
 import com.example.findmehomeapp.Model.User;
+import com.example.findmehomeapp.MyApplication;
 import com.example.findmehomeapp.R;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -169,6 +177,40 @@ public class RegisterFragment extends Fragment {
         startActivityForResult(intent, REQUEST_CAMERA);
     }
 
+    private void saveImageToFile(Bitmap imageBitmap, String imageFileName){
+        try {
+            File dir = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES);
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+            File imageFile = new File(dir,imageFileName);
+            imageFile.createNewFile();
+            OutputStream out = new FileOutputStream(imageFile);
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.close();
+            addPicureToGallery(imageFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addPicureToGallery(File imageFile){
+        //add the picture to the gallery so we dont need to manage the cache size
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri contentUri = Uri.fromFile(imageFile);
+        mediaScanIntent.setData(contentUri);
+        MyApplication.getContext().sendBroadcast(mediaScanIntent);
+    }
+
+    private String getLocalImageFileName(String url) {
+        String name = URLUtil.guessFileName(url, null, null);
+        return name;
+    }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -177,7 +219,7 @@ public class RegisterFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 imageBitmap = (Bitmap) extras.get("data");
                 picture.setImageBitmap(imageBitmap);
-
+                String email = emailEt.getText().toString().trim().toLowerCase(Locale.ROOT);
             }
         }
         if (requestCode == REQUEST_GALLERY) {
@@ -320,6 +362,7 @@ public class RegisterFragment extends Fragment {
             } else {
                 Model.instance.saveImage(imageBitmap, email + ".jpg", url -> {
                     user.setAvatarUrl(url);
+                    saveImageToFile(imageBitmap, getLocalImageFileName(url));
                     viewModel.Register(user, password, new Model.AddUserListener() {
                         @Override
                         public void onComplete(User user) {
