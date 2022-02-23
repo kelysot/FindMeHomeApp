@@ -79,7 +79,7 @@ public class CreatePostFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_post, container, false);
 
-        Post post = new Post(Model.instance.getConnectedUserId(), null, null, null, null, null, null, null);
+        Post post = new Post(Model.instance.getConnectedUserId(), null, null, null, null, null, null, null, false);
         viewModel.setData(post);
 
         petImage = view.findViewById(R.id.create_post_photo);

@@ -27,12 +27,13 @@ public class Post {
     String size = "";
     String gender = "";
     String location = "";
+    Boolean isDeleted = false;
     Long updateDate = new Long(0);
 
     public Post(){}
 
     @Ignore
-    public Post(String userId, String text, String image, String type, String age, String size, String gender, String location){  //}), List<String> likesUserId) {
+    public Post(String userId, String text, String image, String type, String age, String size, String gender, String location, Boolean isDeleted){
         this.userId = userId;
         this.text = text;
         this.image = image;
@@ -41,6 +42,7 @@ public class Post {
         this.size = size;
         this.gender = gender;
         this.location = location;
+        this.isDeleted = isDeleted;
     }
 
     public static Post create(String postId, Map<String, Object> json) {
@@ -53,11 +55,12 @@ public class Post {
         String size = (String) json.get("size");
         String gender = (String) json.get("gender");
         String location = (String) json.get("location");
+        Boolean isDeleted = (Boolean) json.get("isDeleted");
 
         Timestamp ts = (Timestamp)json.get("updateDate");
         Long updateDate = ts.getSeconds();
 
-        Post post = new Post(userId,text,image,type,age,size, gender,location);
+        Post post = new Post(userId,text,image,type,age,size, gender,location, isDeleted);
         post.setUpdateDate(updateDate);
 
         post.setId(postId);
@@ -76,6 +79,7 @@ public class Post {
                 ", size='" + size + '\'' +
                 ", gender='" + gender + '\'' +
                 ", location='" + location + '\'' +
+                ", isDeleted='" + isDeleted + '\'' +
                 '}';
     }
 
@@ -85,6 +89,14 @@ public class Post {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public String getId() {
@@ -178,6 +190,7 @@ public class Post {
         json.put("size",size);
         json.put("gender",gender);
         json.put("location",location);
+        json.put("isDeleted", isDeleted);
         json.put("updateDate", FieldValue.serverTimestamp());
 
         return json;

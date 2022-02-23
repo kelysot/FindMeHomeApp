@@ -19,8 +19,9 @@ public class EditPostViewModel extends ViewModel {
         Model.instance.savePost(post, listener);
     }
 
-    public void DeletePost(Model.DeletePostListener listener) {
+    public void DeletePost(Model.UpdatePostListener listener) {
         Post post = data.getValue();
+        post.setIsDeleted(true);
         Model.instance.deletePost(post, listener);
     }
 
