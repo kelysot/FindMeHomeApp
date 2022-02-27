@@ -351,15 +351,31 @@ public class EditPostFragment extends Fragment {
             Model.instance.deleteImagePost(viewModel.data.getValue().getId() + ".jpg", new Model.DeleteImagePostListener() {
                 @Override
                 public void onComplete() {
-                    viewModel.DeletePost(() -> {
-                        NavHostFragment.findNavController(EditPostFragment.this).navigate(R.id.action_global_nav_profile);
+                    viewModel.DeletePost(new Model.UpdatePostListener() {
+                        @Override
+                        public void onComplete() {
+                            NavHostFragment.findNavController(EditPostFragment.this).navigate(R.id.action_global_nav_profile);
+                        }
+
+                        @Override
+                        public void onFailure() {
+
+                        }
                     });
                 }
             });
         }
         else{
-            viewModel.DeletePost(() -> {
-                NavHostFragment.findNavController(EditPostFragment.this).navigate(R.id.action_global_nav_profile);
+            viewModel.DeletePost(new Model.UpdatePostListener() {
+                @Override
+                public void onComplete() {
+                    NavHostFragment.findNavController(EditPostFragment.this).navigate(R.id.action_global_nav_profile);
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
             });
         }
 

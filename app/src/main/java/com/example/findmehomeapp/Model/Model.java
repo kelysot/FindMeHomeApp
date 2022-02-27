@@ -76,7 +76,11 @@ public class Model {
                     public void run() {
                         Long lud = new Long(0);
                         for (Post post : list) {
-                            AppLocalDb.db.postDao().insertAll(post);
+                            if (post.isDeleted) {
+                                AppLocalDb.db.postDao().deleteById(post.getId());
+                            } else {
+                                AppLocalDb.db.postDao().insertAll(post);
+                            }
                             if (lud < post.getUpdateDate()) {
                                 lud = post.getUpdateDate();
                             }
@@ -123,7 +127,11 @@ public class Model {
                     public void run() {
                         Long lud = new Long(0);
                         for (Post post : list) {
-                            AppLocalDb.db.postDao().insertAll(post);
+                            if (post.isDeleted) {
+                                AppLocalDb.db.postDao().deleteById(post.getId());
+                            } else {
+                                AppLocalDb.db.postDao().insertAll(post);
+                            }
                             if (lud < post.getUpdateDate()) {
                                 lud = post.getUpdateDate();
                             }
@@ -290,12 +298,8 @@ public class Model {
         });
     }
 
-    public interface DeletePostListener {
-        void onComplete();
-    }
-
-    public void deletePost(Post post, DeletePostListener listener) {
-        modelFirebase.deletePost(post, new ModelFirebase.DeletePostListener() {
+    public void deletePost(Post post, UpdatePostListener listener) {
+        modelFirebase.savePost(post, new UpdatePostListener() {
             @Override
             public void onComplete() {
                 executor.execute(new Runnable() {
@@ -305,6 +309,11 @@ public class Model {
                     }
                 });
                 listener.onComplete();
+            }
+
+            @Override
+            public void onFailure() {
+                listener.onFailure();
             }
         });
     }
