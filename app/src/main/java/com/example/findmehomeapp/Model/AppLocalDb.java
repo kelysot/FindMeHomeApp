@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase;
 import com.example.findmehomeapp.MyApplication;
 
 
-@Database(entities = {User.class, Post.class}, version = 18)
+@Database(entities = {User.class, Post.class}, version = 20)
 abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract PostDao postDao();

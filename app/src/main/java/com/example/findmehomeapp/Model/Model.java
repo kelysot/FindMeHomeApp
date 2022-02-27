@@ -74,7 +74,6 @@ public class Model {
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
-//                        AppLocalDb.db.postDao().deleteAll();
                         Long lud = new Long(0);
                         for (Post post : list) {
                             if (post.isDeleted) {
@@ -126,7 +125,6 @@ public class Model {
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
-//                        AppLocalDb.db.postDao().deleteAll();
                         Long lud = new Long(0);
                         for (Post post : list) {
                             if (post.isDeleted) {
