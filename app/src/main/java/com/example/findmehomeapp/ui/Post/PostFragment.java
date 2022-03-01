@@ -88,7 +88,10 @@ public class PostFragment extends Fragment {
                 Picasso.get().load(viewModel.getData().getImage()).into(petImage);
             }
             else {
-                petImage.setVisibility(View.GONE);
+                Picasso.get()
+                        .load(R.drawable.cat_dog_rabbit).resize(250, 180)
+                        .centerCrop()
+                        .into(petImage);
             }
 
             Model.instance.getUserById(viewModel.getData().getUserId(), new Model.GetUserById() {

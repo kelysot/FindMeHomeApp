@@ -170,7 +170,10 @@ public class ProfileFragment extends Fragment {
                 Picasso.get().load(post.getImage()).into(holder.petImage);
             }
             else {
-                holder.petImage.setVisibility(View.GONE);
+                Picasso.get()
+                        .load(R.drawable.cat_dog_rabbit).resize(250, 180)
+                        .centerCrop()
+                        .into(holder.petImage);
             }
 
             profileViewModel.GetUserById(post.getUserId(), user -> {
