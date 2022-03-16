@@ -12,9 +12,5 @@
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_menu_profile"
             android:title="@string/menu_profile" />
-        <item
-            android:id="@+id/nav_edit_profile"
-            android:icon="@drawable/edit_profile"
-            android:title="@string/edit_profile" />
     </group>
 </menu>
