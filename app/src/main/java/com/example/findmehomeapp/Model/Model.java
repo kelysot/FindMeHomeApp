@@ -75,16 +75,17 @@ public class Model {
                     @Override
                     public void run() {
                         Long lud = new Long(0);
-                        for (Post post : list) {
-                            if (post.isDeleted) {
-                                AppLocalDb.db.postDao().deleteById(post.getId());
-                            } else {
-                                AppLocalDb.db.postDao().insertAll(post);
-                            }
-                            if (lud < post.getUpdateDate()) {
-                                lud = post.getUpdateDate();
-                            }
-                        }
+                        AppLocalDb.db.postDao().deleteAll();
+//                        for (Post post : list) {
+//                            if (post.isDeleted) {
+//                                AppLocalDb.db.postDao().deleteById(post.getId());
+//                            } else {
+//                                AppLocalDb.db.postDao().insertAll(post);
+//                            }
+//                            if (lud < post.getUpdateDate()) {
+//                                lud = post.getUpdateDate();
+//                            }
+//                        }
                         // update last local update date
                         MyApplication.getContext()
                                 .getSharedPreferences("TAG", Context.MODE_PRIVATE)
@@ -126,16 +127,17 @@ public class Model {
                     @Override
                     public void run() {
                         Long lud = new Long(0);
-                        for (Post post : list) {
-                            if (post.isDeleted) {
-                                AppLocalDb.db.postDao().deleteById(post.getId());
-                            } else {
-                                AppLocalDb.db.postDao().insertAll(post);
-                            }
-                            if (lud < post.getUpdateDate()) {
-                                lud = post.getUpdateDate();
-                            }
-                        }
+                        AppLocalDb.db.postDao().deleteAll();
+//                        for (Post post : list) {
+//                            if (post.isDeleted) {
+//                                AppLocalDb.db.postDao().deleteById(post.getId());
+//                            } else {
+//                                AppLocalDb.db.postDao().insertAll(post);
+//                            }
+//                            if (lud < post.getUpdateDate()) {
+//                                lud = post.getUpdateDate();
+//                            }
+//                        }
                         // update last local update date
                         MyApplication.getContext()
                                 .getSharedPreferences("TAG", Context.MODE_PRIVATE)
