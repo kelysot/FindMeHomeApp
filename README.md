@@ -1,4 +1,4 @@
-# Find Me Home 
+# 🐰 🏠 Find Me Home 🏡 🐶
 
 <br />
 <p align="center">
@@ -14,7 +14,7 @@
  </br> </br>
 </p>
 
-## App Functionality:
+## App Functionality 💻
 
 1. Implementation of Users Identification and Users Registration:
 	- Authentication and validation inputs of the users when entering the app.
@@ -32,7 +32,7 @@
 8. Drawer Menu - The user can select in the drawer menu if he wants to change the page to the home page or his own profile page.
 
 
-## Getting Started...
+## Getting Started... 🏃
 
 #### Installation
 - Export git repository to Android Studio
@@ -42,7 +42,7 @@ https://github.com/kelysot/FindMeHomeApp.git
 - Build and run the application on an Android emulator
 
 
-## Screenshots
+## 📱 Screenshots 📱
 
 Intro Page | Login Page |  Register Page
 :-------------------------:|:-------------------------:|:-------------------------:
